@@ -1,5 +1,5 @@
-
-import * as lotsActions from 'domain/lots/actions';
+import actionInterface from './../../interfaces/action';
+import * as lotsActions from './actions';
 
 
 const State = {
@@ -9,7 +9,7 @@ const State = {
 
 
 export const reducer = {
-  lots(state = State, action) {
+  lots(state = State, action: actionInterface) {
     switch (action.type) {
       case lotsActions.fetchLots.request: {
         return state;

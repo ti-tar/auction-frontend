@@ -1,12 +1,12 @@
 import { fork, takeEvery } from 'redux-saga/effects';
 
 // lots
-import { fetchLots } from 'domain/lots/sagas';
-import * as lotsActions from 'domain/lots/actions';
+import { fetchLots } from '../domain/lots/sagas';
+import * as lotsActions from '../domain/lots/actions';
 
 // users
-import { fetchUsers } from 'domain/users/sagas';
-import * as usersActions from 'domain/users/actions';
+import { fetchUsers } from '../domain/users/sagas';
+import * as usersActions from '../domain/users/actions';
 
 
 export function* components() {

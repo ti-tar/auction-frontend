@@ -4,8 +4,13 @@ export const SUFIXES = {
   FAILURE: 'FAILURE',
 };
 
-export function getAction(actionName: string): object {
-  
+interface actionCreator {
+  request: string,
+  success: string,
+  failure: string,
+}
+
+export function getAction(actionName: string): actionCreator {
   return { 
     request: `${actionName}/${SUFIXES.PENDING}`,
     success: `${actionName}/${SUFIXES.SUCCESS}`,
