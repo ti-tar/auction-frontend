@@ -11,8 +11,8 @@ import { Switch, Route } from 'react-router';
 const App: React.FC = () => {
   return (
     <div className="App">
+      <NanMenu />
       <Switch>
-        <NanMenu />
         <Route exact path="/" component={Lots} />
         <Route exact path="/lots" component={Lots} />
       </Switch>

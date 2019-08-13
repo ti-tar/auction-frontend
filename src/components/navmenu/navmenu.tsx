@@ -16,22 +16,22 @@ const NavMenu: React.FC = () => (
   
     <ul className={'buttons'}>
       <li>
-        <Link to={{ pathname: 'lots/crete' }}>
+        <Link to={{ pathname: '/lots/crete' }}>
           Create Lot
         </Link>
       </li>
       <li>
-        <Link to={{ pathname: 'lots' }}>
+        <Link to={{ pathname: '/lots' }}>
           All Lots
         </Link>
       </li>
       <li>
-        <Link to={{ pathname: 'lots' }}>
+        <Link to={{ pathname: '/lots' }}>
           My Lots
         </Link>
       </li>
       <li>
-        <Link to={{ pathname: 'logout' }}>
+        <Link to={{ pathname: '/logout' }}>
           Log out
         </Link>
       </li>

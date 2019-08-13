@@ -3,7 +3,8 @@ import qs from 'qs';
 
 const getAxiosInstance = () => axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  withCredentials: true,
+  // withCredentials: true,
+  withCredentials: false,
   paramsSerializer: params => qs.stringify(params, { encode: false, skipNulls: true, arrayFormat: 'brackets' }),
 });
 
@@ -18,7 +19,8 @@ const httpClient = getAxiosInstance();
 //   withCredentials: true,
 // }), err => Promise.reject(err));
 
-const prefix = '/api/v1';
+// const prefix = '/api/v1';
+const prefix = '';
 
 export default {
   // lots

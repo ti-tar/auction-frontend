@@ -1,15 +1,17 @@
 import actionInterface from './../../interfaces/action';
+import lotsReducerInterface from './../../interfaces/lotsReducer';
 import * as usersActions from './actions';
 
 
-const State = {
-  resources: {},
+
+export const usersInitialState = {
+  resources: [],
   isLoading: false,
 };
 
 
 export const reducer = {
-  users(state = State, action: actionInterface) {
+  users(state = usersInitialState, action: actionInterface) {
     switch (action.type) {
       case usersActions.fetchUsers.request: {
         return state;
