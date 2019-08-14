@@ -13,6 +13,7 @@ import configureStore from './domain/index';
 const store = configureStore();
 store.runSaga(rootSaga);
 
+// @ts-ignore
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

@@ -15,6 +15,7 @@
     "@types/redux-saga": "^0.10.5",
     "@types/webpack-env": "^1.14.0",
     "axios": "^0.19.0",
+    "eslint": "^6.1.0",
     "qs": "^6.7.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -29,7 +30,7 @@
     "typescript": "3.5.3"
   },
   "scripts": {
-    "start": "react-scripts start --jsx",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -48,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^2.0.0"
   }
 }
