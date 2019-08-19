@@ -20,7 +20,7 @@ const httpClient = getAxiosInstance();
 // }), err => Promise.reject(err));
 
 // const prefix = '/api/v1';
-const prefix = '';
+const prefix = '/api';
 
 export default {
   // lots
