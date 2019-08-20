@@ -3,18 +3,20 @@ import './App.css';
 
 // pages
 import Lots from './pages/lots/lots';
+import LotsCreate from './pages/lots/lotsCreate';
 
 // components
 import NanMenu from './components/navmenu/navmenu';
-import { Switch, Route } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <NanMenu />
       <Switch>
-        <Route exact path="/" component={Lots} />
-        <Route exact path="/lots" component={Lots} />
+	      <Route path="/lots/create" component={LotsCreate} />
+	      <Route exact path="/lots" component={Lots} />
+	      <Route exact path="/" component={Lots} />
       </Switch>
     </div>
   );

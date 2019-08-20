@@ -9,15 +9,16 @@ import  * as lotsActions from '../../domain/lots/actions';
 import lotInterface from '../../interfaces/lot';
 import lotsReducerInterface from '../../interfaces/lotsReducer';
 
-import "./lotsStyles.css";
+import "./styles/lotsStyles.scss";
 
 
 interface Props {
   lots: lotInterface[],
   isLoading: boolean,
+  fetchLots: Function
 }
 
-const Lots = (props: Props & { fetchLots: Function, children?: React.ReactNode }) => {
+const Lots: React.FunctionComponent<Props> = (props) => {
   useEffect(() => {
     props.fetchLots();
   }, []);

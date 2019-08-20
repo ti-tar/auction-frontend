@@ -1,0 +1,45 @@
+.lots {
+    margin: 0 auto;
+    width: 850px;
+    background: white;
+    .lot {
+        margin-top: 5px;
+        min-height: 210px;
+        display: flex;
+        background: #F2F2F2;
+        border-radius: 10px;
+
+        .lot__img {
+            display: flex;
+            flex: 0 0 185px;
+            margin: 10px;
+
+            div {
+                display: flex;
+                align-items: stretch;
+                justify-content: center;
+                background: #C4C4C4;
+                border-radius: 5px;
+                font-family: Roboto;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 20px;
+                flex-grow: 1;
+            }
+        }
+
+        .lot__product {
+            flex-grow: 1;
+        }
+
+        .lot__info {
+            flex: 0 0 270px;
+            margin: 5px;
+
+            div {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}
