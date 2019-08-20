@@ -1,13 +1,14 @@
 export default interface lotInterface {
+  id: number,
   title: string,
   image?: string,
   description?: string,
   status: string,
-  createAt :string,
+  createAt: string,
   currentPrice: number,
   estimatedPrice: number,
-  lotStartTime: string,
-  lotEndTime: string,
+  startTime: string,
+  endTime: string,
 }
 
 // Statuses: 

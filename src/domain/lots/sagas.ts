@@ -12,6 +12,7 @@ export function* fetchLots() {
       type: lotsActions.fetchLots.success,
       payload: data,
     });
+
   } catch (errors) {
     showAxiosErrors(errors.response);
 

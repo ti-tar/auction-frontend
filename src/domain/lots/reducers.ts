@@ -1,21 +1,52 @@
-import actionInterface from './../../interfaces/action';
+import reducerActionInterface from './../../interfaces/reducerAction';
 import * as lotsActions from './actions';
 
 
 export const lotsInitialState = {
   resources: [],
+  meta: {},
   isLoading: false,
 };
 
 
 export const reducer = {
-  lots(state = lotsInitialState, action: actionInterface) {
-    switch (action.type) {
+  lots(lotsState = lotsInitialState, action: reducerActionInterface) {
+
+    const { type, payload } = action;
+
+    switch (type) {
       case lotsActions.fetchLots.request: {
-        return state;
+        return  {
+          ...lotsState,
+            isLoading: true,
+        };
       }
+
+      case lotsActions.fetchLots.success: {
+        if( payload && payload.resources ){
+          return  {
+            ...lotsState,
+            resources: [...payload.resources],
+            meta: payload.meta,
+            isLoading: false
+          };
+        }
+
+        return {
+          ...lotsState,
+          isLoading: false,
+        };
+      }
+
+      case lotsActions.fetchLots.failure: {
+        return {
+          ...lotsState,
+            isLoading: false,
+        };
+      }
+
       default:
-        return state;
+          return { ...lotsState };
     }
   }
 };
