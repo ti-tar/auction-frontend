@@ -1,30 +1,62 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-
+import { Field, reduxForm } from 'redux-form';
+import { toast } from 'react-toastify';
 // actions
 import  * as lotsActions from '../../domain/lots/actions';
-import lotsReducerInterface from "../../interfaces/lotsReducer";
 
 // components
-import Datepicker from '../../components/form/datePicker/datepicker';
+import CustomDatePicker from '../../components/form/datePicker/datepicker';
+
+// interfaces
+import LotCreateInterface from '../../interfaces/lotCreate';
 
 // css
 import "./styles/lotsCreateStyles.scss";
 
 
-interface DummyFormComponentProps {
-	InjectedFormProps
+interface LotsCreateFromProps {
+
 }
 
-const LotsCreateFrom = reduxForm({
-	form: 'form-lots-create',
-})((props) => {
-	const { handleSubmit } = props;
 
-	const handleBeforeSubmit = (v: any) => {
-		console.log(v);
+const LotsCreateFrom: any = compose(
+	connect(
+		null,
+		{
+			createNewLot: (newLot: LotCreateInterface): any => ({ type: lotsActions.createNewLot.request, payload: newLot }),
+		}
+	),
+	reduxForm({
+		form: 'form-lots-create',
+	})
+) ((props: LotsCreateFromProps & React.ReactChild & { handleSubmit: Function, createNewLot: Function}) => {
+	const { handleSubmit, createNewLot } = props;
+
+	const handleBeforeSubmit = (formValues: any) => {
+		if (!formValues.title || !formValues.currentPrice || !formValues.estimatedPrice || !formValues.startTime || !formValues.endTime ){
+			toast.error('fill all fields');
+			return false;
+		}
+
+		const lotToSend:LotCreateInterface = {
+			title: formValues.title,
+			currentPrice: parseFloat(formValues.currentPrice),
+			estimatedPrice: parseFloat(formValues.estimatedPrice),
+			startTime: formValues.startTime,
+			endTime: formValues.endTime,
+		};
+
+		if (formValues.description) {
+			lotToSend.description = formValues.description;
+		}
+		if (formValues.image) {
+			lotToSend.image = formValues.image;
+		}
+
+		createNewLot(lotToSend);
+
 	};
 	return (
 		<form onSubmit={handleSubmit(handleBeforeSubmit)}>
@@ -51,12 +83,12 @@ const LotsCreateFrom = reduxForm({
 
 			<Field
 				name="startTime"
-				component={Datepicker}
+				component={CustomDatePicker}
 			/>
 
 			<Field
 				name="endTime"
-				component={Datepicker}
+				component={CustomDatePicker}
 			/>
 
 			<Field
@@ -83,11 +115,9 @@ const LotsCreateFrom = reduxForm({
 });
 
 
-interface Props {
-	isLoading: boolean,
-}
+interface Props {}
 
-const	LotsCreate: React.FunctionComponent<Props & DummyFormComponentProps> = (props) => {
+const LotsCreate: React.SFC<Props> = (props) => {
 
 	return (
 		<section className="lotsCreate">
@@ -104,13 +134,4 @@ const	LotsCreate: React.FunctionComponent<Props & DummyFormComponentProps> = (pr
 	);
 };
 
-export default compose(
-	connect(
-		(state: { lots: lotsReducerInterface }) => ({
-			isLoading: state.lots.isLoading,
-		}),
-		{
-			fetchLotsCreate: (): any => ({ type: lotsActions.fetchLotsCreate.request }),
-		}
-	),
-)(LotsCreate);
+export default LotsCreate;

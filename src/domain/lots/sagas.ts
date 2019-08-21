@@ -22,3 +22,22 @@ export function* fetchLots() {
     });
   }
 }
+
+export function* createNewLot(action: any) {
+  try {
+    const { data } = yield call(Api.createNewLot, action.payload);
+
+    yield put({
+      type: lotsActions.createNewLot.success,
+      payload: data,
+    });
+
+    // history.push('/lots');
+  } catch (errors) {
+    showAxiosErrors(errors.response.data);
+    yield put({
+      type: lotsActions.createNewLot.failure,
+      payload: errors,
+    });
+  }
+}

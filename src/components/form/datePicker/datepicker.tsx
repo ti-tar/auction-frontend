@@ -19,13 +19,9 @@ interface Props {
 }
 
 
-class renderDatePicker extends React.Component<Props> {
+class CustomDatePicker extends React.Component<Props> {
 
-	constructor (props) {
-		super(props);
-	}
-
-	handleChange = (date) => {
+	handleChange = (date: Date) => {
 		this.props.input.onChange(moment(date).toISOString());
 	};
 
@@ -48,4 +44,4 @@ class renderDatePicker extends React.Component<Props> {
 	}
 }
 
-export default renderDatePicker;
+export default CustomDatePicker;

@@ -13,7 +13,6 @@ import configureStore from './domain/index';
 const store = configureStore();
 store.runSaga(rootSaga);
 
-// @ts-ignore
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -21,8 +20,11 @@ ReactDOM.render(
     </BrowserRouter>
   </Provider>, document.getElementById('root'));
 
+// Hot Module Replacement
+declare let module: { hot: any };
+
 if (module.hot) {
-  module.hot.accept();
+    module.hot.accept();
 }
 
 // If you want your app to work offline and load faster, you can change
