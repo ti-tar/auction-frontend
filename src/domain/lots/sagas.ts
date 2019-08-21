@@ -32,7 +32,10 @@ export function* createNewLot(action: any) {
       payload: data,
     });
 
-    // history.push('/lots');
+    console.log(action.history)
+    console.log(data.resource.id)
+
+    action.history.push(`/lots/${data.resource.id}`);
   } catch (errors) {
     showAxiosErrors(errors.response.data);
     yield put({

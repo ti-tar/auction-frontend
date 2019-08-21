@@ -18,6 +18,7 @@ interface Props {
   fetchLots: Function
 }
 
+
 const Lots: React.FunctionComponent<Props> = (props) => {
   useEffect(() => {
     props.fetchLots();
@@ -73,7 +74,7 @@ export default connect(
   (state: { lots: lotsReducerInterface }) => ({
     lots: state.lots.resources,
     isLoading: state.lots.isLoading,
-  }), 
+  }),
   {
     fetchLots: (): any => ({ type: lotsActions.fetchLots.request }),
   }

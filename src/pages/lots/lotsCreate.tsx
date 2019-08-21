@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 // actions
 import  * as lotsActions from '../../domain/lots/actions';
 
@@ -25,14 +26,15 @@ const LotsCreateFrom: any = compose(
 	connect(
 		null,
 		{
-			createNewLot: (newLot: LotCreateInterface): any => ({ type: lotsActions.createNewLot.request, payload: newLot }),
+			createNewLot: (newLot: LotCreateInterface, history: Function): any => ({ type: lotsActions.createNewLot.request, payload: newLot, history }),
 		}
 	),
 	reduxForm({
 		form: 'form-lots-create',
-	})
-) ((props: LotsCreateFromProps & React.ReactChild & { handleSubmit: Function, createNewLot: Function}) => {
-	const { handleSubmit, createNewLot } = props;
+	}),
+	withRouter
+) ((props: LotsCreateFromProps & React.ReactChild & { handleSubmit: Function, createNewLot: Function, history: Function}) => {
+	const { handleSubmit, createNewLot, history } = props;
 
 	const handleBeforeSubmit = (formValues: any) => {
 		if (!formValues.title || !formValues.currentPrice || !formValues.estimatedPrice || !formValues.startTime || !formValues.endTime ){
@@ -55,7 +57,10 @@ const LotsCreateFrom: any = compose(
 			lotToSend.image = formValues.image;
 		}
 
-		createNewLot(lotToSend);
+		console.log('111');
+		console.log(history);
+
+		createNewLot(lotToSend, history);
 
 	};
 	return (
@@ -117,7 +122,7 @@ const LotsCreateFrom: any = compose(
 
 interface Props {}
 
-const LotsCreate: React.SFC<Props> = (props) => {
+const LotsCreate: React.FC<Props> = (props) => {
 
 	return (
 		<section className="lotsCreate">

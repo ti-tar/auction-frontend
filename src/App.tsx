@@ -4,6 +4,7 @@ import './App.css';
 
 import Lots from './pages/lots/lots';
 import LotsCreate from './pages/lots/lotsCreate';
+import LotsDetails from './pages/lots/lotDetails';
 
 // declare toasts
 import { ToastContainer } from 'react-toastify';
@@ -21,11 +22,12 @@ const App: React.FC = () => {
       <NanMenu />
       <Switch>
 	      <Route path="/lots/create" component={LotsCreate} />
+	      <Route path="/lots/:id" component={LotsDetails} />
 	      <Route exact path="/lots" component={Lots} />
 	      <Route exact path="/" component={Lots} />
       </Switch>
     </div>
   );
-}
+};
 
 export default App;
