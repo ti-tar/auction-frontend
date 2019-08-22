@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 // actions
 import  * as lotsActions from '../../domain/lots/actions';
@@ -35,7 +36,9 @@ const Lots: React.FunctionComponent<Props> = (props) => {
           </div>
           <div className="lot__product">
             <h3>
-              {lot.title}
+              <Link to={{ pathname: `/lots/${lot.id}`}}>
+                {lot.title}
+              </Link>
             </h3>
             <p>
               {lot.description}

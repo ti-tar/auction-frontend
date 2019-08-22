@@ -4,6 +4,7 @@ import * as lotsActions from './actions';
 
 export const lotsInitialState = {
   resources: [],
+  resource: {},
   meta: {},
   isLoading: false,
 };
@@ -21,7 +22,6 @@ export const reducer = {
             isLoading: true,
         };
       }
-
       case lotsActions.fetchLots.success: {
         if( payload && payload.resources ){
           return  {
@@ -31,17 +31,34 @@ export const reducer = {
             isLoading: false
           };
         }
-
         return {
           ...lotsState,
           isLoading: false,
         };
       }
-
       case lotsActions.fetchLots.failure: {
         return {
           ...lotsState,
             isLoading: false,
+        };
+      }
+
+      case lotsActions.fetchLot.request: {
+        return  { ...lotsState, isLoading: true };
+      }
+      case lotsActions.fetchLot.success: {
+        if( payload && payload.resource ){
+          return  {
+            ...lotsState,
+            resource: {...payload.resource}, meta: payload.meta, isLoading: false
+          };
+        }
+        return { ...lotsState,          isLoading: false,        };
+      }
+      case lotsActions.fetchLot.failure: {
+        return {
+          ...lotsState,
+          isLoading: false,
         };
       }
 

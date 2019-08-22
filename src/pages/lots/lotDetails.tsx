@@ -2,7 +2,7 @@ import React, {useEffect, ComponentType, PropsWithChildren} from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { compose } from "redux";
-import { RouteComponentProps, withRouter} from "react-router";
+import { RouteComponentProps, withRouter , StaticContext} from "react-router";
 
 // actions
 import  * as lotsActions from '../../domain/lots/actions';
@@ -12,6 +12,7 @@ import lotInterface from '../../interfaces/lot';
 import lotsReducerInterface from '../../interfaces/lotsReducer';
 
 import "./styles/lotDetailsStyles.scss";
+import * as H from "history";
 
 type PathParamsType = {
 	id: string,
@@ -28,17 +29,28 @@ interface Props {
 	lot: lotInterface,
 	isLoading: boolean,
 	fetchLot: Function,
+
+	history: H.History,
+	location: H.Location<H.LocationState>;
+	match: {
+		params: {
+			id: string,
+		}
+	},
+	staticContext?: any,
 }
 
-const LotDetails: React.FunctionComponent<PropsType> = (props) => {
-	const { lot, fetchLot } = props;
+const LotDetails: React.FC<Props> = (props) => {
+
+	const { lot, fetchLot, match: { params: { id: lotId } }, isLoading } = props;
 
 	useEffect(() => {
-		fetchLot();
+		fetchLot(lotId);
 	}, []);
 
 	return (
 		<section className="lotDetails">
+			{!!lot && (
 				<div className="lot" key={`${lot.id} ${lot.title}`}>
 					<div className="lot__img">
 						<div>
@@ -77,19 +89,25 @@ const LotDetails: React.FunctionComponent<PropsType> = (props) => {
 
 					</div>
 				</div>
+			)}
+			{ isLoading && (
+				<h1>Loading..</h1>
+			)}
 		</section>
 	)
 };
 
-export default compose(
+const lotDetailsRoute: any = compose(
 	connect(
 		(state: { lots: lotsReducerInterface }) => ({
 			lot: state.lots.resource,
 			isLoading: state.lots.isLoading,
 		}),
 		{
-			fetchLot: (): any => ({ type: lotsActions.fetchLot.request }),
+			fetchLot: (lotId: string): any => ({ type: lotsActions.fetchLot.request, payload: {lotId} }),
 		}
 	),
 	withRouter
 )(LotDetails);
+
+export default lotDetailsRoute;
