@@ -3,7 +3,7 @@ import './App.css';
 // pages
 
 import Lots from './pages/lots/lots';
-import LotsCreate from './pages/lots/lotsCreate';
+import LotsEdit from './pages/lots/lotsEdit';
 import LotsDetails from './pages/lots/lotDetails';
 
 // declare toasts
@@ -21,7 +21,7 @@ const App: React.FC = () => {
       <ToastContainer />
       <NanMenu />
       <Switch>
-	      <Route path="/lots/create" component={LotsCreate} />
+	      <Route path="/lots/create" component={LotsEdit} />
 	      <Route path="/lots/:id" component={LotsDetails} />
 	      <Route exact path="/lots" component={Lots} />
 	      <Route exact path="/" component={Lots} />

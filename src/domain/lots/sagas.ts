@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import Api from '../../api';
 import * as lotsActions from '../../domain/lots/actions';
-import { showAxiosErrors } from '../../libs/helpers';
+import {showAxiosErrors, toast} from '../../libs/helpers';
 
 export function* fetchLots() {
   try {
@@ -50,10 +50,10 @@ export function* createNewLot(action: any) {
       payload: data,
     });
 
-    console.log(action.history)
-    console.log(data.resource.id)
+    toast('Lot successfully added!', 'success');
 
     action.history.push(`/lots/${data.resource.id}`);
+
   } catch (errors) {
     showAxiosErrors(errors.response.data);
     yield put({

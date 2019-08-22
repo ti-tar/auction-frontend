@@ -1,7 +1,7 @@
 import { toast as toast123 } from 'react-toastify';
 import responseErrorInterface from '../interfaces/responseError';
 
-export const toast = (msg = '', type = '') => {
+export const toast = (msg: string, type: string = '') => {
   switch (type) {
     case 'success':
       toast123.success(msg, {
