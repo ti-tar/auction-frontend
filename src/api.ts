@@ -3,6 +3,7 @@ import qs from 'qs';
 
 // interfaces
 import LotCreateInterface from './interfaces/lotCreate';
+import userCreateInterface from './interfaces/userCreate';
 
 const getAxiosInstance = () => axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -26,5 +27,6 @@ export default {
   createNewLot: (newLot: LotCreateInterface) => httpClient.post(`${prefix}/lots`, newLot),
   // users
   fetchUsers: () => httpClient.get(`${prefix}/users`),
+  createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/users`, newUser),
 
 };

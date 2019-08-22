@@ -5,7 +5,7 @@ import { fetchLots, fetchLot, createNewLot } from '../domain/lots/sagas';
 import * as lotsActions from '../domain/lots/actions';
 
 // users
-import { fetchUsers } from '../domain/users/sagas';
+import { fetchUsers, createUser } from '../domain/users/sagas';
 import * as usersActions from '../domain/users/actions';
 
 export function* components() {
@@ -16,6 +16,7 @@ export function* components() {
 
   // users
   yield takeEvery(usersActions.fetchUsers.request, fetchUsers);
+  yield takeEvery(usersActions.createNewUser.request, createUser);
 }
 
 export default function* () {

@@ -28,13 +28,19 @@ export const toast = (msg: string, type: string = '') => {
 
 
 // response is payload object from saga to reducer
-export const showAxiosErrors = (response: responseErrorInterface[]) => {
+export const showAxiosErrors = (response: responseErrorInterface ) => {
 
-  response.forEach((errObj) => {
-    toast(errObj.message);
-  });
+  if (Array.isArray(response)){
+    response.forEach((errObj) => {
+      toast(errObj.message);
+      return;
+    });
+  }
 
-  //  else {
-  //   toast('Unknown server error');
-  // }
+  if (response && response.hasOwnProperty('message')) {
+    toast(response.message);
+    return;
+  }
+
+  toast('Unknown server error');
 };

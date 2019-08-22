@@ -16,6 +16,9 @@ export const reducer = {
     const { type, payload } = action;
 
     switch (type) {
+
+      //  fetch all Lots
+
       case lotsActions.fetchLots.request: {
         return  {
           ...lotsState,
@@ -43,6 +46,8 @@ export const reducer = {
         };
       }
 
+      //  fetch Lot by Id
+
       case lotsActions.fetchLot.request: {
         return  { ...lotsState, isLoading: true };
       }
@@ -61,6 +66,8 @@ export const reducer = {
           isLoading: false,
         };
       }
+
+
 
       default:
           return { ...lotsState };
