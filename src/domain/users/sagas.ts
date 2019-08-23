@@ -24,7 +24,6 @@ export function* fetchUsers() {
   }
 }
 
-
 export function* createUser(action: any) {
   try {
     const { data } = yield call(Api.createUser, action.payload);
@@ -42,6 +41,24 @@ export function* createUser(action: any) {
     showAxiosErrors(errors.response.data);
     yield put({
       type: usersActions.createNewUser.failure,
+      payload: errors,
+    });
+  }
+}
+
+export function* makeLogin(action: any) {
+  try {
+    const { data } = yield call(Api.login, action.payload);
+
+    yield put({
+      type: usersActions.login.success,
+      payload: data,
+    });
+
+  } catch (errors) {
+    showAxiosErrors(errors.response.data);
+    yield put({
+      type: usersActions.login.failure,
       payload: errors,
     });
   }

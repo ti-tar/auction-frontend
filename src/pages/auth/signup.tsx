@@ -9,7 +9,9 @@ import {withRouter} from "react-router";
 // interfaces
 import userCreateInterface from "../../interfaces/userCreate";
 import {toast} from "react-toastify";
-import LotCreateInterface from "../../interfaces/lotCreate";
+
+// css
+import './styles/signUpStyles.scss';
 
 type Props = React.ReactChild & { handleSubmit: Function, createNewUser: Function, history: Function};
 
@@ -17,7 +19,7 @@ const SignUp: React.FunctionComponent<Props> = (props) => {
 	const {handleSubmit, createNewUser, history} = props;
 
 	const handleBeforeSubmit = (formValues: any) => {
-		if (!formValues.firstName || !formValues.lastName || !formValues.email || !formValues.password) {
+		if (!formValues.firstName || !formValues.lastName || !formValues.email || !formValues.password || !formValues.phone) {
 			toast.error('fill all fields');
 			return false;
 		}
@@ -26,6 +28,7 @@ const SignUp: React.FunctionComponent<Props> = (props) => {
 			firstName: formValues.firstName,
 			lastName: formValues.lastName,
 			email: formValues.email,
+			phone: formValues.phone,
 			password: formValues.password,
 		};
 
@@ -60,6 +63,13 @@ const SignUp: React.FunctionComponent<Props> = (props) => {
 					/>
 
 					<Field
+						name="phone"
+						type="text"
+						component="input"
+						placeholder="380991234567"
+					/>
+
+					<Field
 						name="password"
 						type="password"
 						component="input"
@@ -87,7 +97,7 @@ const SignUpRouteComponent: any = compose(
 		}
 	),
 	reduxForm({
-		form: 'form-lots-create',
+		form: 'form-signup',
 	}),
 	withRouter
 ) (SignUp);

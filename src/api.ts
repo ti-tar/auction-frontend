@@ -28,5 +28,6 @@ export default {
   // users
   fetchUsers: () => httpClient.get(`${prefix}/users`),
   createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/users`, newUser),
-
+  //
+  login: ({ loginData }: any) => httpClient.post(`${prefix}/users/login`, loginData),
 };
