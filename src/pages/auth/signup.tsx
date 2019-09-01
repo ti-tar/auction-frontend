@@ -3,7 +3,7 @@ import './styles/signUpStyles.scss';
 import {Field, reduxForm} from "redux-form";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import * as usersActions from "../../domain/users/actions";
+import * as usersActions from "../../domain/user/actions";
 import {withRouter} from "react-router";
 
 // interfaces

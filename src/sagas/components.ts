@@ -5,8 +5,8 @@ import { fetchLots, fetchLot, createNewLot } from '../domain/lots/sagas';
 import * as lotsActions from '../domain/lots/actions';
 
 // users
-import { fetchUsers, createUser, makeLogin } from '../domain/users/sagas';
-import * as usersActions from '../domain/users/actions';
+import { fetchProfile, createUser, makeLogin } from '../domain/user/sagas';
+import * as userActions from '../domain/user/actions';
 
 export function* components() {
   // lots
@@ -14,14 +14,14 @@ export function* components() {
   yield takeEvery(lotsActions.fetchLot.request, fetchLot);
   yield takeEvery(lotsActions.createNewLot.request, createNewLot);
 
-  // users
-  yield takeEvery(usersActions.fetchUsers.request, fetchUsers);
+  // user
+  yield takeEvery(userActions.fetchProfile.request, fetchProfile);
 
   // user register
-  yield takeEvery(usersActions.createNewUser.request, createUser);
+  yield takeEvery(userActions.createNewUser.request, createUser);
 
   // user login
-  yield takeEvery(usersActions.login.request, makeLogin);
+  yield takeEvery(userActions.login.request, makeLogin);
 }
 
 export default function* () {

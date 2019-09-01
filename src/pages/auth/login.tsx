@@ -4,17 +4,20 @@ import {toast} from "react-toastify";
 import userLoginDataInterface from "../../interfaces/userLoginData";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import * as usersActions from "../../domain/users/actions";
+import * as userActions from "../../domain/user/actions";
 import {withRouter} from "react-router";
 
 // css
 import './styles/signUpStyles.scss';
 
-type Props = React.ReactChild & { handleSubmit: Function, makeLogin: Function, history: Function};
+type Props = React.ReactChild & { handleSubmit: Function, makeLogin: Function, history: Function, isLoading: boolean };
 
 const Login: React.FunctionComponent<Props> = (props) => {
 
-	const {handleSubmit, makeLogin, history} = props;
+	const {
+		handleSubmit, makeLogin, history,
+		isLoading,
+	} = props;
 
 	const handleBeforeSubmit = (formValues: any) => {
 		if (!formValues.email || !formValues.password) {
@@ -30,7 +33,11 @@ const Login: React.FunctionComponent<Props> = (props) => {
 		makeLogin(loginData, history);
 	};
 
-	return (
+	return isLoading
+		? (
+			<h1>isLoading...</h1>
+		)
+		: (
 		<section className="login">
 			<h1>Login</h1>
 
@@ -66,9 +73,11 @@ const Login: React.FunctionComponent<Props> = (props) => {
 
 const LoginRouteComponent: any = compose(
 	connect(
-		null,
+		(state: any) => ({
+			isLoading: state.user.isLoading,
+		}),
 		{
-			makeLogin: (loginData: userLoginDataInterface, history: Function): any => ({ type: usersActions.login.request, payload: {loginData, history} }),
+			makeLogin: (loginData: userLoginDataInterface, history: any): any => ({ type: userActions.login.request, payload: {loginData}, history }),
 		}
 	),
 	reduxForm({

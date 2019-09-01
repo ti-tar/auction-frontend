@@ -1,24 +1,22 @@
 import { put, call } from 'redux-saga/effects';
 import Api from '../../api';
-import * as usersActions from '../../domain/users/actions';
+import * as usersActions from '../../domain/user/actions';
 import {showAxiosErrors, toast} from '../../libs/helpers';
-import * as lotsActions from "../lots/actions";
 
-
-export function* fetchUsers() {
+export function* fetchProfile() {
   try {
-    const { data } = yield call(Api.fetchUsers);
+    const { data } = yield call(Api.fetchProfile);
 
     yield put({
-      type: usersActions.fetchUsers.success,
+      type: usersActions.fetchProfile.success,
       payload: data,
     });
-    
+
   } catch (errors) {
     showAxiosErrors(errors.response);
 
     yield put({
-      type: usersActions.fetchUsers.failure,
+      type: usersActions.fetchProfile.failure,
       payload: errors,
     });
   }
@@ -54,6 +52,8 @@ export function* makeLogin(action: any) {
       type: usersActions.login.success,
       payload: data,
     });
+
+    action.history.push('/lots');
 
   } catch (errors) {
     showAxiosErrors(errors.response.data);

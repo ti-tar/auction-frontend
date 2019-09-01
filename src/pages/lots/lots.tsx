@@ -27,7 +27,7 @@ const Lots: React.FunctionComponent<Props> = (props) => {
 
   return (
     <section className="lots">
-      {props.lots.map((lot:lotInterface) => (
+      {!props.isLoading && props.lots.length > 0 && props.lots.map((lot:lotInterface) => (
         <div className="lot" key={`${lot.id} ${lot.title}`}>
           <div className="lot__img">
             <div>
@@ -69,6 +69,8 @@ const Lots: React.FunctionComponent<Props> = (props) => {
           </div>
         </div>
       ))}
+
+      {!props.isLoading && props.lots.length === 0 && (<h1> you have no lots yet</h1>)}
     </section>
   )
 };
