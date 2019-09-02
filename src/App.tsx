@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+// actions
+import * as userActions from "./domain/user/actions";
+// csd
 import './App.css';
 // pages
 import Main from './pages/main';
@@ -17,10 +21,24 @@ import 'react-toastify/dist/ReactToastify.css';
 // components
 import NanMenu from './components/navmenu/navmenu';
 import { Switch, Route } from 'react-router-dom';
+import { getStorageItem } from "./libs/storage";
 
 
 
-const App: React.FC = () => {
+const App: React.FC = (props: any) => {
+
+	const { setUserFromLocalStorage } = props;
+
+	useEffect(() => {
+		const email = getStorageItem('token');
+		const token = getStorageItem('email');
+		const firstName = getStorageItem('firstName');
+
+		if (!!email && !!token && !!firstName) {
+			setUserFromLocalStorage({ email, token, firstName});
+		}
+	}, []);
+
   return (
     <div className="App">
       <ToastContainer />
@@ -39,4 +57,9 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default connect(
+	null,
+	{
+		setUserFromLocalStorage: (userLocalStorage: any) => ({ type: userActions.setUserFromLocalStorage.request, payload: userLocalStorage }), // direct to reducer
+	}
+)(App);

@@ -7,7 +7,7 @@ import "./navmenuStyles.css";
 
 
 const NavMenu: React.FC = (props: any) => {
-  const { token: isAuthenticated } = props;
+  const { token: isAuthenticated, firstName } = props;
 
   return (
     <header className={'NavMenu'}>
@@ -22,6 +22,9 @@ const NavMenu: React.FC = (props: any) => {
       <ul className={'buttons'}>
         {!!isAuthenticated ? (
           <>
+            <li>
+                hello, {firstName}
+            </li>
             <li>
               <Link to={{pathname: '/lots/create'}}>
                 Create Lot
@@ -63,7 +66,8 @@ const NavMenu: React.FC = (props: any) => {
   )};
 
 export default connect(
-  (state: any): {token: string} => ({
+  (state: any): {token: string, firstName: string | undefined} => ({
+    firstName: state.user.firstName,
     token: state.user.token,
   })
 )(NavMenu);

@@ -1,6 +1,7 @@
 import axios from 'axios/index';
 import qs from 'qs';
-
+// utils
+import { getStorageItem } from './libs/storage';
 // interfaces
 import LotCreateInterface from './interfaces/lotCreate';
 import userCreateInterface from './interfaces/userCreate';
@@ -13,6 +14,15 @@ const getAxiosInstance = () => axios.create({
 });
 
 const httpClient = getAxiosInstance();
+
+httpClient.interceptors.request.use(config => ({
+  ...config,
+  headers: {
+    Authorization: `Bearer ${getStorageItem('token')}`,
+    ...config.headers,
+  },
+}), err => Promise.reject(err));
+
 
 // const prefix = '/api/v1';
 const prefix = '/api';

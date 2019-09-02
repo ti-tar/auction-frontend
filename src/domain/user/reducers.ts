@@ -32,7 +32,7 @@ export const reducer = {
       }
 
       case userActions.login.success: {
-        console.log(action.payload);
+
         return {
           ...state,
           email: action.payload.resource.email,
@@ -46,6 +46,16 @@ export const reducer = {
         return {
           ...state,
           isLoading: false,
+        };
+      }
+
+        // direct from component without saga
+      case userActions.setUserFromLocalStorage.request: {
+        return {
+          ...state,
+          email: action.payload.email,
+          firstName: action.payload.firstName,
+          token: action.payload.token,
         };
       }
 

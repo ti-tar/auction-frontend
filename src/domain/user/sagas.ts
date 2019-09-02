@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects';
 import Api from '../../api';
 import * as usersActions from '../../domain/user/actions';
 import {showAxiosErrors, toast} from '../../libs/helpers';
+import { setStorageItem } from '../../libs/storage';
 
 export function* fetchProfile() {
   try {
@@ -52,6 +53,15 @@ export function* makeLogin(action: any) {
       type: usersActions.login.success,
       payload: data,
     });
+
+    const { email, token, firstName } = data.resource;
+
+    if (!!email && !!token && !!firstName) {
+      setStorageItem('token', token);
+      setStorageItem('email', email);
+      setStorageItem('firstName', firstName);
+    }
+
 
     action.history.push('/lots');
 
