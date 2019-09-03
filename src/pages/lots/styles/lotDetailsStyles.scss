@@ -42,4 +42,16 @@
       }
     }
   }
+
+  .make_bid_wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 1em 0;
+
+    .make_bid_button {
+       font-size: 18px;
+       padding: 5px 10px;
+    }
+  }
 }

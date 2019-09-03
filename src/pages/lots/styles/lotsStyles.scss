@@ -2,8 +2,9 @@
     margin: 0 auto;
     width: 850px;
     background: white;
+
     .lot {
-        margin-top: 5px;
+        margin-top: 2em;
         min-height: 210px;
         display: flex;
         background: #F2F2F2;
@@ -11,10 +12,24 @@
 
         .lot__img {
             display: flex;
+            position: relative;
             flex: 0 0 185px;
             margin: 10px;
 
-            div {
+            .your_lot {
+                position: absolute;
+                top: -20px;
+                left: 10px;
+                padding: 5px 20px;
+
+                background: #F2C94C;
+                box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+                border-radius: 5px;
+                color: black;
+                text-align: center;
+            }
+
+            .image_place {
                 display: flex;
                 align-items: stretch;
                 justify-content: center;

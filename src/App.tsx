@@ -14,6 +14,8 @@ import Lots from './pages/lots/lots';
 import LotsEdit from './pages/lots/lotsEdit';
 import LotsDetails from './pages/lots/lotDetails';
 
+import BidCreate from './pages/bids/bidCreate';
+
 // declare toasts
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,12 +32,13 @@ const App: React.FC = (props: any) => {
 	const { setUserFromLocalStorage } = props;
 
 	useEffect(() => {
+		const id = parseInt(getStorageItem('id'), 10);
 		const email = getStorageItem('token');
 		const token = getStorageItem('email');
 		const firstName = getStorageItem('firstName');
 
-		if (!!email && !!token && !!firstName) {
-			setUserFromLocalStorage({ email, token, firstName});
+		if (!!id && !!email && !!token && !!firstName) {
+			setUserFromLocalStorage({ id, email, token, firstName});
 		}
 	}, []);
 
@@ -51,6 +54,7 @@ const App: React.FC = (props: any) => {
 
 	      <Route exact path="/lots/create" component={LotsEdit} />
 				<Route exact path="/lots/own" component={Lots} />
+	      <Route exact path="/lots/:id/make_bid" component={BidCreate} />
 	      <Route exact path="/lots/:id" component={LotsDetails} />
 	      <Route exact path="/lots" component={Lots} />
 	      <Route exact path="/" component={Main} />

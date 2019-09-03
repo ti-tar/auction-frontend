@@ -54,9 +54,10 @@ export function* makeLogin(action: any) {
       payload: data,
     });
 
-    const { email, token, firstName } = data.resource;
+    const { id, email, token, firstName } = data.resource;
 
-    if (!!email && !!token && !!firstName) {
+    if (!!id && !!email && !!token && !!firstName) {
+      setStorageItem('id', id);
       setStorageItem('token', token);
       setStorageItem('email', email);
       setStorageItem('firstName', firstName);

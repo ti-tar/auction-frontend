@@ -30,6 +30,20 @@ export const toast = (msg: string, type: string = '') => {
 // response is payload object from saga to reducer
 export const showAxiosErrors = (response: responseErrorInterface ) => {
 
+  // todo
+  if (response.data && Array.isArray(response.data)){
+    response.data.forEach((errObj) => {
+      toast(errObj.message);
+      return;
+    });
+    return;
+  }
+
+  if (response.data && response.data.hasOwnProperty('message')) {
+    toast(response.data.message);
+    return;
+  }
+
   if (Array.isArray(response)){
     response.forEach((errObj) => {
       toast(errObj.message);
@@ -38,7 +52,7 @@ export const showAxiosErrors = (response: responseErrorInterface ) => {
     return;
   }
 
-  if (response && response.hasOwnProperty('message')) {
+  if (response && response.message) {
     toast(response.message);
     return;
   }

@@ -13,6 +13,8 @@ import lotsReducerInterface from '../../interfaces/lotsReducer';
 
 import "./styles/lotDetailsStyles.scss";
 import * as H from "history";
+import userReducerInterface from "../../interfaces/userReducer";
+import {Link} from "react-router-dom";
 
 type PathParamsType = {
 	id: string,
@@ -22,11 +24,11 @@ type PropsType = RouteComponentProps<PathParamsType> & {
 	lot: lotInterface,
 	isLoading: boolean,
 	fetchLot: Function,
-
 }
 
 interface Props {
 	lot: lotInterface,
+	userId: number,
 	isLoading: boolean,
 	fetchLot: Function,
 
@@ -42,7 +44,7 @@ interface Props {
 
 const LotDetails: React.FC<Props> = (props) => {
 
-	const { lot, fetchLot, match: { params: { id: lotId } }, isLoading } = props;
+	const { lot, fetchLot, match: { params: { id: lotId } }, isLoading , userId } = props;
 
 	useEffect(() => {
 		fetchLot(lotId);
@@ -101,17 +103,38 @@ const LotDetails: React.FC<Props> = (props) => {
 					</div>
 				</div>
 			)}
+
 			{ isLoading && (
 				<h1>Loading..</h1>
 			)}
+
+			{
+				!isLoading && lot.user && userId === lot.user.id
+					? (
+            <div className="make_bid_wrapper">
+                You are not allowed to bid your own lot.
+            </div>
+					)
+					: !isLoading && lot && lot.id && (
+						<div className="make_bid_wrapper">
+							<Link
+								className="make_bid_button"
+								to={{ pathname: `/lots/${lot.id}/make_bid` }}
+							>
+								Make a bid
+							</Link>
+						</div>
+					)
+			}
 		</section>
 	)
 };
 
 const lotDetailsRoute: any = compose(
 	connect(
-		(state: { lots: lotsReducerInterface }) => ({
+		(state: { lots: lotsReducerInterface, user: userReducerInterface }) => ({
 			lot: state.lots.resource,
+			userId: state.user.id,
 			isLoading: state.lots.isLoading,
 		}),
 		{

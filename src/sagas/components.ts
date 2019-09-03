@@ -17,6 +17,8 @@ export function* components() {
   // user
   yield takeEvery(userActions.fetchProfile.request, fetchProfile);
 
+  // bids
+
   // user register
   yield takeEvery(userActions.createNewUser.request, createUser);
 

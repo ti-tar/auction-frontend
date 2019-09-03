@@ -9,12 +9,14 @@ import  * as lotsActions from '../../domain/lots/actions';
 // interface
 import lotInterface from '../../interfaces/lot';
 import lotsReducerInterface from '../../interfaces/lotsReducer';
+import userReducerInterface from '../../interfaces/userReducer';
 
 import "./styles/lotsStyles.scss";
 
 
 interface Props {
   lots: lotInterface[],
+  userId: number,
   isLoading: boolean,
   fetchLots: Function,
   match: any
@@ -22,8 +24,8 @@ interface Props {
 
 
 const Lots: React.FunctionComponent<Props> = (props) => {
-  const { match: { url } } = props;
-  const own = undefined;
+  const { match: { url }, userId } = props;
+
   useEffect(() => {
     props.fetchLots({ owner: url === "/lots/own" ? 'own' : 'all' });
   }, [url]);
@@ -33,7 +35,10 @@ const Lots: React.FunctionComponent<Props> = (props) => {
       {!props.isLoading && props.lots.length > 0 && props.lots.map((lot:lotInterface) => (
         <div className="lot" key={`${lot.id} ${lot.title}`}>
           <div className="lot__img">
-            <div>
+            {userId === lot.user.id && (
+              <div className="your_lot">Your lot</div>
+            )}
+            <div className="image_place">
               {lot.image}
             </div>
           </div>
@@ -89,7 +94,8 @@ const Lots: React.FunctionComponent<Props> = (props) => {
 };
 
 export default connect(
-  (state: { lots: lotsReducerInterface }) => ({
+  (state: { lots: lotsReducerInterface, user: userReducerInterface }) => ({
+    userId: state.user.id,
     lots: state.lots.resources,
     isLoading: state.lots.isLoading,
   }),

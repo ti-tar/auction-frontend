@@ -2,6 +2,7 @@ import reducerActionInterface from './../../interfaces/reducerAction';
 import * as userActions from './actions';
 
 declare type UserInitialState = {
+  id: number,
   email: string,
   firstName: string,
   token: string,
@@ -9,6 +10,7 @@ declare type UserInitialState = {
 }
 
 export const userInitialState: UserInitialState = {
+  id: 0,
   email: "",
   firstName: "",
   token: "",
@@ -35,6 +37,7 @@ export const reducer = {
 
         return {
           ...state,
+          id: action.payload.resource.id,
           email: action.payload.resource.email,
           firstName: action.payload.resource.firstName,
           token: action.payload.resource.token,
@@ -53,6 +56,7 @@ export const reducer = {
       case userActions.setUserFromLocalStorage.request: {
         return {
           ...state,
+          id: action.payload.id,
           email: action.payload.email,
           firstName: action.payload.firstName,
           token: action.payload.token,
@@ -63,6 +67,7 @@ export const reducer = {
       case userActions.logout.success: {
         return {
           ...state,
+          id: 0,
           email: "",
           firstName: "",
           token: "",
