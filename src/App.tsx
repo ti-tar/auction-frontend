@@ -42,13 +42,15 @@ const App: React.FC = (props: any) => {
   return (
     <div className="App">
       <ToastContainer />
-      <NanMenu />
-      <Switch>
 
+      <NanMenu />
+
+      <Switch>
 	      <Route exact path="/auth/login" component={Login} />
 	      <Route exact path="/auth/signup" component={SignUp} />
 
 	      <Route exact path="/lots/create" component={LotsEdit} />
+				<Route exact path="/lots/own" component={Lots} />
 	      <Route exact path="/lots/:id" component={LotsDetails} />
 	      <Route exact path="/lots" component={Lots} />
 	      <Route exact path="/" component={Main} />

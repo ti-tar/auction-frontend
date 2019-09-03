@@ -3,9 +3,10 @@ import Api from '../../api';
 import * as lotsActions from '../../domain/lots/actions';
 import {showAxiosErrors, toast} from '../../libs/helpers';
 
-export function* fetchLots() {
+export function* fetchLots({ payload }: any) {
+  const { filters: { owner } } = payload;
   try {
-    const { data } = yield call(Api.fetchLots);
+    const { data } = yield call(owner === 'own'? Api.fetchOwnLots : Api.fetchLots);
 
     yield put({
       type: lotsActions.fetchLots.success,

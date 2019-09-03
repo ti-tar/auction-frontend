@@ -16,14 +16,17 @@ import "./styles/lotsStyles.scss";
 interface Props {
   lots: lotInterface[],
   isLoading: boolean,
-  fetchLots: Function
+  fetchLots: Function,
+  match: any
 }
 
 
 const Lots: React.FunctionComponent<Props> = (props) => {
+  const { match: { url } } = props;
+  const own = undefined;
   useEffect(() => {
-    props.fetchLots();
-  }, []);
+    props.fetchLots({ owner: url === "/lots/own" ? 'own' : 'all' });
+  }, [url]);
 
   return (
     <section className="lots">
@@ -42,6 +45,16 @@ const Lots: React.FunctionComponent<Props> = (props) => {
             </h3>
             <p>
               {lot.description}
+            </p>
+
+            <p>
+              <u>Status:</u> {lot.status}
+            </p>
+
+            <p>
+              <u>Owner:</u><br />
+              {lot.user.firstName}<br />
+              {lot.user.email}<br />
             </p>
           </div>
           <div className="lot__info">
@@ -81,6 +94,6 @@ export default connect(
     isLoading: state.lots.isLoading,
   }),
   {
-    fetchLots: (): any => ({ type: lotsActions.fetchLots.request }),
+    fetchLots: (filters: {owner: 'all' | 'own'}): any => ({ type: lotsActions.fetchLots.request, payload: {filters} }),
   }
 )(Lots);

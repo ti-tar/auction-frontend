@@ -2,7 +2,7 @@ import { put, call } from 'redux-saga/effects';
 import Api from '../../api';
 import * as usersActions from '../../domain/user/actions';
 import {showAxiosErrors, toast} from '../../libs/helpers';
-import { setStorageItem } from '../../libs/storage';
+import { setStorageItem, clearStorage } from '../../libs/storage';
 
 export function* fetchProfile() {
   try {
@@ -34,7 +34,7 @@ export function* createUser(action: any) {
 
     toast('User successfully registered!', 'success');
 
-    // action.history.push(`/users/${data.resource.id}`);
+    action.history.push(`/auth/login`);
 
   } catch (errors) {
     showAxiosErrors(errors.response.data);
@@ -62,7 +62,6 @@ export function* makeLogin(action: any) {
       setStorageItem('firstName', firstName);
     }
 
-
     action.history.push('/lots');
 
   } catch (errors) {
@@ -72,4 +71,15 @@ export function* makeLogin(action: any) {
       payload: errors,
     });
   }
+}
+
+export function* makeLogout(action: any) {
+  clearStorage();
+
+  yield put({
+    type: usersActions.logout.success,
+  });
+
+  // action.history.push('/');
+  window.location.href = '/';
 }

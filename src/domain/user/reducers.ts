@@ -49,13 +49,23 @@ export const reducer = {
         };
       }
 
-        // direct from component without saga
+      // direct from component without saga
       case userActions.setUserFromLocalStorage.request: {
         return {
           ...state,
           email: action.payload.email,
           firstName: action.payload.firstName,
           token: action.payload.token,
+        };
+      }
+
+      // logout
+      case userActions.logout.success: {
+        return {
+          ...state,
+          email: "",
+          firstName: "",
+          token: "",
         };
       }
 

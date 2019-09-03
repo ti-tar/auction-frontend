@@ -9,6 +9,7 @@ export default interface lotInterface {
   estimatedPrice: number,
   startTime: string,
   endTime: string,
+  user: any,
 }
 
 // Statuses: 

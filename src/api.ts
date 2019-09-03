@@ -33,6 +33,7 @@ export default {
 
   // lots
   fetchLots: () => httpClient.get(`${prefix}/lots`),
+  fetchOwnLots: () => httpClient.get(`${prefix}/lots/own`),
   fetchLot: ({lotId}: any) => httpClient.get(`${prefix}/lots/${lotId}`),
   createNewLot: (newLot: LotCreateInterface) => httpClient.post(`${prefix}/lots`, newLot),
   // user

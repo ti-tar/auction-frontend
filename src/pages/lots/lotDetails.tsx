@@ -64,6 +64,17 @@ const LotDetails: React.FC<Props> = (props) => {
 						<p>
 							{lot.description}
 						</p>
+						<p>
+							<u>Status:</u> {lot.status}
+						</p>
+
+						{!!lot.user && (
+						<p>
+							<u>Owner:</u><br />
+							{lot.user.firstName}<br />
+							{lot.user.email}<br />
+						</p>
+						)}
 					</div>
 					<div className="lot__info">
 						<div>
@@ -77,8 +88,8 @@ const LotDetails: React.FC<Props> = (props) => {
 						<div>
 							<span>Start Time</span>
 							<span>
-                      {moment(lot.startTime).format('DD MM YYYY hh:mm:ss')}
-                  </span>
+								{moment(lot.startTime).format('DD MM YYYY hh:mm:ss')}
+							</span>
 						</div>
 						<div>
 							<span>End Time</span>
