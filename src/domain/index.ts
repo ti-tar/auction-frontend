@@ -6,6 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 // reducers
 import { reducer as domainLotsReducers, lotsInitialState } from './lots/reducers';
 import { reducer as domainUsersReducers, userInitialState } from './user/reducers';
+import { reducer as domainBidsReducers, bidsInitialState } from './bids/reducers';
 
 // redux-form
 import { reducer as ReduxFormReducers } from 'redux-form';
@@ -15,6 +16,7 @@ import { reducer as ReduxFormReducers } from 'redux-form';
 const rootReducers = {
   ...domainLotsReducers,
   ...domainUsersReducers,
+  ...domainBidsReducers,
   form: ReduxFormReducers,
 };
 
@@ -33,7 +35,11 @@ export default (): any => {
   // Admin reducers and other will be added dynamically
   const store = createStore(
     combineReducers(rootReducers),
-    { lots: lotsInitialState, user: userInitialState },
+    {
+      lots: lotsInitialState,
+      user: userInitialState,
+      bids: bidsInitialState,
+    },
     composeEnhancers(
       applyMiddleware(
         sagaMiddleware,

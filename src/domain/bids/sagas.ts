@@ -5,6 +5,7 @@ import {showAxiosErrors, toast} from '../../libs/helpers';
 
 export function* fetchBids({ payload }: any) {
   const { lotId } = payload;
+
   try {
     const { data } = yield call(Api.fetchBids, { lotId });
 

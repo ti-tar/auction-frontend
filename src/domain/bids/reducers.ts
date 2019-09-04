@@ -1,11 +1,11 @@
 import reducerActionInterface from './../../interfaces/reducerAction';
 import * as bidsActions from './actions';
 
-
-export const bidsInitialState = {
+export const bidsInitialState: any = {
   resources: [],
-  resource: {},
-  meta: {},
+  meta: {
+    total: 0,
+  },
   isLoading: false,
 };
 

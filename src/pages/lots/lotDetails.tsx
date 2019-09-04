@@ -5,32 +5,33 @@ import { compose } from "redux";
 import { RouteComponentProps, withRouter , StaticContext} from "react-router";
 
 // actions
-import  * as lotsActions from '../../domain/lots/actions';
+import * as lotsActions from '../../domain/lots/actions';
+import * as bitsActions from '../../domain/bids/actions';
 
 // interface
 import lotInterface from '../../interfaces/lot';
 import lotsReducerInterface from '../../interfaces/lotsReducer';
+import userReducerInterface from "../../interfaces/userReducer";
+import bidsReducerInterface from "../../interfaces/bidReducer";
 
 import "./styles/lotDetailsStyles.scss";
 import * as H from "history";
-import userReducerInterface from "../../interfaces/userReducer";
+
 import {Link} from "react-router-dom";
+import {fetchBids} from "../../domain/bids/sagas";
 
 type PathParamsType = {
 	id: string,
 }
 
-type PropsType = RouteComponentProps<PathParamsType> & {
-	lot: lotInterface,
-	isLoading: boolean,
-	fetchLot: Function,
-}
-
 interface Props {
 	lot: lotInterface,
 	userId: number,
+	bids: any,
 	isLoading: boolean,
+	bidsTotal: number,
 	fetchLot: Function,
+	fetchBids: Function,
 
 	history: H.History,
 	location: H.Location<H.LocationState>;
@@ -44,10 +45,11 @@ interface Props {
 
 const LotDetails: React.FC<Props> = (props) => {
 
-	const { lot, fetchLot, match: { params: { id: lotId } }, isLoading , userId } = props;
+	const { lot, fetchLot, fetchBids, match: { params: { id: lotId } }, isLoading , userId, bids, bidsTotal } = props;
 
 	useEffect(() => {
 		fetchLot(lotId);
+		fetchBids(lotId);
 	}, []);
 
 	return (
@@ -96,8 +98,8 @@ const LotDetails: React.FC<Props> = (props) => {
 						<div>
 							<span>End Time</span>
 							<span>
-                      {moment(lot.endTime).format('DD MM YYYY hh:mm:ss')}
-                  </span>
+								{moment(lot.endTime).format('DD MM YYYY hh:mm:ss')}
+							</span>
 						</div>
 
 					</div>
@@ -107,6 +109,19 @@ const LotDetails: React.FC<Props> = (props) => {
 			{ isLoading && (
 				<h1>Loading..</h1>
 			)}
+
+			<div>
+				<h2>Bids</h2>
+			{ !!bids && !!bids.length && (
+				bids.map((bid: any) =>
+					<div style={{margin: '2em 0'}}>
+						<div><u>{bid.user.firstName}</u> at {moment(bid.bidCreationTime).format('DD MMM YY, hh:mm:ss')}</div>
+						<p>Proposed Price: ${bid.proposedPrice}</p>
+					</div>
+				)
+			)}
+				<div>Total bids: {bidsTotal}</div>
+			</div>
 
 			{
 				!isLoading && lot.user && userId === lot.user.id
@@ -132,13 +147,20 @@ const LotDetails: React.FC<Props> = (props) => {
 
 const lotDetailsRoute: any = compose(
 	connect(
-		(state: { lots: lotsReducerInterface, user: userReducerInterface }) => ({
+		(state: {
+			lots: lotsReducerInterface,
+			user: userReducerInterface,
+			bids: bidsReducerInterface,
+		}) => ({
 			lot: state.lots.resource,
 			userId: state.user.id,
+			bids: state.bids.resources,
+			bidsTotal: state.bids.meta.total,
 			isLoading: state.lots.isLoading,
 		}),
 		{
 			fetchLot: (lotId: string): any => ({ type: lotsActions.fetchLot.request, payload: {lotId} }),
+			fetchBids: (lotId: string): any => ({ type: bitsActions.fetchBids.request, payload: {lotId} }),
 		}
 	),
 	withRouter
