@@ -36,6 +36,9 @@ export default {
   fetchOwnLots: () => httpClient.get(`${prefix}/lots/own`),
   fetchLot: ({lotId}: any) => httpClient.get(`${prefix}/lots/${lotId}`),
   createNewLot: (newLot: LotCreateInterface) => httpClient.post(`${prefix}/lots`, newLot),
+  // bids
+  fetchBids: ({ lotId }: { lotId: number }) => httpClient.get(`${prefix}/lots/${lotId}/bids`),
+  createBid: ({ newBid, lotId }: any) => httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
   // user
   fetchProfile: () => httpClient.get(`${prefix}/users/profile`),
   createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/users`, newUser),

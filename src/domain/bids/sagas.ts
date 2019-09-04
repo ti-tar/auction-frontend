@@ -1,15 +1,15 @@
 import { put, call } from 'redux-saga/effects';
 import Api from '../../api';
-import * as lotsActions from '../../domain/lots/actions';
+import * as bidsActions from '../../domain/bids/actions';
 import {showAxiosErrors, toast} from '../../libs/helpers';
 
-export function* fetchLots({ payload }: any) {
-  const { filters: { owner } } = payload;
+export function* fetchBids({ payload }: any) {
+  const { lotId } = payload;
   try {
-    const { data } = yield call(owner === 'own'? Api.fetchOwnLots : Api.fetchLots);
+    const { data } = yield call(Api.fetchBids, { lotId });
 
     yield put({
-      type: lotsActions.fetchLots.success,
+      type: bidsActions.fetchBids.success,
       payload: data,
     });
 
@@ -18,48 +18,32 @@ export function* fetchLots({ payload }: any) {
     showAxiosErrors(errors.response);
 
     yield put({
-      type: lotsActions.fetchLots.failure,
+      type: bidsActions.fetchBids.failure,
       payload: errors,
     });
   }
 }
 
-export function* fetchLot(action: any) {
+export function* createBid({ payload, history }: any) {
+
+  const { newBid, lotId } = payload;
+
   try {
-    const { data } = yield call(Api.fetchLot, {lotId: action.payload.lotId});
+    const { data } = yield call(Api.createBid, { newBid, lotId });
 
     yield put({
-      type: lotsActions.fetchLot.success,
+      type: bidsActions.createBid.success,
       payload: data,
     });
 
-  } catch (errors) {
-    showAxiosErrors(errors.response);
+    toast('Bid successfully added!', 'success');
 
-    yield put({
-      type: lotsActions.fetchLot.failure,
-      payload: errors,
-    });
-  }
-}
-
-export function* createNewLot(action: any) {
-  try {
-    const { data } = yield call(Api.createNewLot, action.payload);
-
-    yield put({
-      type: lotsActions.createNewLot.success,
-      payload: data,
-    });
-
-    toast('Lot successfully added!', 'success');
-
-    action.history.push(`/lots/${data.resource.id}`);
+    history.push(`/lots/${lotId}/`);
 
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
-      type: lotsActions.createNewLot.failure,
+      type: bidsActions.createBid.failure,
       payload: errors,
     });
   }

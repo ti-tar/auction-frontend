@@ -4,6 +4,10 @@ import { fork, takeEvery } from 'redux-saga/effects';
 import { fetchLots, fetchLot, createNewLot } from '../domain/lots/sagas';
 import * as lotsActions from '../domain/lots/actions';
 
+// bids
+import { fetchBids, createBid } from '../domain/bids/sagas';
+import * as bidsActions from '../domain/bids/actions';
+
 // users
 import { fetchProfile, createUser, makeLogin, makeLogout } from '../domain/user/sagas';
 import * as userActions from '../domain/user/actions';
@@ -18,6 +22,8 @@ export function* components() {
   yield takeEvery(userActions.fetchProfile.request, fetchProfile);
 
   // bids
+  yield takeEvery(bidsActions.fetchBids.request, fetchBids);
+  yield takeEvery(bidsActions.createBid.request, createBid);
 
   // user register
   yield takeEvery(userActions.createNewUser.request, createUser);

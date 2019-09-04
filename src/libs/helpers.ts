@@ -31,7 +31,7 @@ export const toast = (msg: string, type: string = '') => {
 export const showAxiosErrors = (response: responseErrorInterface ) => {
 
   // todo
-  if (response.data && Array.isArray(response.data)){
+  if (response && response.data && Array.isArray(response.data)){
     response.data.forEach((errObj) => {
       toast(errObj.message);
       return;
@@ -39,7 +39,7 @@ export const showAxiosErrors = (response: responseErrorInterface ) => {
     return;
   }
 
-  if (response.data && response.data.hasOwnProperty('message')) {
+  if (response && response.data && response.data.hasOwnProperty('message')) {
     toast(response.data.message);
     return;
   }

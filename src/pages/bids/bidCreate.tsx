@@ -4,26 +4,28 @@ import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
 import {withRouter} from "react-router";
 import {toast} from "react-toastify";
+// bid actions
+import * as bidActions from '../../domain/bids/actions';
 // css
 import './bidCreateStyles.scss';
 
 const BidCreate: React.FunctionComponent = (props: any) => {
 
-	const {handleSubmit, createBid, history} = props;
+	const {handleSubmit, createBid, history } = props;
 
 	const handleBeforeSubmit = (formValues: any) => {
-		if (!formValues.proposed_price ) {
+		if (!formValues.proposedPrice ) {
 			toast.error('fill the price field');
 			return false;
 		}
 
 		const newBid: any = {
-			proposed_price: formValues.proposed_price,
+			proposedPrice: parseFloat(formValues.proposedPrice),
 		};
 
-		createBid(newBid, history);
+		const lotId = 1;
+		createBid(newBid, lotId, history);
 	};
-
 
 	return (
 		<section className="bidCreate">
@@ -36,10 +38,10 @@ const BidCreate: React.FunctionComponent = (props: any) => {
 
 				<form onSubmit={handleSubmit(handleBeforeSubmit)}>
 					<Field
-						name="proposed_price"
+						name="proposedPrice"
 						type="text"
 						component="input"
-						placeholder="proposed_price"
+						placeholder="proposed price"
 					/>
 
 					<div className="submitBtn">
@@ -60,7 +62,9 @@ const BidCreate: React.FunctionComponent = (props: any) => {
 const BidCreateRouteComponent: any = compose(
 	connect(
 		null,
-		null
+		{
+			createBid: (newBid: any, lotId: any, history: any) => ({ type: bidActions.createBid.request, payload: { newBid, lotId }, history }),
+		}
 	),
 	reduxForm({
 		form: 'form-bid-create',
