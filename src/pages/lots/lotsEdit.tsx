@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Field, reduxForm } from 'redux-form';
@@ -15,15 +15,31 @@ import LotCreateInterface from '../../interfaces/lotCreate';
 
 // css
 import "./styles/lotsCreateStyles.scss";
+import * as bitsActions from "../../domain/bids/actions";
 
 
-type Props = React.ReactChild & { handleSubmit: Function, createNewLot: Function, history: Function};
+type Props = React.ReactChild & {
+	handleSubmit: Function,
+	createNewLot: Function,
+	updateLot: Function,
+	history: Function,
+	match: any, // todo
+	fetchLot: Function,
+	lot: any, // todo
+};
 
 const LotsEdit: React.FC<Props> = (props) => {
 
-	const {handleSubmit, createNewLot, history} = props;
+	const {handleSubmit, createNewLot, updateLot, history, match: { params: { lotId }}, fetchLot} = props;
 
-	const handleBeforeSubmit = (formValues: any) => {
+	useEffect(() => {
+		if(lotId) {
+			fetchLot(lotId);
+		}
+	}, []);
+
+	const handleBeforeSubmit = (formValues: any): any => {
+
 		if (!formValues.title || !formValues.currentPrice || !formValues.estimatedPrice || !formValues.startTime || !formValues.endTime) {
 			toast.error('fill all fields');
 			return false;
@@ -44,15 +60,18 @@ const LotsEdit: React.FC<Props> = (props) => {
 			lotToSend.image = formValues.image;
 		}
 
-		createNewLot(lotToSend, history);
-
+		if (lotId) {
+			updateLot(lotToSend, lotId, history);
+		} else {
+			createNewLot(lotToSend, history);
+		}
 	};
 
 	return (
 		<section className="lotsCreate">
 
 			<div className="title">
-				Create Lot
+				{ !!lotId ? 'Edit Lot' : 'Create Lot'}
 			</div>
 
 			<div className="fromWrapper">
@@ -118,16 +137,25 @@ const LotsEdit: React.FC<Props> = (props) => {
 };
 
 const LotsEditRouteComponent: any = compose(
+	withRouter,
 	connect(
-		null,
+		(state:any, ownProps: any) => {
+			const { lotId } = ownProps.match.params;
+			return {
+				lot: state.lots.resource,
+				initialValues: lotId ? state.lots.resource : {},
+			}
+		},
 		{
 			createNewLot: (newLot: LotCreateInterface, history: Function): any => ({ type: lotsActions.createNewLot.request, payload: newLot, history }),
+			updateLot: (updatedLot: LotCreateInterface, lotId: string, history: Function): any => ({ type: lotsActions.updateLot.request, payload: {lotId, updatedLot}, history }),
+			fetchLot: (lotId: string): any => ({ type: lotsActions.fetchLot.request, payload: {lotId} }),
 		}
 	),
 	reduxForm({
-		form: 'form-lots-create',
+		form: 'form-lots-edit',
+		enableReinitialize : true
 	}),
-	withRouter
 ) (LotsEdit);
 
 export default LotsEditRouteComponent;

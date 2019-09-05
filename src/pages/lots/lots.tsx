@@ -74,13 +74,13 @@ const Lots: React.FunctionComponent<Props> = (props) => {
               <div>
                   <span>Start Time</span>
                   <span>
-                      {moment(lot.startTime).format('DD MM YYYY hh:mm:ss')}
+                      {moment(lot.startTime).format('DD MMM YY, hh:mm:ss')}
                   </span>
               </div>
               <div>
                   <span>End Time</span>
                   <span>
-                      {moment(lot.endTime).format('DD MM YYYY hh:mm:ss')}
+                      {moment(lot.endTime).format('DD MMM YY, hh:mm:ss')}
                   </span>
               </div>
 

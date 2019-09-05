@@ -23,7 +23,7 @@
         font-family: Roboto;
         font-style: normal;
         font-weight: normal;
-        font-size: 20px;
+        font-size: 17px;
         flex-grow: 1;
       }
     }
@@ -33,25 +33,51 @@
     }
 
     .lot__info {
+      display: flex;
+      flex-wrap: wrap;
       flex: 0 0 270px;
       margin: 5px;
+      align-items: stretch;
 
       div {
         display: flex;
         justify-content: space-between;
+        font-size: 15px;
+        flex-grow: 1;
       }
-    }
-  }
 
-  .make_bid_wrapper {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    padding: 1em 0;
 
-    .make_bid_button {
-       font-size: 18px;
-       padding: 5px 10px;
+      .lot_options_make_bid_button,
+      .lot_options_edit_lot_button,
+      .lot_options_delete_lot_button
+      {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 1em 0;
+
+        height: 30px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 2px;
+
+        font-size: 15px;
+        padding: 3px 0;
+
+        text-decoration: none;
+        color: black;
+      }
+
+      .lot_options_make_bid_button {
+        background: #27AE60;
+       }
+      .lot_options_edit_lot_button {
+        background: #58B3E6;
+      }
+      .lot_options_delete_lot_button {
+        background: #EB5757;
+        cursor: pointer;
+      }
+
     }
   }
 }

@@ -2,7 +2,7 @@ import React, {useEffect, ComponentType, PropsWithChildren} from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { compose } from "redux";
-import { RouteComponentProps, withRouter , StaticContext} from "react-router";
+import { withRouter } from "react-router";
 
 // actions
 import * as lotsActions from '../../domain/lots/actions';
@@ -32,6 +32,7 @@ interface Props {
 	bidsTotal: number,
 	fetchLot: Function,
 	fetchBids: Function,
+	deleteLot: Function,
 
 	history: H.History,
 	location: H.Location<H.LocationState>;
@@ -45,7 +46,7 @@ interface Props {
 
 const LotDetails: React.FC<Props> = (props) => {
 
-	const { lot, fetchLot, fetchBids, match: { params: { id: lotId } }, isLoading , userId, bids, bidsTotal } = props;
+	const { lot, fetchLot, fetchBids, deleteLot, match: { params: { id: lotId } }, isLoading , userId, bids, bidsTotal, history } = props;
 
 	useEffect(() => {
 		fetchLot(lotId);
@@ -82,25 +83,55 @@ const LotDetails: React.FC<Props> = (props) => {
 					</div>
 					<div className="lot__info">
 						<div>
-							<span>Current Price</span>
-							<span>{lot.currentPrice} $</span>
+							<span>Current Price: </span> <span>${lot.currentPrice}</span>
 						</div>
 						<div>
-							<span>Estimated Price</span>
-							<span>{lot.estimatedPrice} $</span>
+							<span>Estimated Price: </span> <span>${lot.estimatedPrice}</span>
 						</div>
 						<div>
 							<span>Start Time</span>
 							<span>
-								{moment(lot.startTime).format('DD MM YYYY hh:mm:ss')}
+								{moment(lot.startTime).format('DD MMM YYYY, hh:mm:ss')}
 							</span>
 						</div>
 						<div>
 							<span>End Time</span>
 							<span>
-								{moment(lot.endTime).format('DD MM YYYY hh:mm:ss')}
+								{moment(lot.endTime).format('DD MMM YYYY, hh:mm:ss')}
 							</span>
 						</div>
+
+
+						{!isLoading && !!lot && lot.id && userId === lot.user.id
+							?
+								!isLoading && !!lot.user && userId === lot.user.id && (
+									<>
+										<Link
+											className="lot_options_edit_lot_button"
+											to={{ pathname: `/lots/${lot.id}/edit` }}
+										>
+											Update a lot
+										</Link>
+										<button
+											className="lot_options_delete_lot_button"
+											onClick={() => {
+												if(window.confirm(`Are you confirm you wont to delete lot ${lotId}`)) {
+													deleteLot(lotId, history);
+												}
+											}}
+										>
+											Delete a lot
+										</button>
+									</>
+							)
+							: (
+								<Link
+									className="lot_options_make_bid_button"
+									to={{ pathname: `/lots/${lot.id}/make_bid` }}
+								>
+									Make a bid
+								</Link>
+						)}
 
 					</div>
 				</div>
@@ -112,35 +143,17 @@ const LotDetails: React.FC<Props> = (props) => {
 
 			<div>
 				<h2>Bids</h2>
-			{ !!bids && !!bids.length && (
-				bids.map((bid: any) =>
-					<div style={{margin: '2em 0'}}>
-						<div><u>{bid.user.firstName}</u> at {moment(bid.bidCreationTime).format('DD MMM YY, hh:mm:ss')}</div>
-						<p>Proposed Price: ${bid.proposedPrice}</p>
-					</div>
-				)
-			)}
+				{ !!bids && !!bids.length && (
+					bids.map((bid: any) =>
+						<div style={{margin: '2em 0'}}>
+							<div><u>{bid.user.firstName}</u> at {moment(bid.bidCreationTime).format('DD MMM YY, hh:mm:ss')}</div>
+							<p>Proposed Price: ${bid.proposedPrice}</p>
+						</div>
+					)
+				)}
 				<div>Total bids: {bidsTotal}</div>
 			</div>
 
-			{
-				!isLoading && lot.user && userId === lot.user.id
-					? (
-            <div className="make_bid_wrapper">
-                You are not allowed to bid your own lot.
-            </div>
-					)
-					: !isLoading && lot && lot.id && (
-						<div className="make_bid_wrapper">
-							<Link
-								className="make_bid_button"
-								to={{ pathname: `/lots/${lot.id}/make_bid` }}
-							>
-								Make a bid
-							</Link>
-						</div>
-					)
-			}
 		</section>
 	)
 };
@@ -161,6 +174,7 @@ const lotDetailsRoute: any = compose(
 		{
 			fetchLot: (lotId: string): any => ({ type: lotsActions.fetchLot.request, payload: {lotId} }),
 			fetchBids: (lotId: string): any => ({ type: bitsActions.fetchBids.request, payload: {lotId} }),
+			deleteLot: (lotId: string, history: Function): any => ({ type: lotsActions.deleteLot.request, payload: {lotId}, history }),
 		}
 	),
 	withRouter

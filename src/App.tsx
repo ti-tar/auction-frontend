@@ -52,7 +52,9 @@ const App: React.FC = (props: any) => {
 	      <Route exact path="/auth/login" component={Login} />
 	      <Route exact path="/auth/signup" component={SignUp} />
 
+	      <Route exact path="/lots/:lotId/edit" component={LotsEdit} />
 	      <Route exact path="/lots/create" component={LotsEdit} />
+
 				<Route exact path="/lots/own" component={Lots} />
 	      <Route exact path="/lots/:lotId/make_bid" component={BidCreate} />
 	      <Route exact path="/lots/:id" component={LotsDetails} />

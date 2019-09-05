@@ -1,7 +1,7 @@
 import { fork, takeEvery } from 'redux-saga/effects';
 
 // lots
-import { fetchLots, fetchLot, createNewLot } from '../domain/lots/sagas';
+import { fetchLots, fetchLot, createNewLot, updateLot, deleteLot } from '../domain/lots/sagas';
 import * as lotsActions from '../domain/lots/actions';
 
 // bids
@@ -17,6 +17,8 @@ export function* components() {
   yield takeEvery(lotsActions.fetchLots.request, fetchLots);
   yield takeEvery(lotsActions.fetchLot.request, fetchLot);
   yield takeEvery(lotsActions.createNewLot.request, createNewLot);
+  yield takeEvery(lotsActions.updateLot.request, updateLot);
+  yield takeEvery(lotsActions.deleteLot.request, deleteLot);
 
   // user
   yield takeEvery(userActions.fetchProfile.request, fetchProfile);

@@ -43,6 +43,29 @@ export function* fetchLot(action: any) {
   }
 }
 
+export function* updateLot(action: any) {
+  const { lotId, updatedLot } = action.payload;
+  try {
+    const { data } = yield call(Api.updateLot, {lotId, updatedLot} );
+
+    yield put({
+      type: lotsActions.createNewLot.success,
+      payload: data,
+    });
+
+    toast('Lot successfully updated!', 'success');
+
+    action.history.push(`/lots/${data.resource.id}`);
+
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: lotsActions.createNewLot.failure,
+      payload: errors,
+    });
+  }
+}
+
 export function* createNewLot(action: any) {
   try {
     const { data } = yield call(Api.createNewLot, action.payload);
@@ -60,6 +83,26 @@ export function* createNewLot(action: any) {
     showAxiosErrors(errors.response);
     yield put({
       type: lotsActions.createNewLot.failure,
+      payload: errors,
+    });
+  }
+}
+
+
+export function* deleteLot(action: any) {
+  const { lotId } = action.payload;
+
+  try {
+    const { data } = yield call(Api.deleteLot, lotId);
+
+    toast('Lot successfully deleted!', 'success');
+
+    action.history.push(`/lots`);
+
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: lotsActions.deleteLot.failure,
       payload: errors,
     });
   }
