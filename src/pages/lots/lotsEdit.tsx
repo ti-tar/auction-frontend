@@ -4,11 +4,14 @@ import { compose } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router-dom';
+// todo - tmp
+import axios from 'axios';
 // actions
 import  * as lotsActions from '../../domain/lots/actions';
 
 // components
 import CustomDatePicker from '../../components/form/datePicker/datepicker';
+import FileUpload from  '../../components/form/fileUpload/fileUpload';
 
 // interfaces
 import LotCreateInterface from '../../interfaces/lotCreate';
@@ -67,6 +70,21 @@ const LotsEdit: React.FC<Props> = (props) => {
 		}
 	};
 
+	const onChange = (e: any) => {
+		console.log(e.target.files[0]);
+
+		const data = new FormData();
+		data.append('file', e.target.files[0]);
+
+		axios.post("http://localhost:5000/api/lots/upload", data, { // receive two parameter endpoint url ,form data
+		})
+			.then(res => { // then print response status
+
+				console.log(res);
+				console.log(res.statusText);
+			})
+	};
+
 	return (
 		<section className="lotsCreate">
 
@@ -117,7 +135,7 @@ const LotsEdit: React.FC<Props> = (props) => {
 
 					<Field
 						name="image"
-						type="text"
+						type="hidden"
 						component="input"
 						placeholder="image"
 					/>
@@ -129,6 +147,18 @@ const LotsEdit: React.FC<Props> = (props) => {
 					</div>
 
 				</form>
+
+				<div>
+					<label>Avatar</label>
+					<div>
+						<input
+							type='file'
+							accept='.jpg, .png, .jpeg'
+							data-enctype='multipart/form-data'
+							onChange={onChange}
+						/>
+					</div>
+				</div>
 
 			</div>
 
