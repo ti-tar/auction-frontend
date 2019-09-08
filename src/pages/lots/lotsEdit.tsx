@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, change } from 'redux-form';
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router-dom';
 // todo - tmp
@@ -29,11 +29,15 @@ type Props = React.ReactChild & {
 	match: any, // todo
 	fetchLot: Function,
 	lot: any, // todo
+	changeFormValue: any, // todo
 };
 
 const LotsEdit: React.FC<Props> = (props) => {
 
-	const {handleSubmit, createNewLot, updateLot, history, match: { params: { lotId }}, fetchLot} = props;
+	const {
+		handleSubmit, createNewLot, updateLot, history, match: { params: { lotId }},
+		fetchLot, changeFormValue,
+	} = props;
 
 	useEffect(() => {
 		if(lotId) {
@@ -71,18 +75,22 @@ const LotsEdit: React.FC<Props> = (props) => {
 	};
 
 	const onChange = (e: any) => {
-		console.log(e.target.files[0]);
 
 		const data = new FormData();
 		data.append('file', e.target.files[0]);
 
 		axios.post("http://localhost:5000/api/lots/upload", data, { // receive two parameter endpoint url ,form data
 		})
-			.then(res => { // then print response status
+			.then(response => { // then print response status
 
-				console.log(res);
-				console.log(res.statusText);
+				if( response && response.data && response.data.fileName) {
+					changeFormValue(response.data.fileName);
+				}
+
 			})
+			.catch(err => {
+				console.warn('Some error has occurred')
+			});
 	};
 
 	return (
@@ -135,7 +143,7 @@ const LotsEdit: React.FC<Props> = (props) => {
 
 					<Field
 						name="image"
-						type="hidden"
+						type="text"
 						component="input"
 						placeholder="image"
 					/>
@@ -180,6 +188,7 @@ const LotsEditRouteComponent: any = compose(
 			createNewLot: (newLot: LotCreateInterface, history: Function): any => ({ type: lotsActions.createNewLot.request, payload: newLot, history }),
 			updateLot: (updatedLot: LotCreateInterface, lotId: string, history: Function): any => ({ type: lotsActions.updateLot.request, payload: {lotId, updatedLot}, history }),
 			fetchLot: (lotId: string): any => ({ type: lotsActions.fetchLot.request, payload: {lotId} }),
+			changeFormValue: (fileName: string) => change('form-lots-edit', 'image', fileName),
 		}
 	),
 	reduxForm({
