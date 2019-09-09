@@ -1,4 +1,4 @@
-import React, {useEffect, ComponentType, PropsWithChildren} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { compose } from "redux";
@@ -18,7 +18,6 @@ import "./styles/lotDetailsStyles.scss";
 import * as H from "history";
 
 import {Link} from "react-router-dom";
-import {fetchBids} from "../../domain/bids/sagas";
 
 type PathParamsType = {
 	id: string,
@@ -59,7 +58,9 @@ const LotDetails: React.FC<Props> = (props) => {
 				<div className="lot" key={`${lot.id} ${lot.title}`}>
 					<div className="lot__img">
 						<div>
-							{lot.image}
+							{ lot.image && (
+								<img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} />
+							)}
 						</div>
 					</div>
 					<div className="lot__product">
@@ -144,13 +145,23 @@ const LotDetails: React.FC<Props> = (props) => {
 			<div>
 				<h2>Bids</h2>
 				{ !!bids && !!bids.length && (
-					bids.map((bid: any) =>
+					bids.map((bid: any) => (
 						<div style={{margin: '2em 0'}}>
-							<div><u>{bid.user.firstName}</u> at {moment(bid.bidCreationTime).format('DD MMM YY, hh:mm:ss')}</div>
+							<div>
+							{ bid.user
+								? (
+									<>
+										<u>{bid.user.firstName}</u> at {moment(bid.bidCreationTime).format('DD MMM YY, hh:mm:ss')}
+									</>
+								)
+								: ('user error')
+							}
+							</div>
 							<p>Proposed Price: ${bid.proposedPrice}</p>
 						</div>
 					)
-				)}
+				))
+				}
 				<div>Total bids: {bidsTotal}</div>
 			</div>
 

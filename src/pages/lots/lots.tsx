@@ -39,7 +39,7 @@ const Lots: React.FunctionComponent<Props> = (props) => {
               <div className="your_lot">Your lot</div>
             )}
             <div className="image_place">
-              {lot.image}
+              <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} />
             </div>
           </div>
           <div className="lot__product">
