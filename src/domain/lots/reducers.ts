@@ -19,9 +19,15 @@ export const reducer = {
 
       //  fetch all Lots
 
+      case lotsActions.resetLot.request: {
+        return  {
+          ...lotsInitialState,
+        };
+      }
+
       case lotsActions.fetchLots.request: {
         return  {
-          ...lotsState,
+          ...lotsInitialState,
             isLoading: true,
         };
       }

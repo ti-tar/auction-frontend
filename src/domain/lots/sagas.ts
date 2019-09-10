@@ -25,6 +25,13 @@ export function* fetchLots({ payload }: any) {
 }
 
 export function* fetchLot(action: any) {
+  if (!action.payload.lotId) {
+    yield put({
+      type: lotsActions.resetLot.request,
+    });
+    return;
+  }
+
   try {
     const { data } = yield call(Api.fetchLot, {lotId: action.payload.lotId});
 

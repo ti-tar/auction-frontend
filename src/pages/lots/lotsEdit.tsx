@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Field, reduxForm, change } from 'redux-form';
@@ -35,15 +35,19 @@ type Props = React.ReactChild & {
 const LotsEdit: React.FC<Props> = (props) => {
 
 	const {
-		handleSubmit, createNewLot, updateLot, history, match: { params: { lotId }},
+		handleSubmit, createNewLot, updateLot, history, match: { params: { lotId }}, lot,
 		fetchLot, changeFormValue,
 	} = props;
 
+	const [image, setImage] = useState();
+
 	useEffect(() => {
-		if(lotId) {
-			fetchLot(lotId);
-		}
-	}, []);
+		fetchLot(lotId);
+	}, [lotId]);
+
+	useEffect(() => {
+		setImage(lot.image)
+	}, [lot]);
 
 	const handleBeforeSubmit = (formValues: any): any => {
 
@@ -85,6 +89,7 @@ const LotsEdit: React.FC<Props> = (props) => {
 
 				if( response && response.data && response.data.fileName) {
 					changeFormValue(response.data.fileName);
+					setImage(response.data.fileName);
 				}
 
 			})
@@ -143,7 +148,7 @@ const LotsEdit: React.FC<Props> = (props) => {
 
 					<Field
 						name="image"
-						type="text"
+						type="hidden"
 						component="input"
 						placeholder="image"
 					/>
@@ -156,8 +161,8 @@ const LotsEdit: React.FC<Props> = (props) => {
 
 				</form>
 
-				<div>
-					<label>Avatar</label>
+				<div className="coverImage">
+					<label>Cover image</label>
 					<div>
 						<input
 							type='file'
@@ -166,6 +171,9 @@ const LotsEdit: React.FC<Props> = (props) => {
 							onChange={onChange}
 						/>
 					</div>
+					{!!image &&
+					  <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${image}`} />
+					}
 				</div>
 
 			</div>
@@ -188,6 +196,7 @@ const LotsEditRouteComponent: any = compose(
 			createNewLot: (newLot: LotCreateInterface, history: Function): any => ({ type: lotsActions.createNewLot.request, payload: newLot, history }),
 			updateLot: (updatedLot: LotCreateInterface, lotId: string, history: Function): any => ({ type: lotsActions.updateLot.request, payload: {lotId, updatedLot}, history }),
 			fetchLot: (lotId: string): any => ({ type: lotsActions.fetchLot.request, payload: {lotId} }),
+			resetLot: (): any => ({ type: lotsActions.resetLot.request }),
 			changeFormValue: (fileName: string) => change('form-lots-edit', 'image', fileName),
 		}
 	),
