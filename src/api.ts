@@ -6,6 +6,9 @@ import { getStorageItem } from './libs/storage';
 import LotCreateInterface from './interfaces/lotCreate';
 import userCreateInterface from './interfaces/userCreate';
 
+import { clearStorage } from './libs/storage';
+import {toast} from "./libs/helpers";
+
 const getAxiosInstance = () => axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   // withCredentials: true,
@@ -23,6 +26,15 @@ httpClient.interceptors.request.use(config => ({
   },
 }), err => Promise.reject(err));
 
+// httpClient.interceptors.response.use((response) => {
+//   return response;
+// }, (error) => {
+//   if (401 === error.response.status) {
+//     // todo - unloging
+//     clearStorage();
+//     toast('Not authorized! Login.')
+//   }
+// });
 
 // const prefix = '/api/v1';
 const prefix = '/api';
@@ -44,7 +56,7 @@ export default {
   createBid: ({ newBid, lotId }: any) => httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
   // user
   fetchProfile: () => httpClient.get(`${prefix}/users/profile`),
-  createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/users`, newUser),
+  createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/auth/signin`, newUser),
   //
-  login: ({ loginData }: any) => httpClient.post(`${prefix}/users/login`, loginData),
+  login: ({ loginData }: any) => httpClient.post(`${prefix}/auth/login`, loginData),
 };

@@ -66,7 +66,7 @@ export function* makeLogin(action: any) {
     action.history.push('/lots');
 
   } catch (errors) {
-    showAxiosErrors(errors.response.data);
+    showAxiosErrors(errors.response);
     yield put({
       type: usersActions.login.failure,
       payload: errors,
