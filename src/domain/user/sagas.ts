@@ -23,6 +23,17 @@ export function* fetchProfile() {
   }
 }
 
+function setUserToLocalStorage(user: { id: string, email: string, token: string, firstName: string }):void {
+  const { id, email, token, firstName } = user;
+
+  if (!!id && !!email && !!token && !!firstName) {
+    setStorageItem('id', id);
+    setStorageItem('token', token);
+    setStorageItem('email', email);
+    setStorageItem('firstName', firstName);
+  }
+}
+
 export function* createUser(action: any) {
   try {
     const { data } = yield call(Api.createUser, action.payload);
@@ -34,7 +45,9 @@ export function* createUser(action: any) {
 
     toast('User successfully registered!', 'success');
 
-    action.history.push(`/auth/login`);
+    setUserToLocalStorage(data.resource);
+
+    action.history.push(`/lots`);
 
   } catch (errors) {
     showAxiosErrors(errors.response.data);
@@ -54,14 +67,7 @@ export function* makeLogin(action: any) {
       payload: data,
     });
 
-    const { id, email, token, firstName } = data.resource;
-
-    if (!!id && !!email && !!token && !!firstName) {
-      setStorageItem('id', id);
-      setStorageItem('token', token);
-      setStorageItem('email', email);
-      setStorageItem('firstName', firstName);
-    }
+    setUserToLocalStorage(data.resource);
 
     action.history.push('/lots');
 
