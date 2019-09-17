@@ -56,7 +56,7 @@ export default {
   createBid: ({ newBid, lotId }: any) => httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
   // user
   fetchProfile: () => httpClient.get(`${prefix}/users/profile`),
-  createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/auth/signin`, newUser),
+  createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/auth/signup`, newUser),
   //
   login: ({ loginData }: any) => httpClient.post(`${prefix}/auth/login`, loginData),
 };
