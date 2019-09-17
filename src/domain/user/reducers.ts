@@ -26,6 +26,7 @@ export const reducer = {
         return { ...state };
       }
 
+      // login
       case userActions.login.request: {
         return {
           ...state,
@@ -74,6 +75,35 @@ export const reducer = {
         };
       }
 
+      // create user
+      case userActions.createNewUser.request: {
+        return {
+          ...userInitialState,
+          isLoading: true,
+        };
+      }
+
+      case userActions.createNewUser.success: {
+        console.log(action.payload);
+        return {
+          ...userInitialState,
+          id: action.payload.resource.id,
+          email: action.payload.resource.email,
+          firstName: action.payload.resource.firstName,
+          token: action.payload.resource.token,
+          isLoading: false,
+        };
+      }
+
+      case userActions.createNewUser.failure: {
+        return {
+          ...userInitialState,
+          isLoading: false,
+        };
+      }
+
+
+      //
       default:
         return { ...state };
     }
