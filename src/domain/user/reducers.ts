@@ -91,6 +91,7 @@ export const reducer = {
           email: action.payload.resource.email,
           firstName: action.payload.resource.firstName,
           token: action.payload.resource.token,
+          status: action.payload.resource.status,
           isLoading: false,
         };
       }

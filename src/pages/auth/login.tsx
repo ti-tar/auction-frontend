@@ -42,7 +42,7 @@ const Login: React.FunctionComponent<Props> = (props) => {
 			<h1>Login</h1>
 
 			<div className="formWrapper">
-				<form onSubmit={handleSubmit(handleBeforeSubmit)}>
+				{ 1 === 1 ? (<form onSubmit={handleSubmit(handleBeforeSubmit)}>
 
 					<Field
 						name="email"
@@ -64,7 +64,9 @@ const Login: React.FunctionComponent<Props> = (props) => {
 						</button>
 					</div>
 
-				</form>
+				</form>)
+
+				}
 			</div>
 
 		</section>

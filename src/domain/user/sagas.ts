@@ -47,7 +47,7 @@ export function* createUser(action: any) {
 
     setUserToLocalStorage(data.resource);
 
-    action.history.push(`/lots`);
+    // action.history.push(`/lots`);
 
   } catch (errors) {
     showAxiosErrors(errors.response.data);
@@ -89,4 +89,20 @@ export function* makeLogout(action: any) {
 
   // action.history.push('/');
   window.location.href = '/';
+}
+
+export function* sendVerifyEmail({ payload, history }: any): any {
+  try {
+    const { data } = yield call(Api.verifyEmail, payload);
+    yield put({
+      type: usersActions.verifyEmail.success,
+      payload: data,
+    });
+
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: usersActions.verifyEmail.failure
+    });
+  }
 }

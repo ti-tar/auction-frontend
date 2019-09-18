@@ -54,9 +54,12 @@ export default {
   // bids
   fetchBids: ({ lotId }: { lotId: number }) => httpClient.get(`${prefix}/lots/${lotId}/bids`),
   createBid: ({ newBid, lotId }: any) => httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
+
   // user
   fetchProfile: () => httpClient.get(`${prefix}/users/profile`),
   createUser: (newUser: userCreateInterface) => httpClient.post(`${prefix}/auth/signup`, newUser),
-  //
+
+  // auth
   login: ({ loginData }: any) => httpClient.post(`${prefix}/auth/login`, loginData),
+  verifyEmail: (token: string) => httpClient.post(`${prefix}/auth/verify_email`, { token }),
 };
