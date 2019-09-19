@@ -9,6 +9,7 @@ import {withRouter} from "react-router";
 
 // css
 import './styles/signUpStyles.scss';
+import { Link } from "react-router-dom";
 
 type Props = React.ReactChild & { handleSubmit: Function, makeLogin: Function, history: Function, isLoading: boolean };
 
@@ -42,7 +43,7 @@ const Login: React.FunctionComponent<Props> = (props) => {
 			<h1>Login</h1>
 
 			<div className="formWrapper">
-				{ 1 === 1 ? (<form onSubmit={handleSubmit(handleBeforeSubmit)}>
+				<form onSubmit={handleSubmit(handleBeforeSubmit)}>
 
 					<Field
 						name="email"
@@ -57,6 +58,9 @@ const Login: React.FunctionComponent<Props> = (props) => {
 						component="input"
 						placeholder="password"
 					/>
+					<div style={{ width: '100%', textAlign: 'right', marginBottom: '1em' }}>
+						<Link to={{ pathname: '/auth/forgot_password' }}>forgot password</Link>
+					</div>
 
 					<div className="submitBtn">
 						<button type="submit">
@@ -64,9 +68,7 @@ const Login: React.FunctionComponent<Props> = (props) => {
 						</button>
 					</div>
 
-				</form>)
-
-				}
+				</form>
 			</div>
 
 		</section>

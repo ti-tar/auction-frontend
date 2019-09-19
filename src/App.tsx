@@ -7,6 +7,8 @@ import './App.css';
 // pages
 import Main from './pages/main';
 
+import ForgotPassword from './pages/auth/forgotPassword';
+import ResetPassword from './pages/auth/resetPassword';
 import VerifyEmail from './pages/auth/verifyEmail';
 import Login from './pages/auth/login';
 import SignUp from './pages/auth/signup';
@@ -50,6 +52,8 @@ const App: React.FC = (props: any) => {
       <NanMenu />
 
       <Switch>
+				<Route exact path="/auth/forgot_password" component={ForgotPassword} />
+				<Route exact path="/auth/reset_email" component={ResetPassword} />
 			  <Route exact path="/auth/verify_email" component={VerifyEmail} />
 	      <Route exact path="/auth/login" component={Login} />
 	      <Route exact path="/auth/signup" component={SignUp} />

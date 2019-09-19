@@ -61,5 +61,7 @@ export default {
 
   // auth
   login: ({ loginData }: any) => httpClient.post(`${prefix}/auth/login`, loginData),
-  verifyEmail: (token: string) => httpClient.post(`${prefix}/auth/verify_email`, { token }),
+  verifyEmail: (sendData: object) => httpClient.post(`${prefix}/auth/verify_email`, sendData),
+  forgotPassword: (sendData: object) => httpClient.post(`${prefix}/auth/forgot_password`, sendData),
+  resetPassword: (sendData: object) => httpClient.post(`${prefix}/auth/reset_password`, sendData),
 };

@@ -106,3 +106,40 @@ export function* sendVerifyEmail({ payload, history }: any): any {
     });
   }
 }
+
+export function* sendForgotPassword({ payload, history }: any): any {
+  try {
+    const { data } = yield call(Api.forgotPassword, payload);
+    yield put({
+      type: usersActions.forgotPassword.success,
+      payload: data,
+    });
+    history.push('/');
+    toast('Letter sent! Check your email.', 'success');
+
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: usersActions.forgotPassword.failure
+    });
+  }
+}
+
+
+export function* sendResetPassword({ payload, history }: any): any {
+  try {
+    const { data } = yield call(Api.resetPassword, payload);
+    yield put({
+      type: usersActions.resetPassword.success,
+      payload: data,
+    });
+    history.push('/auth/login');
+    toast('Password changes. Try to login', 'success');
+
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: usersActions.resetPassword.failure
+    });
+  }
+}

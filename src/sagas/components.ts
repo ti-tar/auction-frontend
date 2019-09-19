@@ -9,7 +9,7 @@ import { fetchBids, createBid } from '../domain/bids/sagas';
 import * as bidsActions from '../domain/bids/actions';
 
 // users
-import { fetchProfile, createUser, makeLogin, makeLogout, sendVerifyEmail } from '../domain/user/sagas';
+import { fetchProfile, createUser, makeLogin, makeLogout, sendVerifyEmail, sendForgotPassword, sendResetPassword } from '../domain/user/sagas';
 import * as userActions from '../domain/user/actions';
 
 export function* components() {
@@ -34,6 +34,8 @@ export function* components() {
   yield takeEvery(userActions.login.request, makeLogin);
   yield takeEvery(userActions.logout.request, makeLogout);
   yield takeEvery(userActions.verifyEmail.request, sendVerifyEmail);
+  yield takeEvery(userActions.forgotPassword.request, sendForgotPassword);
+  yield takeEvery(userActions.resetPassword.request, sendResetPassword);
 }
 
 export default function* () {
