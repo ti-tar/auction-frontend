@@ -114,7 +114,7 @@ export function* sendForgotPassword({ payload, history }: any): any {
       type: usersActions.forgotPassword.success,
       payload: data,
     });
-    history.push('/');
+    history.push('/auth/login');
     toast('Letter sent! Check your email.', 'success');
 
   } catch (errors) {

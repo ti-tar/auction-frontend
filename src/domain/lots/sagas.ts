@@ -14,7 +14,6 @@ export function* fetchLots({ payload }: any) {
     });
 
   } catch (errors) {
-
     showAxiosErrors(errors.response);
 
     yield put({

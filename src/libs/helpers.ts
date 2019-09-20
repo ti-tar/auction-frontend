@@ -39,8 +39,13 @@ export const showAxiosErrors = (response: responseErrorInterface ) => {
     return;
   }
 
-  if (response && response.data && response.data.hasOwnProperty('message')) {
+  if (response && response.data && response.data.message) {
     toast(response.data.message);
+    return;
+  }
+
+  if (response && response.data && response.data.error) {
+    toast(response.data.error);
     return;
   }
 
