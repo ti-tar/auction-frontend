@@ -19,6 +19,7 @@ import LotCreateInterface from '../../interfaces/lotCreate';
 // css
 import "./styles/lotsCreateStyles.scss";
 import * as bitsActions from "../../domain/bids/actions";
+import { getStorageItem } from '../../libs/storage';
 
 
 type Props = React.ReactChild & {
@@ -83,7 +84,9 @@ const LotsEdit: React.FC<Props> = (props) => {
 		const data = new FormData();
 		data.append('file', e.target.files[0]);
 
-		axios.post("http://localhost:5000/api/lots/upload", data, { // receive two parameter endpoint url ,form data
+		// receive two parameter endpoint url ,form data
+		axios.post("http://localhost:5000/api/lots/upload", data, {
+			headers: { Authorization: `Bearer ${getStorageItem('token')}` },
 		})
 			.then(response => { // then print response status
 
