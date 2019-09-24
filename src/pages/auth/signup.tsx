@@ -15,10 +15,10 @@ import userReducerInterface from '../../interfaces/userReducer';
 // css
 import './styles/signUpStyles.scss';
 
-type Props = React.ReactChild & { handleSubmit: Function, createNewUser: Function, history: Function, userStatus: string | undefined};
+type Props = React.ReactChild & { handleSubmit: Function, createNewUser: Function, history: Function};
 
 const SignUp: React.FunctionComponent<Props> = (props) => {
-	const {handleSubmit, createNewUser, history, userStatus} = props;
+	const {handleSubmit, createNewUser, history} = props;
 
 	const handleBeforeSubmit = (formValues: any) => {
 		if (!formValues.firstName || !formValues.lastName || !formValues.email || !formValues.password || !formValues.phone) {
@@ -41,20 +41,6 @@ const SignUp: React.FunctionComponent<Props> = (props) => {
 		<section className="signUp">
 			<h1>Sign Up</h1>
 			<div className="formWrapper">
-				{ userStatus === 'pending' 
-				? (
-					<>
-						<h1>Thank You for Signing Up!</h1>
-						<h1>Check the confirmation email</h1>
-						<p>Note: If you do not receive the email in few minutes:</p>
-						
-						<ul>
-							<li>check spam folder</li>
-							<li>verify if you typed your email correctly</li>
-						</ul>
-					</>
-				)
-				: (
 					<form onSubmit={handleSubmit(handleBeforeSubmit)}>
 						<Field
 							name="firstName"
@@ -98,19 +84,14 @@ const SignUp: React.FunctionComponent<Props> = (props) => {
 						</div>
 
 					</form>
-					)
-				}
 			</div>
-
 		</section>
 	);
 };
 
 const SignUpRouteComponent: any = compose(
 	connect(
-		( state : { user: userReducerInterface} ) => ({
-			userStatus: state.user.status,
-		}),
+		null,
 		{
 			createNewUser: (userToSend: userCreateInterface, history: Function): any => ({ type: usersActions.createNewUser.request, payload: userToSend, history }),
 		}

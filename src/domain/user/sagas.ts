@@ -47,7 +47,7 @@ export function* createUser(action: any) {
 
     setUserToLocalStorage(data.resource);
 
-    // action.history.push(`/lots`);
+    action.history.push('/auth/signup/success');
 
   } catch (errors) {
     showAxiosErrors(errors.response.data);
@@ -87,7 +87,6 @@ export function* makeLogout(action: any) {
     type: usersActions.logout.success,
   });
 
-  // action.history.push('/');
   window.location.href = '/';
 }
 
@@ -98,6 +97,9 @@ export function* sendVerifyEmail({ payload, history }: any): any {
       type: usersActions.verifyEmail.success,
       payload: data,
     });
+
+    setUserToLocalStorage(data.resource);
+    history.push('/lots');
 
   } catch (errors) {
     showAxiosErrors(errors.response);

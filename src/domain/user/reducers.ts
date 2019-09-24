@@ -52,6 +52,25 @@ export const reducer = {
           isLoading: false,
         };
       }
+      
+      case userActions.verifyEmail.success: {
+
+        return {
+          ...state,
+          id: action.payload.resource.id,
+          email: action.payload.resource.email,
+          firstName: action.payload.resource.firstName,
+          token: action.payload.resource.token,
+          isLoading: false,
+        };
+      }
+
+      case userActions.verifyEmail.failure: {
+        return {
+          ...state,
+          isLoading: false,
+        };
+      }
 
       // direct from component without saga
       case userActions.setUserFromLocalStorage.request: {

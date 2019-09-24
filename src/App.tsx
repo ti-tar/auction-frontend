@@ -12,6 +12,7 @@ import ResetPassword from './pages/auth/resetPassword';
 import VerifyEmail from './pages/auth/verifyEmail';
 import Login from './pages/auth/login';
 import SignUp from './pages/auth/signup';
+import SignUpSuccess from './pages/auth/signupSuccess';
 
 import Lots from './pages/lots/lots';
 import LotsEdit from './pages/lots/lotsEdit';
@@ -54,9 +55,10 @@ const App: React.FC = (props: any) => {
       <Switch>
 				<Route exact path="/auth/forgot_password" component={ForgotPassword} />
 				<Route exact path="/auth/reset_email" component={ResetPassword} />
-			  <Route exact path="/auth/verify_email" component={VerifyEmail} />
+			  <Route exact path="/auth/verify/email" component={VerifyEmail} />
 	      <Route exact path="/auth/login" component={Login} />
-	      <Route exact path="/auth/signup" component={SignUp} />
+				<Route exact path="/auth/signup" component={SignUp} />
+				<Route exact path="/auth/signup/success" component={SignUpSuccess} />
 
 	      <Route exact path="/lots/:lotId/edit" component={LotsEdit} />
 	      <Route exact path="/lots/create" component={LotsEdit} />
