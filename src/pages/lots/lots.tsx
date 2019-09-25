@@ -27,8 +27,20 @@ const Lots: React.FunctionComponent<Props> = (props) => {
   const { match: { url }, userId } = props;
 
   useEffect(() => {
-    props.fetchLots({ owner: url === "/lots/own" ? 'own' : 'all' });
+    const filter =
+    props.fetchLots({ filter: getFilter(url) });
   }, [url]);
+
+  const getFilter = (url: string) => {
+    switch(url){
+      case '/lots/own/lots': 
+        return 'ownLots'
+      case '/lots/own/bids': 
+        return 'ownBids'
+      default:
+        return 'all'
+    }
+  }
 
   return (
     <section className="lots">
@@ -100,6 +112,6 @@ export default connect(
     isLoading: state.lots.isLoading,
   }),
   {
-    fetchLots: (filters: {owner: 'all' | 'own'}): any => ({ type: lotsActions.fetchLots.request, payload: {filters} }),
+    fetchLots: (data: any): any => ({ type: lotsActions.fetchLots.request, payload: {filter: data.filter} }),
   }
 )(Lots);

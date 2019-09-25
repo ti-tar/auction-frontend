@@ -4,9 +4,24 @@ import * as lotsActions from '../../domain/lots/actions';
 import {showAxiosErrors, toast} from '../../libs/helpers';
 
 export function* fetchLots({ payload }: any) {
-  const { filters: { owner } } = payload;
+  
+  const { filter } = payload;
+
+  function getHandler(filter: string): any{
+    switch(filter){
+      case 'ownLots': 
+        return Api.fetchOwnLots; 
+      case 'ownBids': 
+        return Api.fetchLotsWithBids;
+      default:
+        return Api.fetchLots;
+    }
+  }
+
+  const ApiHandler = getHandler(filter);
+
   try {
-    const { data } = yield call(owner === 'own'? Api.fetchOwnLots : Api.fetchLots);
+    const { data } = yield call(ApiHandler);
 
     yield put({
       type: lotsActions.fetchLots.success,

@@ -44,8 +44,13 @@ const NavMenu: React.FC<Props> = (props) => {
                 </Link>
               </li>
               <li>
-                <Link to={{pathname: '/lots/own'}}>
+                <Link to={{pathname: '/lots/own/lots'}}>
                   My Lots
+                </Link>
+              </li>
+              <li>
+                <Link to={{pathname: '/lots/own/bids'}}>
+                  Lots My Bids 
                 </Link>
               </li>
               <li>

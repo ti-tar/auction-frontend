@@ -11,7 +11,7 @@ import './bidCreateStyles.scss';
 
 const BidCreate: React.FunctionComponent = (props: any) => {
 
-	const {handleSubmit, createBid, history } = props;
+	const {handleSubmit, createBid, history, match : {params: {lotId}} } = props;
 
 	const handleBeforeSubmit = (formValues: any) => {
 		if (!formValues.proposedPrice ) {
@@ -23,19 +23,15 @@ const BidCreate: React.FunctionComponent = (props: any) => {
 			proposedPrice: parseFloat(formValues.proposedPrice),
 		};
 
-		const lotId = 1;
-		createBid(newBid, lotId, history);
+		createBid(newBid, parseInt(lotId, 10), history);
 	};
 
 	return (
 		<section className="bidCreate">
-
 			<div className="title">
 				Create bid
 			</div>
-
 			<div className="fromWrapper">
-
 				<form onSubmit={handleSubmit(handleBeforeSubmit)}>
 					<Field
 						name="proposedPrice"
@@ -43,17 +39,13 @@ const BidCreate: React.FunctionComponent = (props: any) => {
 						component="input"
 						placeholder="proposed price"
 					/>
-
 					<div className="submitBtn">
 						<button type="submit">
 							Submit
 						</button>
 					</div>
-
 				</form>
-
 			</div>
-
 		</section>
 	)
 };
@@ -63,7 +55,7 @@ const BidCreateRouteComponent: any = compose(
 	connect(
 		null,
 		{
-			createBid: (newBid: any, lotId: any, history: any) => ({ type: bidActions.createBid.request, payload: { newBid, lotId }, history }),
+			createBid: (newBid: any, lotId: number, history: any) => ({ type: bidActions.createBid.request, payload: { newBid, lotId }, history }),
 		}
 	),
 	reduxForm({
