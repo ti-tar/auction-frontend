@@ -26,6 +26,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // components
 import NanMenu from './components/navmenu/navmenu';
+import SocketIO from './components/socketio/socketIO';
 import { Switch, Route } from 'react-router-dom';
 import { getStorageItem } from "./libs/storage";
 
@@ -51,6 +52,8 @@ const App: React.FC = (props: any) => {
       <ToastContainer />
 
       <NanMenu />
+
+			<SocketIO />
 
       <Switch>
 				<Route exact path="/auth/forgot_password" component={ForgotPassword} />

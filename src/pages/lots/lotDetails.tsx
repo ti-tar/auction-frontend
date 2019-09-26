@@ -146,7 +146,7 @@ const LotDetails: React.FC<Props> = (props) => {
 				<h2>Bids</h2>
 				{ !!bids && !!bids.length && (
 					bids.map((bid: any) => (
-						<div style={{margin: '2em 0'}}>
+						<div key={bid.proposedPrice} style={{margin: '2em 0'}}>
 							<div>
 							{ bid.user
 								? (
