@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import {Field, reduxForm} from "redux-form";
-import {toast} from "react-toastify";
-import userLoginDataInterface from "../../interfaces/userLoginData";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import * as userActions from "../../domain/user/actions";

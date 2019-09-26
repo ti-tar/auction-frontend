@@ -11,14 +11,12 @@ import  * as lotsActions from '../../domain/lots/actions';
 
 // components
 import CustomDatePicker from '../../components/form/datePicker/datepicker';
-import FileUpload from  '../../components/form/fileUpload/fileUpload';
 
 // interfaces
 import LotCreateInterface from '../../interfaces/lotCreate';
 
 // css
 import "./styles/lotsCreateStyles.scss";
-import * as bitsActions from "../../domain/bids/actions";
 import { getStorageItem } from '../../libs/storage';
 
 
@@ -44,7 +42,7 @@ const LotsEdit: React.FC<Props> = (props) => {
 
 	useEffect(() => {
 		fetchLot(lotId);
-	}, [lotId]);
+	}, [fetchLot, lotId]);
 
 	useEffect(() => {
 		setImage(lot.image)
@@ -175,7 +173,7 @@ const LotsEdit: React.FC<Props> = (props) => {
 						/>
 					</div>
 					{!!image &&
-					  <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${image}`} />
+					  <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${image}`} alt="" />
 					}
 				</div>
 

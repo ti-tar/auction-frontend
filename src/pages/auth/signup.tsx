@@ -9,8 +9,6 @@ import {toast} from "react-toastify";
 
 // interfaces
 import userCreateInterface from "../../interfaces/userCreate";
-import userReducerInterface from '../../interfaces/userReducer';
-
 
 // css
 import './styles/signUpStyles.scss';

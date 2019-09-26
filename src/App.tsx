@@ -45,7 +45,7 @@ const App: React.FC = (props: any) => {
 		if (!!id && !!email && !!token && !!firstName) {
 			setUserFromLocalStorage({ id, email, token, firstName});
 		}
-	}, []);
+	}, [setUserFromLocalStorage]);
 
   return (
     <div className="App">

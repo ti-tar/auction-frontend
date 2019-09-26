@@ -50,7 +50,7 @@ const LotDetails: React.FC<Props> = (props) => {
 	useEffect(() => {
 		fetchLot(lotId);
 		fetchBids(lotId);
-	}, []);
+	}, [fetchLot, fetchBids, lotId]);
 
 	return (
 		<section className="lotDetails">
@@ -59,7 +59,7 @@ const LotDetails: React.FC<Props> = (props) => {
 					<div className="lot__img">
 						<div>
 							{ lot.image && (
-								<img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} />
+								<img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} alt="" />
 							)}
 						</div>
 					</div>

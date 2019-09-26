@@ -1,4 +1,3 @@
-import reducerActionInterface from './../../interfaces/reducerAction';
 import * as userActions from './actions';
 
 declare type UserInitialState = {

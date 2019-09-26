@@ -13,7 +13,6 @@ import userReducerInterface from '../../interfaces/userReducer';
 
 import "./styles/lotsStyles.scss";
 
-
 interface Props {
   lots: lotInterface[],
   userId: number,
@@ -22,14 +21,8 @@ interface Props {
   match: any
 }
 
-
 const Lots: React.FunctionComponent<Props> = (props) => {
-  const { match: { url }, userId } = props;
-
-  useEffect(() => {
-    const filter =
-    props.fetchLots({ filter: getFilter(url) });
-  }, [url]);
+  const { match: { url }, userId, fetchLots } = props;
 
   const getFilter = (url: string) => {
     switch(url){
@@ -40,7 +33,12 @@ const Lots: React.FunctionComponent<Props> = (props) => {
       default:
         return 'all'
     }
-  }
+  };
+
+  useEffect(() => {
+    fetchLots({ filter: getFilter(url) });
+  }, [fetchLots, url]);
+
 
   return (
     <section className="lots">
@@ -51,7 +49,7 @@ const Lots: React.FunctionComponent<Props> = (props) => {
               <div className="your_lot">Your lot</div>
             )}
             <div className="image_place">
-              <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} />
+              <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} alt={lot.title} />
             </div>
           </div>
           <div className="lot__product">

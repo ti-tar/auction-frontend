@@ -1,12 +1,18 @@
 .socketIoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
   margin: 0 auto;
+  padding: 5px;
   max-width: 850px;
   width: 100%;
   background: white;
+  font-size: 12px;
   .success {
     color: green;
+    margin: 0 1em;
   }
-  .failed {
-    color: red;
+  button {
+    margin-left: 1em;
   }
 }

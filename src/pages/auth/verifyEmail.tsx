@@ -1,7 +1,6 @@
 import React from "react";
 import { toast } from '../../libs/helpers';
 import qs from 'qs';
-import userLoginDataInterface from "../../interfaces/userLoginData";
 import {connect} from "react-redux";
 import * as userActions from "../../domain/user/actions";
 

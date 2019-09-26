@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import './socketIOStyles.scss';
 
 let socket: any;
+let setTimeoutId: any;
 
 const SocketIO: React.FC<any> = (props) => {
   
@@ -11,7 +12,8 @@ const SocketIO: React.FC<any> = (props) => {
   const showRespResult = (data: any) => {
     console.log(data.message);
     setRespMsg(data.message);
-    setTimeout(() => setRespMsg(false), 10000);
+    clearTimeout(setTimeoutId);
+    setTimeoutId = setTimeout(() => setRespMsg(false), 10000);
   }
 
   useEffect(() => {
@@ -31,8 +33,7 @@ const SocketIO: React.FC<any> = (props) => {
   }
 
   return <div className="socketIoWrapper">
-    check socket io {!!respMsg && <span className='success'>{respMsg}</span>} 
-    <button type="button" onClick={sendIOquery}>send</button>
+    socket io: {!!respMsg && <span className='success'>{respMsg}</span>} <button type="button" onClick={sendIOquery}>check</button>
   </div>;
 }
 

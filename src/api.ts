@@ -6,9 +6,6 @@ import { getStorageItem } from './libs/storage';
 import LotCreateInterface from './interfaces/lotCreate';
 import userCreateInterface from './interfaces/userCreate';
 
-import { clearStorage } from './libs/storage';
-import {toast} from "./libs/helpers";
-
 const getAxiosInstance = () => axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   // withCredentials: true,

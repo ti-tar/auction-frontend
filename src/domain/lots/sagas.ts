@@ -114,10 +114,8 @@ export function* deleteLot(action: any) {
   const { lotId } = action.payload;
 
   try {
-    const { data } = yield call(Api.deleteLot, lotId);
-
+    yield call(Api.deleteLot, lotId);
     toast('Lot successfully deleted!', 'success');
-
     action.history.push(`/lots`);
 
   } catch (errors) {
