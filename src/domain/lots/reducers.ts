@@ -1,39 +1,35 @@
-import reducerActionInterface from './../../interfaces/reducerAction';
-import * as lotsActions from './actions';
-
+import reducerActionInterface from "./../../interfaces/reducerAction";
+import * as lotsActions from "./actions";
 
 export const lotsInitialState = {
   resources: [],
   resource: {},
   meta: {},
-  isLoading: false,
+  isLoading: false
 };
-
 
 export const reducer = {
   lots(lotsState = lotsInitialState, action: reducerActionInterface) {
-
     const { type, payload } = action;
 
     switch (type) {
-
       //  fetch all Lots
 
       case lotsActions.resetLot.request: {
-        return  {
-          ...lotsInitialState,
+        return {
+          ...lotsInitialState
         };
       }
 
       case lotsActions.fetchLots.request: {
-        return  {
+        return {
           ...lotsInitialState,
-            isLoading: true,
+          isLoading: true
         };
       }
       case lotsActions.fetchLots.success: {
-        if( payload && payload.resources ){
-          return  {
+        if (payload && payload.resources) {
+          return {
             ...lotsState,
             resources: [...payload.resources],
             meta: payload.meta,
@@ -42,41 +38,41 @@ export const reducer = {
         }
         return {
           ...lotsState,
-          isLoading: false,
+          isLoading: false
         };
       }
       case lotsActions.fetchLots.failure: {
         return {
           ...lotsState,
-            isLoading: false,
+          isLoading: false
         };
       }
 
       //  fetch Lot by Id
 
       case lotsActions.fetchLot.request: {
-        return  { ...lotsState, isLoading: true };
+        return { ...lotsState, isLoading: true };
       }
       case lotsActions.fetchLot.success: {
-        if( payload && payload.resource ){
-          return  {
+        if (payload && payload.resource) {
+          return {
             ...lotsState,
-            resource: {...payload.resource}, meta: payload.meta, isLoading: false
+            resource: { ...payload.resource },
+            meta: payload.meta,
+            isLoading: false
           };
         }
-        return { ...lotsState,          isLoading: false,        };
+        return { ...lotsState, isLoading: false };
       }
       case lotsActions.fetchLot.failure: {
         return {
           ...lotsState,
-          isLoading: false,
+          isLoading: false
         };
       }
 
-
-
       default:
-          return { ...lotsState };
+        return { ...lotsState };
     }
   }
 };

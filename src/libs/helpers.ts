@@ -1,38 +1,35 @@
-import { toast as toast123 } from 'react-toastify';
-import responseErrorInterface from '../interfaces/responseError';
+import { toast as toast123 } from "react-toastify";
+import responseErrorInterface from "../interfaces/responseError";
 
-export const toast = (msg: string, type: string = '') => {
+export const toast = (msg: string, type = "") => {
   switch (type) {
-    case 'success':
+    case "success":
       toast123.success(msg, {
-        position: toast123.POSITION.TOP_RIGHT,
+        position: toast123.POSITION.TOP_RIGHT
       });
       break;
-    case 'info':
+    case "info":
       toast123.info(msg, {
-        position: toast123.POSITION.TOP_RIGHT,
+        position: toast123.POSITION.TOP_RIGHT
       });
       break;
-    case 'warn':
+    case "warn":
       toast123.warn(msg, {
-        position: toast123.POSITION.TOP_RIGHT,
+        position: toast123.POSITION.TOP_RIGHT
       });
       break;
     default:
       toast123.error(msg, {
-        position: toast123.POSITION.TOP_RIGHT,
+        position: toast123.POSITION.TOP_RIGHT
       });
   }
 };
 
-
-
 // response is payload object from saga to reducer
-export const showAxiosErrors = (response: responseErrorInterface ) => {
-
+export const showAxiosErrors = (response: responseErrorInterface) => {
   // todo
-  if (response && response.data && Array.isArray(response.data)){
-    response.data.forEach((errObj) => {
+  if (response && response.data && Array.isArray(response.data)) {
+    response.data.forEach(errObj => {
       toast(errObj.message);
       return;
     });
@@ -49,8 +46,8 @@ export const showAxiosErrors = (response: responseErrorInterface ) => {
     return;
   }
 
-  if (Array.isArray(response)){
-    response.forEach((errObj) => {
+  if (Array.isArray(response)) {
+    response.forEach(errObj => {
       toast(errObj.message);
       return;
     });
@@ -62,5 +59,5 @@ export const showAxiosErrors = (response: responseErrorInterface ) => {
     return;
   }
 
-  toast('Unknown server error');
+  toast("Unknown server error");
 };

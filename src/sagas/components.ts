@@ -1,16 +1,31 @@
-import { fork, takeEvery } from 'redux-saga/effects';
+import { fork, takeEvery } from "redux-saga/effects";
 
 // lots
-import { fetchLots, fetchLot, createNewLot, updateLot, deleteLot } from '../domain/lots/sagas';
-import * as lotsActions from '../domain/lots/actions';
+import {
+  fetchLots,
+  fetchLot,
+  createNewLot,
+  updateLot,
+  deleteLot
+} from "../domain/lots/sagas";
+import * as lotsActions from "../domain/lots/actions";
 
 // bids
-import { fetchBids, createBid } from '../domain/bids/sagas';
-import * as bidsActions from '../domain/bids/actions';
+import { fetchBids, createBid } from "../domain/bids/sagas";
+import * as bidsActions from "../domain/bids/actions";
 
 // users
-import { fetchProfile, createUser, makeLogin, makeLogout, sendVerifyEmail, sendForgotPassword, sendResetPassword } from '../domain/user/sagas';
-import * as userActions from '../domain/user/actions';
+
+import {
+  fetchProfile,
+  createUser,
+  makeLogin,
+  makeLogout,
+  sendVerifyEmail,
+  sendForgotPassword,
+  sendResetPassword
+} from "../domain/user/sagas";
+import * as userActions from "../domain/user/actions";
 
 export function* components() {
   // lots
@@ -38,6 +53,6 @@ export function* components() {
   yield takeEvery(userActions.resetPassword.request, sendResetPassword);
 }
 
-export default function* () {
+export default function*() {
   yield fork(components);
 }

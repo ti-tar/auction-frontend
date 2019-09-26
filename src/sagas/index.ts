@@ -1,10 +1,10 @@
-import { fork } from 'redux-saga/effects';
+import { fork } from "redux-saga/effects";
 
-import watchComponents from './../sagas/components';
+import watchComponents from "./../sagas/components";
 
 export default function* rootSaga() {
   yield* [
     // components watchers
-    fork(watchComponents),
+    fork(watchComponents)
   ];
 }

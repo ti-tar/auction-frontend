@@ -1,4 +1,4 @@
-export default interface responseErrorInterface {
-	message?: string,
-	data?: any,
-};
+export default interface ResponseErrorInterface {
+  message?: string;
+  data?: any;
+}

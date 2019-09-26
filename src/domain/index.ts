@@ -1,23 +1,29 @@
-import {
-  combineReducers, createStore, applyMiddleware, compose,
-} from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { combineReducers, createStore, applyMiddleware, compose } from "redux";
+import createSagaMiddleware from "redux-saga";
 
 // reducers
-import { reducer as domainLotsReducers, lotsInitialState } from './lots/reducers';
-import { reducer as domainUsersReducers, userInitialState } from './user/reducers';
-import { reducer as domainBidsReducers, bidsInitialState } from './bids/reducers';
+import {
+  reducer as domainLotsReducers,
+  lotsInitialState
+} from "./lots/reducers";
+import {
+  reducer as domainUsersReducers,
+  userInitialState
+} from "./user/reducers";
+import {
+  reducer as domainBidsReducers,
+  bidsInitialState
+} from "./bids/reducers";
 
 // redux-form
-import { reducer as ReduxFormReducers } from 'redux-form';
-
+import { reducer as ReduxFormReducers } from "redux-form";
 
 // auth action
 const rootReducers = {
   ...domainLotsReducers,
   ...domainUsersReducers,
   ...domainBidsReducers,
-  form: ReduxFormReducers,
+  form: ReduxFormReducers
 };
 
 declare global {
@@ -28,7 +34,8 @@ declare global {
 }
 
 export default (): any => {
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const sagaMiddleware = createSagaMiddleware();
 
   // init reducers
@@ -38,13 +45,9 @@ export default (): any => {
     {
       lots: lotsInitialState,
       user: userInitialState,
-      bids: bidsInitialState,
+      bids: bidsInitialState
     },
-    composeEnhancers(
-      applyMiddleware(
-        sagaMiddleware,
-      ),
-    ),
+    composeEnhancers(applyMiddleware(sagaMiddleware))
   );
 
   return { ...store, runSaga: sagaMiddleware.run };

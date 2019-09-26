@@ -1,26 +1,24 @@
-import * as userActions from './actions';
+import * as userActions from "./actions";
 
 declare type UserInitialState = {
-  id: number,
-  email: string,
-  firstName: string,
-  token: string,
-  isLoading: boolean,
-}
+  id: number;
+  email: string;
+  firstName: string;
+  token: string;
+  isLoading: boolean;
+};
 
 export const userInitialState: UserInitialState = {
   id: 0,
   email: "",
   firstName: "",
   token: "",
-  isLoading: false,
+  isLoading: false
 };
-
 
 export const reducer = {
   user(state = userInitialState, action: any) {
     switch (action.type) {
-
       case userActions.fetchProfile.request: {
         return { ...state };
       }
@@ -29,45 +27,43 @@ export const reducer = {
       case userActions.login.request: {
         return {
           ...state,
-          isLoading: true,
+          isLoading: true
         };
       }
 
       case userActions.login.success: {
-
         return {
           ...state,
           id: action.payload.resource.id,
           email: action.payload.resource.email,
           firstName: action.payload.resource.firstName,
           token: action.payload.resource.token,
-          isLoading: false,
+          isLoading: false
         };
       }
 
       case userActions.login.failure: {
         return {
           ...state,
-          isLoading: false,
+          isLoading: false
         };
       }
-      
-      case userActions.verifyEmail.success: {
 
+      case userActions.verifyEmail.success: {
         return {
           ...state,
           id: action.payload.resource.id,
           email: action.payload.resource.email,
           firstName: action.payload.resource.firstName,
           token: action.payload.resource.token,
-          isLoading: false,
+          isLoading: false
         };
       }
 
       case userActions.verifyEmail.failure: {
         return {
           ...state,
-          isLoading: false,
+          isLoading: false
         };
       }
 
@@ -78,7 +74,7 @@ export const reducer = {
           id: action.payload.id,
           email: action.payload.email,
           firstName: action.payload.firstName,
-          token: action.payload.token,
+          token: action.payload.token
         };
       }
 
@@ -89,7 +85,7 @@ export const reducer = {
           id: 0,
           email: "",
           firstName: "",
-          token: "",
+          token: ""
         };
       }
 
@@ -97,7 +93,7 @@ export const reducer = {
       case userActions.createNewUser.request: {
         return {
           ...userInitialState,
-          isLoading: true,
+          isLoading: true
         };
       }
 
@@ -110,23 +106,20 @@ export const reducer = {
           firstName: action.payload.resource.firstName,
           token: action.payload.resource.token,
           status: action.payload.resource.status,
-          isLoading: false,
+          isLoading: false
         };
       }
 
       case userActions.createNewUser.failure: {
         return {
           ...userInitialState,
-          isLoading: false,
+          isLoading: false
         };
       }
-
 
       //
       default:
         return { ...state };
     }
-
-
   }
 };

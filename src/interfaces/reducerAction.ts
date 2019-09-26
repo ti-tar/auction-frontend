@@ -1,8 +1,8 @@
-export default interface reducerActionInterface {
-  type?: string,
+export default interface ReducerActionInterface {
+  type?: string;
   payload?: {
-    resources?: [],
-    resource?: any,
-    meta: {},
-  }
-};
+    resources?: [];
+    resource?: any;
+    meta: {};
+  };
+}

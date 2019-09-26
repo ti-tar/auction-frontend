@@ -1,7 +1,7 @@
-import lotInterface from './lot';
+import LotInterface from "./lot";
 
-export default interface lotsReducerInterface {
-  resources: lotInterface[] | [],
-  resource?: lotInterface | {},
-  isLoading: boolean,
+export default interface LotsReducerInterface {
+  resources: LotInterface[] | [];
+  resource?: LotInterface | {};
+  isLoading: boolean;
 }

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import './socketIOStyles.scss';
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
+import "./socketIOStyles.scss";
 
 let socket: any;
 let setTimeoutId: any;
 
-const SocketIO: React.FC<any> = (props) => {
-  
+const SocketIO: React.FC<any> = props => {
   const [respMsg, setRespMsg] = useState(false);
 
   const showRespResult = (data: any) => {
@@ -14,27 +13,32 @@ const SocketIO: React.FC<any> = (props) => {
     setRespMsg(data.message);
     clearTimeout(setTimeoutId);
     setTimeoutId = setTimeout(() => setRespMsg(false), 10000);
-  }
+  };
 
   useEffect(() => {
-    socket = io('http://localhost:5000/');
-    
+    socket = io("http://localhost:5000/");
+
     socket.on("connection", () => {
       console.log("socket.io connected");
     });
 
     socket.on("checkBrowserConnection", showRespResult);
     socket.on("bidsUpdated", showRespResult);
-
   }, []);
 
   const sendIOquery = () => {
-    socket.emit('checkServerConnection')
-  }
+    socket.emit("checkServerConnection");
+  };
 
-  return <div className="socketIoWrapper">
-    socket io: {!!respMsg && <span className='success'>{respMsg}</span>} <button type="button" onClick={sendIOquery}>check</button>
-  </div>;
-}
+  return (
+    <div className="socketIoWrapper">
+      socket io:
+      {!!respMsg && <span className="success">{respMsg}</span>}
+      <button type="button" onClick={sendIOquery}>
+        check
+      </button>
+    </div>
+  );
+};
 
 export default SocketIO;

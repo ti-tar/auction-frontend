@@ -1,60 +1,62 @@
 import React, { useState } from "react";
-import {compose} from "redux";
-import {connect} from "react-redux";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import * as userActions from "../../domain/user/actions";
 
 // css
-import './styles/signUpStyles.scss';
+import "./styles/signUpStyles.scss";
 import { withRouter } from "react-router";
 
 const ForgotPassword: any = (props: any): any => {
+  const { sendForgotEmail, history } = props;
 
-	const { sendForgotEmail, history } = props;
-
-  const [ email, setEmail ] = useState('');
+  const [email, setEmail] = useState("");
 
   const handleInput = (e: any) => {
     setEmail(e.target.value);
-  }
+  };
 
-	const handleSendForgotEmail = () => {
-		sendForgotEmail({ email }, history);
-	};
+  const handleSendForgotEmail = () => {
+    sendForgotEmail({ email }, history);
+  };
 
-	return (<section className="fogotPassword">
-			<h1>Fogot password</h1>
+  return (
+    <section className="fogotPassword">
+      <h1>Fogot password</h1>
 
-			<div className="formWrapper">
-				<form >
-
-					<input
-						name="email"
-						type="text"
+      <div className="formWrapper">
+        <form>
+          <input
+            name="email"
+            type="text"
             placeholder="email"
             value={email}
             onChange={handleInput}
-					/>
+          />
 
-					<div className="submitBtn">
-						<button type="button" onClick={handleSendForgotEmail}>
-							Submit
-						</button>
-					</div>
-
-				</form>
-			</div>
-
-		</section>);
+          <div className="submitBtn">
+            <button type="button" onClick={handleSendForgotEmail}>
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
 };
 
 const ForgotPasswordRouteComponent: any = compose(
-	connect(
-		null,
-		{
-			sendForgotEmail: (emailData: any, history: any): any => ({ type: userActions.forgotPassword.request, payload: emailData, history }),
-		}
+  connect(
+    null,
+    {
+      sendForgotEmail: (emailData: any, history: any): any => ({
+        type: userActions.forgotPassword.request,
+        payload: emailData,
+        history
+      })
+    }
   ),
-  withRouter,
-) (ForgotPassword);
+  withRouter
+)(ForgotPassword);
 
 export default ForgotPasswordRouteComponent;

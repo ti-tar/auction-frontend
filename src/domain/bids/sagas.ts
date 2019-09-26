@@ -1,7 +1,7 @@
-import { put, call } from 'redux-saga/effects';
-import Api from '../../api';
-import * as bidsActions from '../../domain/bids/actions';
-import {showAxiosErrors, toast} from '../../libs/helpers';
+import { put, call } from "redux-saga/effects";
+import Api from "../../api";
+import * as bidsActions from "../../domain/bids/actions";
+import { showAxiosErrors, toast } from "../../libs/helpers";
 
 export function* fetchBids({ payload }: any) {
   const { lotId } = payload;
@@ -11,22 +11,19 @@ export function* fetchBids({ payload }: any) {
 
     yield put({
       type: bidsActions.fetchBids.success,
-      payload: data,
+      payload: data
     });
-
   } catch (errors) {
-
     showAxiosErrors(errors.response);
 
     yield put({
       type: bidsActions.fetchBids.failure,
-      payload: errors,
+      payload: errors
     });
   }
 }
 
 export function* createBid({ payload, history }: any) {
-
   const { newBid, lotId } = payload;
 
   try {
@@ -34,18 +31,17 @@ export function* createBid({ payload, history }: any) {
 
     yield put({
       type: bidsActions.createBid.success,
-      payload: data,
+      payload: data
     });
 
-    toast('Bid successfully added!', 'success');
+    toast("Bid successfully added!", "success");
 
     history.push(`/lots/${lotId}/`);
-
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
       type: bidsActions.createBid.failure,
-      payload: errors,
+      payload: errors
     });
   }
 }

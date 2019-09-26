@@ -2,7 +2,7 @@ export function setStorageItem(key, value) {
   return window.localStorage.setItem(key, value);
 }
 
-export function getStorageItem(key, def = '') {
+export function getStorageItem(key, def = "") {
   return window.localStorage.getItem(key) || def;
 }
 
