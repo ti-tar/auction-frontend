@@ -1,6 +1,4 @@
-// https://github.com/Hacker0x01/react-datepicker/issues/543
-
-import React from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 
@@ -18,24 +16,27 @@ interface Props {
   };
 }
 
-class CustomDatePicker extends React.Component<Props> {
-  handleChange = (date: Date) => {
-    this.props.input.onChange(moment(date).toISOString());
-  };
+const CustomDatePicker: React.FC<Props> = (props) => {
+  const { input, meta: { touched, error } } = props;
 
-  render() {
-    const {
-      input,
-      meta: { touched, error }
-    } = this.props;
+  const [startDate, setStartDate] = useState(new Date());
 
-    return (
-      <div>
-        <DatePicker {...input} showTimeSelect onChange={this.handleChange} />
-        {touched && error && <span>{error}</span>}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <DatePicker
+        {...input}
+        selected={startDate}
+        showTimeSelect
+        onChange={(date: Date) => {
+          input.onChange(moment(date).format('YYYY-MM-DD hh:mm:ss'));
+          setStartDate(date)
+        }}
+        autoComplete="off"
+        timeIntervals={5}
+      />
+      {touched && error && <span>{error}</span>}
+    </div>
+  );
 }
 
 export default CustomDatePicker;

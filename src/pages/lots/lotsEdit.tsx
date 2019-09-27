@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { Field, reduxForm, change } from "redux-form";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
-// todo - tmp
+import moment from 'moment';
 import axios from "axios";
 // actions
 import * as lotsActions from "../../domain/lots/actions";
@@ -70,8 +70,8 @@ const LotsEdit: React.FC<Props> = props => {
       title: formValues.title,
       currentPrice: parseFloat(formValues.currentPrice),
       estimatedPrice: parseFloat(formValues.estimatedPrice),
-      startTime: formValues.startTime,
-      endTime: formValues.endTime
+      startTime: moment(formValues.startTime).toISOString(),
+      endTime: moment(formValues.endTime).toISOString()
     };
 
     if (formValues.description) {
@@ -121,6 +121,7 @@ const LotsEdit: React.FC<Props> = props => {
             type="text"
             component="input"
             placeholder="title"
+            autoComplete="off"
           />
 
           <Field
@@ -128,6 +129,7 @@ const LotsEdit: React.FC<Props> = props => {
             type="text"
             component="input"
             placeholder="currentPrice"
+            autoComplete="off"
           />
 
           <Field
@@ -135,11 +137,20 @@ const LotsEdit: React.FC<Props> = props => {
             type="text"
             component="input"
             placeholder="estimatedPrice"
+            autoComplete="off"
           />
 
-          <Field name="startTime" component={CustomDatePicker} />
+          <Field
+            name="startTime"
+            type="text"
+            component={CustomDatePicker}
+          />
 
-          <Field name="endTime" component={CustomDatePicker} />
+          <Field
+            name="endTime"
+            type="text"
+            component={CustomDatePicker}
+          />
 
           <Field
             name="description"
