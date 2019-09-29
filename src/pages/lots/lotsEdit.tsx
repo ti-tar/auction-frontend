@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { Field, reduxForm, change } from "redux-form";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
-import moment from 'moment';
+import moment from "moment";
 import axios from "axios";
 // actions
 import * as lotsActions from "../../domain/lots/actions";
@@ -140,17 +140,9 @@ const LotsEdit: React.FC<Props> = props => {
             autoComplete="off"
           />
 
-          <Field
-            name="startTime"
-            type="text"
-            component={CustomDatePicker}
-          />
+          <Field name="startTime" type="text" component={CustomDatePicker} />
 
-          <Field
-            name="endTime"
-            type="text"
-            component={CustomDatePicker}
-          />
+          <Field name="endTime" type="text" component={CustomDatePicker} />
 
           <Field
             name="description"

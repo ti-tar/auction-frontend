@@ -4,4 +4,5 @@ export default interface LotsReducerInterface {
   resources: LotInterface[] | [];
   resource?: LotInterface | {};
   isLoading: boolean;
+  meta: {},
 }

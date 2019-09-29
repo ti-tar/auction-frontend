@@ -16,8 +16,11 @@ interface Props {
   };
 }
 
-const CustomDatePicker: React.FC<Props> = (props) => {
-  const { input, meta: { touched, error } } = props;
+const CustomDatePicker: React.FC<Props> = props => {
+  const {
+    input,
+    meta: { touched, error }
+  } = props;
 
   const [startDate, setStartDate] = useState(new Date());
 
@@ -28,8 +31,8 @@ const CustomDatePicker: React.FC<Props> = (props) => {
         selected={startDate}
         showTimeSelect
         onChange={(date: Date) => {
-          input.onChange(moment(date).format('YYYY-MM-DD hh:mm:ss'));
-          setStartDate(date)
+          input.onChange(moment(date).format("YYYY-MM-DD hh:mm:ss"));
+          setStartDate(date);
         }}
         autoComplete="off"
         timeIntervals={5}
@@ -37,6 +40,6 @@ const CustomDatePicker: React.FC<Props> = (props) => {
       {touched && error && <span>{error}</span>}
     </div>
   );
-}
+};
 
 export default CustomDatePicker;
