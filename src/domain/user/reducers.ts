@@ -1,6 +1,6 @@
 import * as userActions from "./actions";
 
-declare type UserInitialState = {
+export interface UserStateInterface {
   id: number;
   email: string;
   firstName: string;
@@ -8,7 +8,7 @@ declare type UserInitialState = {
   isLoading: boolean;
 };
 
-export const userInitialState: UserInitialState = {
+export const userInitialState: UserStateInterface = {
   id: 0,
   email: "",
   firstName: "",

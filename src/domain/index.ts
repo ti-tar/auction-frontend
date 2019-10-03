@@ -1,30 +1,25 @@
-import { combineReducers, createStore, applyMiddleware, compose } from "redux";
+import { combineReducers, createStore, applyMiddleware, compose, ReducersMapObject } from "redux";
 import createSagaMiddleware from "redux-saga";
 
 // reducers
 import {
   reducer as domainLotsReducers,
-  lotsInitialState
+  lotsInitialState,
+  LotsStateInterface
 } from "./lots/reducers";
 import {
   reducer as domainUsersReducers,
-  userInitialState
+  userInitialState,
+  UserStateInterface
 } from "./user/reducers";
 import {
   reducer as domainBidsReducers,
-  bidsInitialState
+  bidsInitialState,
+  BidsStateInterface
 } from "./bids/reducers";
 
 // redux-form
 import { reducer as ReduxFormReducers } from "redux-form";
-
-// auth action
-const rootReducers = {
-  ...domainLotsReducers,
-  ...domainUsersReducers,
-  ...domainBidsReducers,
-  form: ReduxFormReducers
-};
 
 declare global {
   interface Window {
@@ -33,20 +28,32 @@ declare global {
   }
 }
 
-export default (): any => {
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export interface StateInterface {
+  user: UserStateInterface,
+  lots: LotsStateInterface,
+  bids: BidsStateInterface,
+}
+
+const stateInitaialValue: StateInterface = {
+  user: userInitialState,
+  lots: lotsInitialState,
+  bids: bidsInitialState
+}
+
+const reducers: ReducersMapObject = {
+  ...domainLotsReducers,
+  ...domainUsersReducers,
+  ...domainBidsReducers,
+  form: ReduxFormReducers
+};
+
+export default () => {
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const sagaMiddleware = createSagaMiddleware();
 
-  // init reducers
-  // Admin reducers and other will be added dynamically
   const store = createStore(
-    combineReducers(rootReducers),
-    {
-      lots: lotsInitialState,
-      user: userInitialState,
-      bids: bidsInitialState
-    },
+    combineReducers(reducers),
+    stateInitaialValue,
     composeEnhancers(applyMiddleware(sagaMiddleware))
   );
 

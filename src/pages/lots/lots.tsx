@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { RouteComponentProps } from 'react-router-dom';
 
 // actions
 import * as lotsActions from "../../domain/lots/actions";
 
 // interface
 import LotInterface from "../../interfaces/lot";
-import lotsReducerInterface from "../../interfaces/lotsReducer";
-import userReducerInterface from "../../interfaces/userReducer";
 
 import "./styles/lotsStyles.scss";
 
@@ -21,11 +20,13 @@ interface Props {
   match: any;
 }
 
-const Lots: React.FunctionComponent<Props> = props => {
+const Lots: React.FunctionComponent<Props & RouteComponentProps> = props => {
   const {
     match: { url },
     userId,
-    fetchLots
+    fetchLots,
+    isLoading, 
+    lots,
   } = props;
 
   const getFilter = (url: string) => {
@@ -45,9 +46,7 @@ const Lots: React.FunctionComponent<Props> = props => {
 
   return (
     <section className="lots">
-      {!props.isLoading &&
-        props.lots.length > 0 &&
-        props.lots.map((lot: LotInterface) => (
+      {!isLoading && lots.length > 0 && lots.map((lot: LotInterface) => (
           <div className="lot" key={`${lot.id} ${lot.title}`}>
             <div className="lot__img">
               {userId === lot.user.id && (
@@ -109,8 +108,8 @@ const Lots: React.FunctionComponent<Props> = props => {
   );
 };
 
-export default connect(
-  (state: { lots: lotsReducerInterface; user: userReducerInterface }) => ({
+export default connect<React.FC<Props> & any>(
+  (state: any) => ({
     userId: state.user.id,
     lots: state.lots.resources,
     isLoading: state.lots.isLoading

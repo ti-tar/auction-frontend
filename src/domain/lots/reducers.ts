@@ -1,10 +1,26 @@
 import reducerActionInterface from "./../../interfaces/reducerAction";
 import * as lotsActions from "./actions";
+import LotInterface from "../../interfaces/lot";
 
-export const lotsInitialState = {
+export interface LotsStateInterface {
+  resources: LotInterface[] | [];
+  resource: LotInterface | {};
+  meta: {
+    page: number,
+    perPage: number,
+    total: number,
+  },
+  isLoading: boolean;
+}
+
+export const lotsInitialState:LotsStateInterface = {
   resources: [],
   resource: {},
-  meta: {},
+  meta: {
+    page: 1,
+    perPage: 1,
+    total: 0
+  },
   isLoading: false
 };
 

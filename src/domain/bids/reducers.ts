@@ -1,9 +1,22 @@
 import reducerActionInterface from "./../../interfaces/reducerAction";
 import * as bidsActions from "./actions";
+import BidsInterface from "../../interfaces/bid";
 
-export const bidsInitialState: any = {
+export interface BidsStateInterface {
+  resources: BidsInterface[] | [],
+  meta: {
+    page: number,
+    perPage: number,
+    total: number,
+  },
+  isLoading: boolean
+}
+
+export const bidsInitialState: BidsStateInterface = {
   resources: [],
   meta: {
+    page: 1,
+    perPage: 10,
     total: 0
   },
   isLoading: false
@@ -12,10 +25,7 @@ export const bidsInitialState: any = {
 export const reducer = {
   bids(bidsState = bidsInitialState, action: reducerActionInterface) {
     const { type, payload } = action;
-
     switch (type) {
-      //  fetch all Lots
-
       case bidsActions.fetchBids.request: {
         return {
           ...bidsState,
@@ -27,7 +37,6 @@ export const reducer = {
           return {
             ...bidsState,
             resources: [...payload.resources],
-            meta: payload.meta,
             isLoading: false
           };
         }
