@@ -4,7 +4,7 @@ import LotInterface from "../../interfaces/lot";
 
 export interface LotsStateInterface {
   resources: LotInterface[];
-  resource: LotInterface | {};
+  resource: LotInterface;
   meta: {
     page: number,
     perPage: number,
@@ -15,7 +15,19 @@ export interface LotsStateInterface {
 
 export const lotsInitialState:LotsStateInterface = {
   resources: [],
-  resource: {},
+  resource: {
+    id: 0,
+    title: '',
+    image: '',
+    description: '',
+    status: '',
+    createAt: '',
+    currentPrice: 0,
+    estimatedPrice: 0,
+    startTime: '',
+    endTime: '',
+    user: null,
+  },
   meta: {
     page: 1,
     perPage: 1,

@@ -84,4 +84,76 @@
 
     }
   }
+  
+  .lotBids {
+    background-color: #F2F2F2;
+    h2 {
+      padding: 15px 0 0 0;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 24px;
+      line-height: 28px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .table {
+      max-width: 600px;
+      margin: 2em auto;
+      .row {
+        display: flex;
+        background-color: #FFFFFF; 
+        align-items: stretch;
+        justify-content: space-between;
+        font-size: 13px;
+        line-height: 18px;
+        
+        &:nth-child(2n+1) {
+          background-color: #EAECED; 
+        }
+
+        &.head {
+          background: #6B757F;
+          .id, .customer, .proposition, .time {
+            color: #EEEEEE;
+            text-transform: uppercase;
+            font-weight: bold;
+          }
+        }
+
+        .id, .customer, .proposition, .time {
+          text-align: center;
+          padding: 10px;
+          border-right: 1px white solid;
+          border-left: 1px white solid;
+        } 
+        .id {
+          flex: 0 0 20px;
+        }
+        .customer {
+          flex: 1 0 50px;
+        }
+        .proposition {
+          flex: 1 0 50px;
+        }
+        .time {
+          flex: 1 0 50px;
+        }
+      }
+    }
+
+    .total {
+      padding: 10px;
+
+      text-align: right; 
+      background: #EAECED;
+      color: #2F3438;
+      border: 1px solid #DEE1E3;
+    
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
 }

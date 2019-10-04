@@ -3,7 +3,7 @@ import * as bidsActions from "./actions";
 import BidsInterface from "../../interfaces/bid";
 
 export interface BidsStateInterface {
-  resources: BidsInterface[] | [],
+  resources: BidsInterface[],
   meta: {
     page: number,
     perPage: number,
@@ -37,6 +37,7 @@ export const reducer = {
           return {
             ...bidsState,
             resources: [...payload.resources],
+            meta: payload.meta,
             isLoading: false
           };
         }
