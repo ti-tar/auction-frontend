@@ -1,16 +1,13 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { RouteComponentProps } from 'react-router-dom';
-
-// actions
 import * as lotsActions from "../../domain/lots/actions";
-
-// interface
 import LotInterface from "../../interfaces/lot";
 
 import "./styles/lotsStyles.scss";
+import { StateInterface } from "../../domain";
 
 interface Props {
   lots: LotInterface[];
@@ -20,14 +17,16 @@ interface Props {
   match: any;
 }
 
-const Lots: React.FunctionComponent<Props & RouteComponentProps> = props => {
-  const {
-    match: { url },
-    userId,
-    fetchLots,
-    isLoading, 
-    lots,
-  } = props;
+const Lots: React.FunctionComponent<any & RouteComponentProps> = props => {
+  const { match: { url }} = props;
+
+  const lots = useSelector((state: StateInterface) => state.lots.resources);
+  const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);
+  const userId = useSelector((state: StateInterface) => state.user.id);
+
+  console.log(lots);
+
+  const dispatch = useDispatch();
 
   const getFilter = (url: string) => {
     switch (url) {
@@ -41,12 +40,12 @@ const Lots: React.FunctionComponent<Props & RouteComponentProps> = props => {
   };
 
   useEffect(() => {
-    fetchLots({ filter: getFilter(url) });
-  }, [fetchLots, url]);
+    dispatch({ type: lotsActions.fetchLots.request, payload: { filter: getFilter(url) } });
+  }, [dispatch, url]);
 
   return (
     <section className="lots">
-      {!isLoading && lots.length > 0 && lots.map((lot: LotInterface) => (
+      {!isLoading && !!lots && lots.map((lot) => (
           <div className="lot" key={`${lot.id} ${lot.title}`}>
             <div className="lot__img">
               {userId === lot.user.id && (
@@ -60,13 +59,12 @@ const Lots: React.FunctionComponent<Props & RouteComponentProps> = props => {
               </div>
             </div>
             <div className="lot__product">
-              <h3>
-                <Link to={{ pathname: `/lots/${lot.id}` }}>{lot.title}</Link>
-              </h3>
+              <h3><Link to={{ pathname: `/lots/${lot.id}` }}>{lot.title}</Link></h3>
               <p>{lot.description}</p>
 
               <p>
-                <u>Status:</u> {lot.status}
+                <u>Status:</u>
+                {lot.status}
               </p>
 
               <p>
@@ -101,23 +99,11 @@ const Lots: React.FunctionComponent<Props & RouteComponentProps> = props => {
           </div>
         ))}
 
-      {!props.isLoading && props.lots.length === 0 && (
+      {!isLoading && lots.length === 0 && (
         <h1> you have no lots yet</h1>
       )}
     </section>
   );
 };
 
-export default connect<React.FC<Props> & any>(
-  (state: any) => ({
-    userId: state.user.id,
-    lots: state.lots.resources,
-    isLoading: state.lots.isLoading
-  }),
-  {
-    fetchLots: (data: any): any => ({
-      type: lotsActions.fetchLots.request,
-      payload: { filter: data.filter }
-    })
-  }
-)(Lots);
+export default Lots;

@@ -59,3 +59,4 @@ export default () => {
 
   return { ...store, runSaga: sagaMiddleware.run };
 };
+

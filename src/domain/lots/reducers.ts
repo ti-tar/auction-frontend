@@ -3,7 +3,7 @@ import * as lotsActions from "./actions";
 import LotInterface from "../../interfaces/lot";
 
 export interface LotsStateInterface {
-  resources: LotInterface[] | [];
+  resources: LotInterface[];
   resource: LotInterface | {};
   meta: {
     page: number,
