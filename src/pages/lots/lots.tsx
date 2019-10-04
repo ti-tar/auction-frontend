@@ -4,27 +4,15 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { RouteComponentProps } from 'react-router-dom';
 import * as lotsActions from "../../domain/lots/actions";
-import LotInterface from "../../interfaces/lot";
-
-import "./styles/lotsStyles.scss";
 import { StateInterface } from "../../domain";
+import "./styles/lotsStyles.scss";
 
-interface Props {
-  lots: LotInterface[];
-  userId: number;
-  isLoading: boolean;
-  fetchLots: Function;
-  match: any;
-}
-
-const Lots: React.FunctionComponent<any & RouteComponentProps> = props => {
+const Lots: React.FunctionComponent<RouteComponentProps> = props => {
   const { match: { url }} = props;
 
   const lots = useSelector((state: StateInterface) => state.lots.resources);
   const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);
   const userId = useSelector((state: StateInterface) => state.user.id);
-
-  console.log(lots);
 
   const dispatch = useDispatch();
 
