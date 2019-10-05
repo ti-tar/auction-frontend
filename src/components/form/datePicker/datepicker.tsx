@@ -26,13 +26,14 @@ const CustomDatePicker: React.FC<Props> = (props) => {
       <DatePicker
         {...input}
         selected={startDate}
-        showTimeSelect
         onChange={(date: Date) => {
-          input.onChange(moment(date).format('YYYY-MM-DD hh:mm:ss'));
+          input.onChange(moment(date).format('YYYY-MM-DD HH:mm:ss'));
           setStartDate(date)
         }}
+        dateFormat="YYYY-MM-DD HH:mm:ss"
         autoComplete="off"
-        timeIntervals={5}
+        showTimeInput
+        timeInputLabel="Time:"
       />
       {touched && error && <span>{error}</span>}
     </div>
