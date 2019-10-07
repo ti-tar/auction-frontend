@@ -24,7 +24,6 @@ export const lotsInitialState:LotsStateInterface = {
     createAt: '',
     currentPrice: 0,
     estimatedPrice: 0,
-    startTime: '',
     endTime: '',
     user: null,
   },

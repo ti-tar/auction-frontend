@@ -33,6 +33,10 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
     dispatch({ type: bitsActions.fetchBids.request, payload: { lotId } });
   }, [dispatch, lotId]);
 
+  const setLot = (lotId: string) => {
+    dispatch({ type: lotsActions.setLot.request, payload: { lotId }, history })
+  }
+
   const deleteLot = (lotId: string) => (
     dispatch({ type: lotsActions.deleteLot.request, payload: { lotId }, history })
   )
@@ -52,46 +56,49 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
             </div>
           </div>
           <div className="lot__product">
-            <h3>{lot.title}</h3>
-            <p>{lot.description}</p>
+            <h3>{lot.title} ({lot.status})</h3>
             <p>
-              <u>Status:</u> {lot.status}
+              <h6>Description:</h6>
+              {lot.description}
             </p>
 
             {!!lot.user && (
               <p>
-                <u>Owner:</u>
-                <br />
-                {lot.user.firstName}
-                <br />
-                {lot.user.email}
-                <br />
+                <h6>Owner:</h6>
+                {lot.user.firstName}, {lot.user.email}
               </p>
             )}
           </div>
           <div className="lot__info">
-            <div>
-              <span>Current Price: </span> <span>${lot.currentPrice}</span>
-            </div>
-            <div>
-              <span>Estimated Price: </span> <span>${lot.estimatedPrice}</span>
-            </div>
-            <div>
-              <span>Start Time</span>
-              <span>
-                {moment(lot.startTime).format("DD MMM YYYY, hh:mm:ss")}
-              </span>
-            </div>
-            <div>
-              <span>End Time</span>
-              <span>{moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}</span>
+            <div className="lot__details">
+              <div>
+                <span>Current Price: </span> <span>${lot.currentPrice}</span>
+              </div>
+              <div>
+                <span>Estimated Price: </span> <span>${lot.estimatedPrice}</span>
+              </div>
+              <div>
+                <span>End Time</span>
+                <span>{moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}</span>
+              </div>
             </div>
 
             {!isLoading && !!lot && lot.id && userId === lot.user.id ? (
-              !isLoading &&
-              !!lot.user &&
-              userId === lot.user.id && (
-                <>
+              !isLoading && !!lot.user && userId === lot.user.id && lot.status === 'pending' && (
+                <div className="lot_options">
+                  <small>
+                    You may change or deledte lot, lot is not proccessed until you push "Set the lot" button. After that you won't change anything.
+                  </small>
+                  <button
+                    className="lot_options_set_lot_button"
+                    onClick={() => {
+                      if (window.confirm(`Set Lot to Auction? You won't be able to edit or delete it`)) {
+                        setLot(lotId);
+                      }
+                    }}
+                  >
+                    Set the lot
+                  </button>
                   <Link
                     className="lot_options_edit_lot_button"
                     to={{ pathname: `/lots/${lot.id}/edit` }}
@@ -112,7 +119,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                   >
                     Delete a lot
                   </button>
-                </>
+                </div>
               )
             ) : (
               <Link

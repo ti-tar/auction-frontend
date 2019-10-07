@@ -49,15 +49,29 @@
 
         .lot__product {
             flex-grow: 1;
+
+            h6 {
+                margin-bottom: 5px;
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 16px;
+            }
         }
 
         .lot__info {
             flex: 0 0 270px;
             margin: 5px;
-
+            
             div {
                 display: flex;
                 justify-content: space-between;
+
+                span {
+                    font-size: 18px;
+                    line-height: 21px;
+                }
             }
         }
     }

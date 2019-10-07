@@ -4,6 +4,5 @@ export default interface LotCreateInterface {
   description?: string;
   currentPrice: number;
   estimatedPrice: number;
-  startTime: string;
   endTime: string;
 }

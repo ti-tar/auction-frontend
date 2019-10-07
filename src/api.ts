@@ -45,6 +45,7 @@ export default {
   updateLot: ({ updatedLot, lotId }: any) =>
     httpClient.put(`${prefix}/lots/${lotId}`, updatedLot),
   deleteLot: (lotId: string) => httpClient.delete(`${prefix}/lots/${lotId}`),
+  setLot: (lotId: string) => httpClient.put(`${prefix}/lots/${lotId}/set`),
 
   // bids
   fetchBids: ({ lotId }: { lotId: number }) =>

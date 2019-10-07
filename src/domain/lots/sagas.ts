@@ -119,3 +119,19 @@ export function* deleteLot(action: any) {
     });
   }
 }
+
+export function* setLot(action: any) {
+  const { lotId } = action.payload;
+
+  try {
+    yield call(Api.setLot, lotId);
+    toast("Lot successfully set to auction!", "success");
+    action.history.push(`/lots`);
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: lotsActions.deleteLot.failure,
+      payload: errors
+    });
+  }
+}

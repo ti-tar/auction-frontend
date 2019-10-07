@@ -47,21 +47,14 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
               </div>
             </div>
             <div className="lot__product">
-              <h3><Link to={{ pathname: `/lots/${lot.id}` }}>{lot.title}</Link></h3>
-              <p>{lot.description}</p>
-
+              <h3><Link to={{ pathname: `/lots/${lot.id}` }}>{lot.title} ({lot.status}) </Link></h3>
               <p>
-                <u>Status:</u>
-                {lot.status}
+                <h6>Description:</h6>
+                {lot.description}
               </p>
-
               <p>
-                <u>Owner:</u>
-                <br />
-                {lot.user.firstName}
-                <br />
-                {lot.user.email}
-                <br />
+                <h6>Owner:</h6>
+                {lot.user.firstName}, {lot.user.email}
               </p>
             </div>
             <div className="lot__info">
@@ -72,12 +65,6 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
               <div>
                 <span>Estimated Price</span>
                 <span>{lot.estimatedPrice} $</span>
-              </div>
-              <div>
-                <span>Start Time</span>
-                <span>
-                  {moment(lot.startTime).format("DD MMM YY, hh:mm:ss")}
-                </span>
               </div>
               <div>
                 <span>End Time</span>

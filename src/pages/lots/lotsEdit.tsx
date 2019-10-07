@@ -59,7 +59,6 @@ const LotsEdit: React.FC<Props> = props => {
       !formValues.title ||
       !formValues.currentPrice ||
       !formValues.estimatedPrice ||
-      !formValues.startTime ||
       !formValues.endTime
     ) {
       toast.error("fill all fields");
@@ -70,7 +69,6 @@ const LotsEdit: React.FC<Props> = props => {
       title: formValues.title,
       currentPrice: parseFloat(formValues.currentPrice),
       estimatedPrice: parseFloat(formValues.estimatedPrice),
-      startTime: moment(formValues.startTime).toISOString(),
       endTime: moment(formValues.endTime).toISOString()
     };
 
@@ -138,12 +136,6 @@ const LotsEdit: React.FC<Props> = props => {
             component="input"
             placeholder="estimatedPrice"
             autoComplete="off"
-          />
-
-          <Field
-            name="startTime"
-            type="text"
-            component={CustomDatePicker}
           />
 
           <Field

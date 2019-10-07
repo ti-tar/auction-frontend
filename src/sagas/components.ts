@@ -6,7 +6,8 @@ import {
   fetchLot,
   createNewLot,
   updateLot,
-  deleteLot
+  deleteLot,
+  setLot
 } from "../domain/lots/sagas";
 import * as lotsActions from "../domain/lots/actions";
 
@@ -34,6 +35,7 @@ export function* components() {
   yield takeEvery(lotsActions.createNewLot.request, createNewLot);
   yield takeEvery(lotsActions.updateLot.request, updateLot);
   yield takeEvery(lotsActions.deleteLot.request, deleteLot);
+  yield takeEvery(lotsActions.setLot.request, setLot);
 
   // user
   yield takeEvery(userActions.fetchProfile.request, fetchProfile);
