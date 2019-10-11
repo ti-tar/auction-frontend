@@ -57,16 +57,16 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
           </div>
           <div className="lot__product">
             <h3>{lot.title} ({lot.status})</h3>
-            <p>
+            <>
               <h6>Description:</h6>
-              {lot.description}
-            </p>
+              <p>{lot.description}</p>
+            </>
 
             {!!lot.user && (
-              <p>
+              <>
                 <h6>Owner:</h6>
-                {lot.user.firstName}, {lot.user.email}
-              </p>
+                <p>{lot.user.firstName}, {lot.user.email}</p>
+              </>
             )}
           </div>
           <div className="lot__info">
@@ -122,12 +122,14 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                 </div>
               )
             ) : (
-              <Link
-                className="lot_options_make_bid_button"
-                to={{ pathname: `/lots/${lot.id}/make_bid` }}
-              >
-                Make a bid
-              </Link>
+              <div className="lot_options">
+                <Link
+                  className="lot_options_make_bid_button"
+                  to={{ pathname: `/lots/${lot.id}/make_bid` }}
+                >
+                  Make a bid
+                </Link>
+              </div>
             )}
           </div>
         </div>

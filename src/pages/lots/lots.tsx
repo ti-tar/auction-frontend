@@ -3,14 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { RouteComponentProps } from 'react-router-dom';
+import Paginate from 'react-paginate';
+import qs from 'qs';
 import * as lotsActions from "../../domain/lots/actions";
 import { StateInterface } from "../../domain";
 import "./styles/lotsStyles.scss";
 
 const Lots: React.FunctionComponent<RouteComponentProps> = props => {
-  const { match: { url }} = props;
+  const { match: { url }, match, history, location: { search }} = props;
+  const queryString = search.startsWith('?') ? search.slice(1) : search;
+  const { page = 1 } = qs.parse(queryString);
+  
+  console.log(match);
 
   const lots = useSelector((state: StateInterface) => state.lots.resources);
+  const { total, perPage } = useSelector((state: StateInterface) => state.lots.meta);
   const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);
   const userId = useSelector((state: StateInterface) => state.user.id);
 
@@ -22,14 +29,20 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
         return "ownLots";
       case "/lots/own/bids":
         return "ownBids";
+      case "/lots":
+        return "all";
       default:
         return "all";
     }
   };
 
   useEffect(() => {
-    dispatch({ type: lotsActions.fetchLots.request, payload: { filter: getFilter(url) } });
-  }, [dispatch, url]);
+    dispatch({ type: lotsActions.fetchLots.request, payload: { filter: getFilter(url), page } });
+  }, [dispatch, url, page]);
+
+  const handlePageClick = (data: {selected: number}) => {
+    history.push({ pathname: url, search: data.selected ? `?page=${data.selected + 1}` : '',})
+  };
 
   return (
     <section className="lots">
@@ -48,14 +61,10 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
             </div>
             <div className="lot__product">
               <h3><Link to={{ pathname: `/lots/${lot.id}` }}>{lot.title} ({lot.status}) </Link></h3>
-              <p>
-                <h6>Description:</h6>
-                {lot.description}
-              </p>
-              <p>
-                <h6>Owner:</h6>
-                {lot.user.firstName}, {lot.user.email}
-              </p>
+              <h6>Description:</h6>
+              <p>{lot.description}</p>
+              <h6>Owner:</h6>
+              <p>{lot.user.firstName}, {lot.user.email}</p>
             </div>
             <div className="lot__info">
               <div>
@@ -73,6 +82,19 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
             </div>
           </div>
         ))}
+
+      {!!lots && total > lots.length  && (
+        <div className={'pagination'}>
+          <Paginate
+            pageCount={Math.ceil(total/perPage)}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            breakLabel={'...'}
+            initialPage={page-1}
+          />
+        </div>
+      )}
 
       {!isLoading && lots.length === 0 && (
         <h1> you have no lots yet</h1>

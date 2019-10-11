@@ -36,9 +36,9 @@ const prefix = "/api";
 
 export default {
   // lots
-  fetchLots: () => httpClient.get(`${prefix}/lots`),
-  fetchOwnLots: () => httpClient.get(`${prefix}/lots/own/lots`),
-  fetchLotsWithBids: () => httpClient.get(`${prefix}/lots/own/bids`),
+  fetchLots: ({page}: {page: number}) => httpClient.get(`${prefix}/lots?page=${page}`),
+  fetchOwnLots: ({page}: {page: number}) => httpClient.get(`${prefix}/lots/own/lots?page=${page}`),
+  fetchLotsWithBids: ({page}: {page: number}) => httpClient.get(`${prefix}/lots/own/bids?page=${page}`),
   fetchLot: ({ lotId }: any) => httpClient.get(`${prefix}/lots/${lotId}`),
   createNewLot: (newLot: LotCreateInterface) =>
     httpClient.post(`${prefix}/lots`, newLot),

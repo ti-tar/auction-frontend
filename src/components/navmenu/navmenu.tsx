@@ -1,61 +1,87 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { compose } from "redux";
-import { connect } from "react-redux";
-
-// actions
+import React, { useState, useRef, useEffect } from "react";
+import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import * as userActions from "../../domain/user/actions";
+import { StateInterface } from "../../domain";
+import "./navmenuStyles.scss";
 
-import "./navmenuStyles.css";
+const useSideClick = (toggleBtnRef: any, setIsOpen: any) => {
+  useEffect(() => {
+    const outsideClick = (e: any) => {
+      if (toggleBtnRef.current && !toggleBtnRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("click", outsideClick);
+    return () => {
+      window.removeEventListener("click", outsideClick);
+    };
+  }, [setIsOpen, toggleBtnRef]);
+};
 
-interface Props {
-  token?: string;
-  firstName?: string;
-  logout: any;
+const MenuBtn = (props:any) => {
+  const toggleBtnRef = useRef(null);
+  useSideClick(toggleBtnRef, props.setIsOpen);
+  return (
+    <div className="toggleDropDownBtn" ref={toggleBtnRef} onClick={props.toggleDropDown}>&#9776;</div>
+  );
 }
 
-const NavMenu: React.FC<Props> = props => {
-  const { token: isAuthenticated, firstName, logout } = props;
+const NavMenu: React.FC<RouteComponentProps> = props => {
+  const { history } = props;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropDown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const firstName = useSelector(
+    (state: StateInterface) => state.user.firstName
+  );
+  const token = useSelector((state: StateInterface) => state.user.token);
+  const dispatch = useDispatch();
+  const logout = () => dispatch({ type: userActions.logout.request, history });
+
 
   return (
     <header className={"NavMenu"}>
-      <Link to={{ pathname: "/" }} className={"logo"}>
-        Auction Marketplace
-      </Link>
+      <NavLink to={{ pathname: "/" }} className={"logo"}>
+        Auction Marketplace   {!!token ? `(User: ${firstName})` : ''}
+      </NavLink>
 
-      <ul className={"buttons"}>
-        {!!isAuthenticated ? (
+      <MenuBtn
+        toggleDropDown={toggleDropDown}
+        setIsOpen={setIsOpen}
+       />
+
+      <ul className={`buttons ${!isOpen || "opened"}`}>
+        {!!token ? (
           <>
-            <li>hello, {firstName}</li>
             <li>
-              <Link to={{ pathname: "/lots/create" }}>Create Lot</Link>
+              <NavLink to={{ pathname: "/lots/create" }}>Create Lot</NavLink>
             </li>
             <li>
-              <Link to={{ pathname: "/lots" }}>All Lots</Link>
+              <NavLink to={{ pathname: "/lots" }} exact>All Lots</NavLink>
             </li>
             <li>
-              <Link to={{ pathname: "/lots/own/lots" }}>My Lots</Link>
+              <NavLink to={{ pathname: "/lots/own/lots" }}>My Lots</NavLink>
             </li>
             <li>
-              <Link to={{ pathname: "/lots/own/bids" }}>Lots My Bids</Link>
+              <NavLink to={{ pathname: "/lots/own/bids" }}>
+                Lots My Bids
+              </NavLink>
             </li>
             <li>
-              <button
-                onClick={() => {
-                  logout();
-                }}
-              >
-                Log out
-              </button>
+              <button onClick={logout}>Log out</button>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link to={{ pathname: "/auth/signup" }}>Sign Up</Link>
+              <NavLink to={{ pathname: "/auth/signup" }}>Sign Up</NavLink>
             </li>
             <li>
-              <Link to={{ pathname: "/auth/login" }}>Login</Link>
+              <NavLink to={{ pathname: "/auth/login" }}>Login</NavLink>
             </li>
           </>
         )}
@@ -64,17 +90,4 @@ const NavMenu: React.FC<Props> = props => {
   );
 };
 
-export default compose(
-  connect(
-    (state: any): { token: string; firstName: string | undefined } => ({
-      firstName: state.user.firstName,
-      token: state.user.token
-    }),
-    {
-      logout: (history: Function) => ({
-        type: userActions.logout.request,
-        history
-      })
-    }
-  )
-)(NavMenu);
+export default withRouter(NavMenu);

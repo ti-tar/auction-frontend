@@ -4,7 +4,7 @@ import * as lotsActions from "../../domain/lots/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
 
 export function* fetchLots({ payload }: any) {
-  const { filter } = payload;
+  const { filter, page } = payload;
 
   function getHandler(filter: string): any {
     switch (filter) {
@@ -20,7 +20,7 @@ export function* fetchLots({ payload }: any) {
   const ApiHandler = getHandler(filter);
 
   try {
-    const { data } = yield call(ApiHandler);
+    const { data } = yield call(ApiHandler, {page});
 
     yield put({
       type: lotsActions.fetchLots.success,

@@ -88,8 +88,8 @@ export function* makeLogout(action: any) {
   yield put({
     type: usersActions.logout.success
   });
-
-  window.location.href = "/";
+  
+  action.history.push('/');
 }
 
 export function* sendVerifyEmail({ payload, history }: any): any {

@@ -1,37 +1,34 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-// actions
-import * as userActions from "./domain/user/actions";
-// csd
-import "./App.css";
-// pages
-import Main from "./pages/main";
+import { Switch, Route } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 
+import Main from "./pages/main";
 import ForgotPassword from "./pages/auth/forgotPassword";
 import ResetPassword from "./pages/auth/resetPassword";
 import VerifyEmail from "./pages/auth/verifyEmail";
 import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import SignUpSuccess from "./pages/auth/signupSuccess";
-
 import Lots from "./pages/lots/lots";
 import LotsEdit from "./pages/lots/lotsEdit";
 import LotsDetails from "./pages/lots/lotDetails";
-
 import BidCreate from "./pages/bids/bidCreate";
 
-// declare toasts
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // components
 import NanMenu from "./components/navmenu/navmenu";
 import SocketIO from "./components/socketio/socketIO";
-import { Switch, Route } from "react-router-dom";
 import { getStorageItem } from "./libs/storage";
 
-const App: React.FC = (props: any) => {
-  const { setUserFromLocalStorage } = props;
+import * as userActions from "./domain/user/actions";
+import "./App.css";
+
+
+const App: React.FC = () => {
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const id = parseInt(getStorageItem("id"), 10);
@@ -40,9 +37,12 @@ const App: React.FC = (props: any) => {
     const firstName = getStorageItem("firstName");
 
     if (!!id && !!email && !!token && !!firstName) {
-      setUserFromLocalStorage({ id, email, token, firstName });
+      dispatch({
+        type: userActions.setUserFromLocalStorage.request,
+        payload: { id, email, token, firstName }
+      })
     }
-  }, [setUserFromLocalStorage]);
+  }, [dispatch]);
 
   return (
     <div className="App">
@@ -74,12 +74,4 @@ const App: React.FC = (props: any) => {
   );
 };
 
-export default connect(
-  null,
-  {
-    setUserFromLocalStorage: (userLocalStorage: any) => ({
-      type: userActions.setUserFromLocalStorage.request,
-      payload: userLocalStorage
-    }) // direct to reducer
-  }
-)(App);
+export default App;
