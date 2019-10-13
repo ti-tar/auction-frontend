@@ -10,12 +10,10 @@ import { StateInterface } from "../../domain";
 import "./styles/lotsStyles.scss";
 
 const Lots: React.FunctionComponent<RouteComponentProps> = props => {
-  const { match: { url }, match, history, location: { search }} = props;
+  const { match: { url }, history, location: { search }} = props;
   const queryString = search.startsWith('?') ? search.slice(1) : search;
   const { page = 1 } = qs.parse(queryString);
   
-  console.log(match);
-
   const lots = useSelector((state: StateInterface) => state.lots.resources);
   const { total, perPage } = useSelector((state: StateInterface) => state.lots.meta);
   const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);

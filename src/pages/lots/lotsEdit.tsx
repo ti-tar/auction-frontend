@@ -98,9 +98,9 @@ const LotsEdit: React.FC<Props> = props => {
       .then(response => {
         // then print response status
 
-        if (response && response.data && response.data.fileName) {
-          changeFormValue(response.data.fileName);
-          setImage(response.data.fileName);
+        if (response && response.data && response.data.file && response.data.file.fileName) {
+          changeFormValue(response.data.file.fileName);
+          setImage(response.data.file.fileName);
         }
       })
       .catch(err => {

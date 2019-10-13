@@ -2,29 +2,42 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "./socketIOStyles.scss";
 
-let socket: any;
-let setTimeoutId: any;
+interface Props {
 
-const SocketIO: React.FC<any> = props => {
-  const [respMsg, setRespMsg] = useState(false);
+}
 
-  const showRespResult = (data: any) => {
+interface WSDataResponse {
+  message: string;
+}
+
+let socket: SocketIOClient.Socket;
+let setTimeoutId: NodeJS.Timeout;
+
+const SocketIO: React.FC<Props> = () => {
+  const [respMsg, setRespMsg] = useState('');
+  const { REACT_APP_API_SOCKETIO_URL } = process.env;
+
+  const showRespResult = (data: WSDataResponse) => {
     console.log(data.message);
     setRespMsg(data.message);
     clearTimeout(setTimeoutId);
-    setTimeoutId = setTimeout(() => setRespMsg(false), 10000);
+    setTimeoutId = setTimeout(() => setRespMsg(''), 10000);
   };
 
   useEffect(() => {
-    socket = io("http://localhost:5000/");
-
+    socket = io(String(REACT_APP_API_SOCKETIO_URL) + '/lots');
+    
     socket.on("connection", () => {
       console.log("socket.io connected");
     });
 
+    socket.on("error", () => {
+      console.log("Error sended from server");
+    });
+
     socket.on("checkBrowserConnection", showRespResult);
     socket.on("bidsUpdated", showRespResult);
-  }, []);
+  }, [REACT_APP_API_SOCKETIO_URL]);
 
   const sendIOquery = () => {
     socket.emit("checkServerConnection");
@@ -35,7 +48,7 @@ const SocketIO: React.FC<any> = props => {
       socket io:
       {!!respMsg && <span className="success">{respMsg}</span>}
       <button type="button" onClick={sendIOquery}>
-        check
+        ping
       </button>
     </div>
   );
