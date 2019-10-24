@@ -3,6 +3,8 @@ import Api from "../../api";
 import * as usersActions from "../../domain/user/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
 import { setStorageItem, clearStorage } from "../../libs/storage";
+import { AuthActionType } from "../../interfaces/actionTypes";
+import { UserInterface } from "../../interfaces/user";
 
 export function* fetchProfile() {
   try {
@@ -22,25 +24,17 @@ export function* fetchProfile() {
   }
 }
 
-function setUserToLocalStorage(user: {
-  id: string;
-  email: string;
-  token: string;
-  firstName: string;
-}): void {
+function setUserToLocalStorage(user: UserInterface) {
   const { id, email, token, firstName } = user;
-
-  if (!!id && !!email && !!token && !!firstName) {
-    setStorageItem("id", id);
-    setStorageItem("token", token);
-    setStorageItem("email", email);
-    setStorageItem("firstName", firstName);
-  }
+  setStorageItem("id", id);
+  setStorageItem("token", token);
+  setStorageItem("email", email);
+  setStorageItem("firstName", firstName);
 }
 
-export function* createUser(action: any) {
+export function* createUser({ payload, history }: AuthActionType) {
   try {
-    const { data } = yield call(Api.createUser, action.payload);
+    const { data } = yield call(Api.createUser, payload);
 
     yield put({
       type: usersActions.createNewUser.success,
@@ -51,7 +45,7 @@ export function* createUser(action: any) {
 
     setUserToLocalStorage(data.resource);
 
-    action.history.push("/auth/signup/success");
+    history.push("/auth/signup/success");
   } catch (errors) {
     showAxiosErrors(errors.response.data);
     yield put({
@@ -61,9 +55,9 @@ export function* createUser(action: any) {
   }
 }
 
-export function* makeLogin(action: any) {
+export function* makeLogin({ payload, history }: AuthActionType) {
   try {
-    const { data } = yield call(Api.login, action.payload);
+    const { data } = yield call(Api.login, payload);
 
     yield put({
       type: usersActions.login.success,
@@ -72,7 +66,7 @@ export function* makeLogin(action: any) {
 
     setUserToLocalStorage(data.resource);
 
-    action.history.push("/lots");
+    history.push("/lots");
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
@@ -82,17 +76,13 @@ export function* makeLogin(action: any) {
   }
 }
 
-export function* makeLogout(action: any) {
+export function* makeLogout({ history }: AuthActionType) {
   clearStorage();
-
-  yield put({
-    type: usersActions.logout.success
-  });
-  
-  action.history.push('/');
+  yield put({ type: usersActions.logout.success });
+  history.push("/");
 }
 
-export function* sendVerifyEmail({ payload, history }: any): any {
+export function* sendVerifyEmail({ payload, history }: AuthActionType) {
   try {
     const { data } = yield call(Api.verifyEmail, payload);
     yield put({
@@ -110,7 +100,7 @@ export function* sendVerifyEmail({ payload, history }: any): any {
   }
 }
 
-export function* sendForgotPassword({ payload, history }: any): any {
+export function* sendForgotPassword({ payload, history }: AuthActionType) {
   try {
     const { data } = yield call(Api.forgotPassword, payload);
     yield put({
@@ -127,7 +117,7 @@ export function* sendForgotPassword({ payload, history }: any): any {
   }
 }
 
-export function* sendResetPassword({ payload, history }: any): any {
+export function* sendResetPassword({ payload, history }: AuthActionType) {
   try {
     const { data } = yield call(Api.resetPassword, payload);
     yield put({

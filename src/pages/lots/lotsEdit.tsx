@@ -3,42 +3,38 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, change } from "redux-form";
 import { toast } from "react-toastify";
-import { withRouter } from "react-router-dom";
-import moment from 'moment';
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import moment from "moment";
 import axios from "axios";
-// actions
 import * as lotsActions from "../../domain/lots/actions";
-
-// components
 import CustomDatePicker from "../../components/form/datePicker/datepicker";
-
-// interfaces
 import LotCreateInterface from "../../interfaces/lotCreate";
-
-// css
-import "./styles/lotsCreateStyles.scss";
 import { getStorageItem } from "../../libs/storage";
 
+import "./styles/lotsCreateStyles.scss";
+import LotInterface from "../../interfaces/lot";
+
 type Props = React.ReactChild & {
+  match: {
+    params: { lotId: string };
+  };
   handleSubmit: Function;
-  createNewLot: Function;
+  createLot: Function;
   updateLot: Function;
-  history: Function;
-  match: any; // todo
   fetchLot: Function;
-  lot: any; // todo
-  changeFormValue: any; // todo
+  lot: LotInterface;
+  changeFormValue: Function;
 };
 
-const LotsEdit: React.FC<Props> = props => {
+const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
   const {
-    handleSubmit,
-    createNewLot,
-    updateLot,
-    history,
     match: {
       params: { lotId }
     },
+    handleSubmit,
+    createLot,
+    updateLot,
+    history,
     lot,
     fetchLot,
     changeFormValue
@@ -47,7 +43,9 @@ const LotsEdit: React.FC<Props> = props => {
   const [image, setImage] = useState();
 
   useEffect(() => {
-    fetchLot(lotId);
+    if (lotId) {
+      fetchLot(lotId);
+    }
   }, [fetchLot, lotId]);
 
   useEffect(() => {
@@ -67,8 +65,8 @@ const LotsEdit: React.FC<Props> = props => {
 
     const lotToSend: LotCreateInterface = {
       title: formValues.title,
-      currentPrice: parseFloat(formValues.currentPrice),
-      estimatedPrice: parseFloat(formValues.estimatedPrice),
+      currentPrice: formValues.currentPrice,
+      estimatedPrice: formValues.estimatedPrice,
       endTime: moment(formValues.endTime).toISOString()
     };
 
@@ -82,7 +80,7 @@ const LotsEdit: React.FC<Props> = props => {
     if (lotId) {
       updateLot(lotToSend, lotId, history);
     } else {
-      createNewLot(lotToSend, history);
+      createLot(lotToSend, history);
     }
   };
 
@@ -98,7 +96,12 @@ const LotsEdit: React.FC<Props> = props => {
       .then(response => {
         // then print response status
 
-        if (response && response.data && response.data.file && response.data.file.fileName) {
+        if (
+          response &&
+          response.data &&
+          response.data.file &&
+          response.data.file.fileName
+        ) {
           changeFormValue(response.data.file.fileName);
           setImage(response.data.file.fileName);
         }
@@ -128,6 +131,7 @@ const LotsEdit: React.FC<Props> = props => {
             component="input"
             placeholder="currentPrice"
             autoComplete="off"
+            parse={(value: string): number => parseFloat(value)}
           />
 
           <Field
@@ -136,13 +140,10 @@ const LotsEdit: React.FC<Props> = props => {
             component="input"
             placeholder="estimatedPrice"
             autoComplete="off"
+            parse={(value: string): number => parseFloat(value)}
           />
 
-          <Field
-            name="endTime"
-            type="text"
-            component={CustomDatePicker}
-          />
+          <Field name="endTime" type="text" component={CustomDatePicker} />
 
           <Field
             name="description"
@@ -195,9 +196,9 @@ const LotsEditRouteComponent: any = compose(
       };
     },
     {
-      createNewLot: (newLot: LotCreateInterface, history: Function): any => ({
-        type: lotsActions.createNewLot.request,
-        payload: newLot,
+      createLot: (newLot: LotCreateInterface, history: Function): any => ({
+        type: lotsActions.createLot.request,
+        payload: { newLot },
         history
       }),
       updateLot: (
@@ -213,7 +214,6 @@ const LotsEditRouteComponent: any = compose(
         type: lotsActions.fetchLot.request,
         payload: { lotId }
       }),
-      resetLot: (): any => ({ type: lotsActions.resetLot.request }),
       changeFormValue: (fileName: string) =>
         change("form-lots-edit", "image", fileName)
     }

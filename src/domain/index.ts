@@ -1,22 +1,34 @@
-import { combineReducers, createStore, applyMiddleware, compose, ReducersMapObject } from "redux";
+import {
+  combineReducers,
+  createStore,
+  applyMiddleware,
+  compose,
+  ReducersMapObject
+} from "redux";
 import createSagaMiddleware from "redux-saga";
 
 // reducers
 import {
-  reducer as domainLotsReducers,
   lotsInitialState,
-  LotsStateInterface
+  LotsStateInterface,
+  lotsReducers
 } from "./lots/reducers";
 import {
-  reducer as domainUsersReducers,
   userInitialState,
+  userReducer,
   UserStateInterface
 } from "./user/reducers";
 import {
-  reducer as domainBidsReducers,
   bidsInitialState,
-  BidsStateInterface
+  BidsStateInterface,
+  bidsReducers
 } from "./bids/reducers";
+
+import {
+  ordersReducers,
+  OrderState,
+  ordersInitialState
+} from "./orders/reducers";
 
 // redux-form
 import { reducer as ReduxFormReducers } from "redux-form";
@@ -29,34 +41,37 @@ declare global {
 }
 
 export interface StateInterface {
-  user: UserStateInterface,
-  lots: LotsStateInterface,
-  bids: BidsStateInterface,
+  user: UserStateInterface;
+  lots: LotsStateInterface;
+  bids: BidsStateInterface;
+  orders: OrderState;
 }
 
-const stateInitaialValue: StateInterface = {
+const stateInitialValue: StateInterface = {
   user: userInitialState,
   lots: lotsInitialState,
-  bids: bidsInitialState
-}
+  bids: bidsInitialState,
+  orders: ordersInitialState
+};
 
 const reducers: ReducersMapObject = {
-  ...domainLotsReducers,
-  ...domainUsersReducers,
-  ...domainBidsReducers,
+  lots: lotsReducers,
+  user: userReducer,
+  bids: bidsReducers,
+  orders: ordersReducers,
   form: ReduxFormReducers
 };
 
 export default () => {
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     combineReducers(reducers),
-    stateInitaialValue,
+    stateInitialValue,
     composeEnhancers(applyMiddleware(sagaMiddleware))
   );
 
   return { ...store, runSaga: sagaMiddleware.run };
 };
-

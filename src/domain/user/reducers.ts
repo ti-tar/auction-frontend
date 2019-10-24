@@ -1,12 +1,15 @@
 import * as userActions from "./actions";
 
+import { ActionType } from "../../interfaces/actionTypes";
+import { Reducer } from "redux";
+
 export interface UserStateInterface {
   id: number;
   email: string;
   firstName: string;
   token: string;
   isLoading: boolean;
-};
+}
 
 export const userInitialState: UserStateInterface = {
   id: 0,
@@ -16,110 +19,76 @@ export const userInitialState: UserStateInterface = {
   isLoading: false
 };
 
-export const reducer = {
-  user(state = userInitialState, action: any) {
-    switch (action.type) {
-      case userActions.fetchProfile.request: {
-        return { ...state };
-      }
+export const userReducer: Reducer = (
+  state: UserStateInterface,
+  { type, payload }: ActionType
+) => {
+  switch (type) {
+    case userActions.fetchProfile.request:
+      return { ...state };
 
-      // login
-      case userActions.login.request: {
-        return {
-          ...state,
-          isLoading: true
-        };
-      }
+    //
+    case userActions.login.request:
+      return { ...userInitialState, isLoading: true };
 
-      case userActions.login.success: {
-        return {
-          ...state,
-          id: action.payload.resource.id,
-          email: action.payload.resource.email,
-          firstName: action.payload.resource.firstName,
-          token: action.payload.resource.token,
-          isLoading: false
-        };
-      }
+    case userActions.login.success:
+      return {
+        id: payload.resource.id,
+        email: payload.resource.email,
+        firstName: payload.resource.firstName,
+        token: payload.resource.token,
+        isLoading: false
+      };
 
-      case userActions.login.failure: {
-        return {
-          ...state,
-          isLoading: false
-        };
-      }
+    case userActions.login.failure:
+      return { ...userInitialState, isLoading: false };
 
-      case userActions.verifyEmail.success: {
-        return {
-          ...state,
-          id: action.payload.resource.id,
-          email: action.payload.resource.email,
-          firstName: action.payload.resource.firstName,
-          token: action.payload.resource.token,
-          isLoading: false
-        };
-      }
+    case userActions.verifyEmail.success:
+      return {
+        id: payload.resource.id,
+        email: payload.resource.email,
+        firstName: payload.resource.firstName,
+        token: payload.resource.token,
+        isLoading: false
+      };
 
-      case userActions.verifyEmail.failure: {
-        return {
-          ...state,
-          isLoading: false
-        };
-      }
+    //
+    case userActions.verifyEmail.failure:
+      return { ...state, isLoading: false };
 
-      // direct from component without saga
-      case userActions.setUserFromLocalStorage.request: {
-        return {
-          ...state,
-          id: action.payload.id,
-          email: action.payload.email,
-          firstName: action.payload.firstName,
-          token: action.payload.token
-        };
-      }
+    // direct from component without saga
+    case userActions.setUserFromLocalStorage.request:
+      return { ...payload };
 
-      // logout
-      case userActions.logout.success: {
-        return {
-          ...state,
-          id: 0,
-          email: "",
-          firstName: "",
-          token: ""
-        };
-      }
+    // logout
+    case userActions.logout.success:
+      return {
+        ...state,
+        id: 0,
+        email: "",
+        firstName: "",
+        token: ""
+      };
 
-      // create user
-      case userActions.createNewUser.request: {
-        return {
-          ...userInitialState,
-          isLoading: true
-        };
-      }
+    // create user
+    case userActions.createNewUser.request:
+      return { ...userInitialState, isLoading: true };
 
-      case userActions.createNewUser.success: {
-        console.log(action.payload);
-        return {
-          ...userInitialState,
-          id: action.payload.resource.id,
-          email: action.payload.resource.email,
-          firstName: action.payload.resource.firstName,
-          token: action.payload.resource.token,
-          status: action.payload.resource.status,
-          isLoading: false
-        };
-      }
+    case userActions.createNewUser.success:
+      return {
+        ...userInitialState,
+        id: payload.resource.id,
+        email: payload.resource.email,
+        firstName: payload.resource.firstName,
+        token: payload.resource.token,
+        status: payload.resource.status,
+        isLoading: false
+      };
 
-      case userActions.createNewUser.failure: {
-        return {
-          ...userInitialState,
-          isLoading: false
-        };
-      }
+    case userActions.createNewUser.failure:
+      return { ...userInitialState, isLoading: false };
 
-      //
-      default:
-        return { ...state };
-    }
+    default:
+      return { ...state };
   }
 };

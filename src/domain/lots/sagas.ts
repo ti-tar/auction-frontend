@@ -2,10 +2,16 @@ import { put, call } from "redux-saga/effects";
 import Api from "../../api";
 import * as lotsActions from "../../domain/lots/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
+import {
+  FetchLotActionType,
+  FetchLotsActionType,
+  UpdateLotActionType,
+  CreateLotActionType,
+  SetLotToAuctionActionType,
+  DeleteLotActionType
+} from "../../interfaces/actionTypes";
 
-export function* fetchLots({ payload }: any) {
-  const { filter, page } = payload;
-
+export function* fetchLots({ payload: { filter, page } }: FetchLotsActionType) {
   function getHandler(filter: string): any {
     switch (filter) {
       case "ownLots":
@@ -20,7 +26,7 @@ export function* fetchLots({ payload }: any) {
   const ApiHandler = getHandler(filter);
 
   try {
-    const { data } = yield call(ApiHandler, {page});
+    const { data } = yield call(ApiHandler, { page });
 
     yield put({
       type: lotsActions.fetchLots.success,
@@ -36,16 +42,9 @@ export function* fetchLots({ payload }: any) {
   }
 }
 
-export function* fetchLot(action: any) {
-  if (!action.payload.lotId) {
-    yield put({
-      type: lotsActions.resetLot.request
-    });
-    return;
-  }
-
+export function* fetchLot({ payload: { lotId } }: FetchLotActionType) {
   try {
-    const { data } = yield call(Api.fetchLot, { lotId: action.payload.lotId });
+    const { data } = yield call(Api.fetchLot, { lotId });
 
     yield put({
       type: lotsActions.fetchLot.success,
@@ -61,56 +60,49 @@ export function* fetchLot(action: any) {
   }
 }
 
-export function* updateLot(action: any) {
-  const { lotId, updatedLot } = action.payload;
+export function* updateLot({ payload: { lotId, updatedLot }, history }: UpdateLotActionType) {
   try {
     const { data } = yield call(Api.updateLot, { lotId, updatedLot });
 
     yield put({
-      type: lotsActions.createNewLot.success,
+      type: lotsActions.createLot.success,
       payload: data
     });
 
     toast("Lot successfully updated!", "success");
-
-    action.history.push(`/lots/${data.resource.id}`);
+    history.push(`/lots/${data.resource.id}`);
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
-      type: lotsActions.createNewLot.failure,
+      type: lotsActions.createLot.failure,
       payload: errors
     });
   }
 }
 
-export function* createNewLot(action: any) {
+export function* createNewLot({ payload: { newLot }, history }: CreateLotActionType) {
   try {
-    const { data } = yield call(Api.createNewLot, action.payload);
-
+    const { data } = yield call(Api.createLot, { newLot });
     yield put({
-      type: lotsActions.createNewLot.success,
+      type: lotsActions.createLot.success,
       payload: data
     });
-
     toast("Lot successfully added!", "success");
-
-    action.history.push(`/lots/${data.resource.id}`);
+    history.push(`/lots/${data.resource.id}`);
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
-      type: lotsActions.createNewLot.failure,
+      type: lotsActions.createLot.failure,
       payload: errors
     });
   }
 }
 
-export function* deleteLot(action: any) {
-  const { lotId } = action.payload;
-
+export function* deleteLot({ payload: { lotId }, history }: DeleteLotActionType) {
   try {
-    yield call(Api.deleteLot, lotId);
+    yield call(Api.deleteLot, { lotId });
     toast("Lot successfully deleted!", "success");
-    action.history.push(`/lots`);
+    history.push(`/lots`);
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
@@ -120,11 +112,11 @@ export function* deleteLot(action: any) {
   }
 }
 
-export function* setLot(action: any) {
+export function* setLot(action: SetLotToAuctionActionType) {
   const { lotId } = action.payload;
 
   try {
-    yield call(Api.setLot, lotId);
+    yield call(Api.setLot, { lotId });
     toast("Lot successfully set to auction!", "success");
     action.history.push(`/lots`);
   } catch (errors) {

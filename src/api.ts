@@ -5,6 +5,8 @@ import { getStorageItem } from "./libs/storage";
 // interfaces
 import LotCreateInterface from "./interfaces/lotCreate";
 import userCreateInterface from "./interfaces/userCreate";
+import { OrderFormValues } from "./components/form/orderForm";
+import { BidFormData } from "./components/form/bidForm";
 
 const getAxiosInstance = () =>
   axios.create({
@@ -36,21 +38,36 @@ const prefix = "/api";
 
 export default {
   // lots
-  fetchLots: ({page}: {page: number}) => httpClient.get(`${prefix}/lots?page=${page}`),
-  fetchOwnLots: ({page}: {page: number}) => httpClient.get(`${prefix}/lots/own/lots?page=${page}`),
-  fetchLotsWithBids: ({page}: {page: number}) => httpClient.get(`${prefix}/lots/own/bids?page=${page}`),
-  fetchLot: ({ lotId }: any) => httpClient.get(`${prefix}/lots/${lotId}`),
-  createNewLot: (newLot: LotCreateInterface) =>
+  fetchLots: ({ page }: { page: number }) =>
+    httpClient.get(`${prefix}/lots?page=${page}`),
+  fetchOwnLots: ({ page }: { page: number }) =>
+    httpClient.get(`${prefix}/lots/own/lots?page=${page}`),
+  fetchLotsWithBids: ({ page }: { page: number }) =>
+    httpClient.get(`${prefix}/lots/own/bids?page=${page}`),
+  fetchLot: ({ lotId }: { lotId: number }) =>
+    httpClient.get(`${prefix}/lots/${lotId}`),
+  createLot: ({ newLot }: { newLot: LotCreateInterface }) =>
     httpClient.post(`${prefix}/lots`, newLot),
-  updateLot: ({ updatedLot, lotId }: any) =>
+  updateLot: ({ updatedLot, lotId }: { updatedLot: object; lotId: number }) =>
     httpClient.put(`${prefix}/lots/${lotId}`, updatedLot),
-  deleteLot: (lotId: string) => httpClient.delete(`${prefix}/lots/${lotId}`),
-  setLot: (lotId: string) => httpClient.put(`${prefix}/lots/${lotId}/set`),
+  deleteLot: ({ lotId }: { lotId: number }) =>
+    httpClient.delete(`${prefix}/lots/${lotId}`),
+  setLot: ({ lotId }: { lotId: number }) =>
+    httpClient.put(`${prefix}/lots/${lotId}/set`),
+
+  // orders
+  fetchOrders: () => httpClient.get(`${prefix}/orders`),
+  fetchOrder: ({ orderId }: { orderId: number }) =>
+    httpClient.get(`${prefix}/orders/${orderId}`),
+  createOrder: ({ lotId, order }: { lotId: number; order: OrderFormValues }) =>
+    httpClient.post(`${prefix}/lots/${lotId}/order`, order),
+  updateOrder: ({ lotId, order }: { lotId: number; order: OrderFormValues }) =>
+    httpClient.put(`${prefix}/lots/${lotId}/order`, order),
 
   // bids
   fetchBids: ({ lotId }: { lotId: number }) =>
     httpClient.get(`${prefix}/lots/${lotId}/bids`),
-  createBid: ({ newBid, lotId }: any) =>
+  createBid: ({ lotId, newBid }: { lotId: number; newBid: BidFormData }) =>
     httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
 
   // user

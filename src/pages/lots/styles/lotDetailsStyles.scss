@@ -23,6 +23,13 @@
     .lot__product {
       flex-grow: 1;
 
+      .winnerStatus {
+        color: red;
+        font-size: 14px;
+        text-align: right;
+        padding: 5px 10px;
+      }
+
       h6 {
           margin-bottom: 5px;
       }
@@ -61,6 +68,7 @@
         .lot_options_make_bid_button,
         .lot_options_set_lot_button,
         .lot_options_edit_lot_button,
+        .lot_options_checkout_button,
         .lot_options_delete_lot_button
         {
           display: flex;
@@ -81,6 +89,10 @@
         }
 
         .lot_options_make_bid_button {
+          background: #27AE60;
+        }
+
+        .lot_options_checkout_button {
           background: #27AE60;
         }
 

@@ -16,7 +16,6 @@ import { fetchBids, createBid } from "../domain/bids/sagas";
 import * as bidsActions from "../domain/bids/actions";
 
 // users
-
 import {
   fetchProfile,
   createUser,
@@ -28,31 +27,48 @@ import {
 } from "../domain/user/sagas";
 import * as userActions from "../domain/user/actions";
 
+// orders
+import {
+  fetchOrders,
+  fetchOrder,
+  createOrder,
+  updateOrder
+} from "../domain/orders/sagas";
+import * as ordersActions from "../domain/orders/actions";
+
+interface WatchComponents {
+  [s: string]: any;
+}
+
+const watchComponents: WatchComponents = {
+  [lotsActions.fetchLots.request]: fetchLots,
+  [lotsActions.fetchLot.request]: fetchLot,
+  [lotsActions.createLot.request]: createNewLot,
+  [lotsActions.updateLot.request]: updateLot,
+  [lotsActions.deleteLot.request]: deleteLot,
+  [lotsActions.setLot.request]: setLot,
+
+  [bidsActions.fetchBids.request]: fetchBids,
+  [bidsActions.createBid.request]: createBid,
+
+  [userActions.fetchProfile.request]: fetchProfile,
+  [userActions.createNewUser.request]: createUser,
+  [userActions.login.request]: makeLogin,
+  [userActions.logout.request]: makeLogout,
+  [userActions.verifyEmail.request]: sendVerifyEmail,
+  [userActions.forgotPassword.request]: sendForgotPassword,
+  [userActions.resetPassword.request]: sendResetPassword,
+
+  [ordersActions.fetchOrders.request]: fetchOrders,
+  [ordersActions.fetchOrder.request]: fetchOrder,
+  [ordersActions.createOrder.request]: createOrder,
+  [ordersActions.updateOrder.request]: updateOrder
+};
+
 export function* components() {
-  // lots
-  yield takeEvery(lotsActions.fetchLots.request, fetchLots);
-  yield takeEvery(lotsActions.fetchLot.request, fetchLot);
-  yield takeEvery(lotsActions.createNewLot.request, createNewLot);
-  yield takeEvery(lotsActions.updateLot.request, updateLot);
-  yield takeEvery(lotsActions.deleteLot.request, deleteLot);
-  yield takeEvery(lotsActions.setLot.request, setLot);
-
-  // user
-  yield takeEvery(userActions.fetchProfile.request, fetchProfile);
-
-  // bids
-  yield takeEvery(bidsActions.fetchBids.request, fetchBids);
-  yield takeEvery(bidsActions.createBid.request, createBid);
-
-  // user register
-  yield takeEvery(userActions.createNewUser.request, createUser);
-
-  // user login logout
-  yield takeEvery(userActions.login.request, makeLogin);
-  yield takeEvery(userActions.logout.request, makeLogout);
-  yield takeEvery(userActions.verifyEmail.request, sendVerifyEmail);
-  yield takeEvery(userActions.forgotPassword.request, sendForgotPassword);
-  yield takeEvery(userActions.resetPassword.request, sendResetPassword);
+  for (const request in watchComponents) {
+    yield takeEvery(request, watchComponents[request]);
+  }
 }
 
 export default function*() {

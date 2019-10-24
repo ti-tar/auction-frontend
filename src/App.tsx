@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 import Main from "./pages/main";
 import ForgotPassword from "./pages/auth/forgotPassword";
@@ -14,6 +14,9 @@ import LotsEdit from "./pages/lots/lotsEdit";
 import LotsDetails from "./pages/lots/lotDetails";
 import BidCreate from "./pages/bids/bidCreate";
 
+import Orders from "./pages/orders/orders";
+import OrderEdit from "./pages/orders/orderEdit";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -25,22 +28,20 @@ import { getStorageItem } from "./libs/storage";
 import * as userActions from "./domain/user/actions";
 import "./App.css";
 
-
 const App: React.FC = () => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     const id = parseInt(getStorageItem("id"), 10);
-    const email = getStorageItem("token");
-    const token = getStorageItem("email");
+    const token = getStorageItem("token");
+    const email = getStorageItem("email");
     const firstName = getStorageItem("firstName");
 
     if (!!id && !!email && !!token && !!firstName) {
       dispatch({
         type: userActions.setUserFromLocalStorage.request,
         payload: { id, email, token, firstName }
-      })
+      });
     }
   }, [dispatch]);
 
@@ -68,6 +69,8 @@ const App: React.FC = () => {
         <Route exact path="/lots/:lotId/make_bid" component={BidCreate} />
         <Route exact path="/lots/:id" component={LotsDetails} />
         <Route exact path="/lots" component={Lots} />
+        <Route exact path="/lots/:lotId/order" component={OrderEdit} />
+        <Route exact path="/orders" component={Orders} />
         <Route exact path="/" component={Main} />
       </Switch>
     </div>

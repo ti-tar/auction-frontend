@@ -19,40 +19,40 @@ const useSideClick = (toggleBtnRef: any, setIsOpen: any) => {
   }, [setIsOpen, toggleBtnRef]);
 };
 
-const MenuBtn = (props:any) => {
+const MenuBtn = (props: any) => {
   const toggleBtnRef = useRef(null);
   useSideClick(toggleBtnRef, props.setIsOpen);
   return (
-    <div className="toggleDropDownBtn" ref={toggleBtnRef} onClick={props.toggleDropDown}>&#9776;</div>
+    <div
+      className="toggleDropDownBtn"
+      ref={toggleBtnRef}
+      onClick={props.toggleDropDown}
+    >
+      &#9776;
+    </div>
   );
-}
+};
 
-const NavMenu: React.FC<RouteComponentProps> = props => {
-  const { history } = props;
+const NavMenu: React.FC<RouteComponentProps> = ({ history }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropDown = () => {
     setIsOpen(!isOpen);
   };
 
-  const firstName = useSelector(
-    (state: StateInterface) => state.user.firstName
-  );
-  const token = useSelector((state: StateInterface) => state.user.token);
   const dispatch = useDispatch();
+  const { firstName, token } = useSelector(
+    (state: StateInterface) => state.user
+  );
   const logout = () => dispatch({ type: userActions.logout.request, history });
-
 
   return (
     <header className={"NavMenu"}>
       <NavLink to={{ pathname: "/" }} className={"logo"}>
-        Auction Marketplace   {!!token ? `(User: ${firstName})` : ''}
+        Auction Marketplace {!!token ? `(User: ${firstName})` : ""}
       </NavLink>
 
-      <MenuBtn
-        toggleDropDown={toggleDropDown}
-        setIsOpen={setIsOpen}
-       />
+      <MenuBtn toggleDropDown={toggleDropDown} setIsOpen={setIsOpen} />
 
       <ul className={`buttons ${!isOpen || "opened"}`}>
         {!!token ? (
@@ -61,14 +61,13 @@ const NavMenu: React.FC<RouteComponentProps> = props => {
               <NavLink to={{ pathname: "/lots/create" }}>Create Lot</NavLink>
             </li>
             <li>
-              <NavLink to={{ pathname: "/lots" }} exact>All Lots</NavLink>
+              <NavLink to={{ pathname: "/lots" }} exact>
+                Lots
+              </NavLink>
             </li>
             <li>
-              <NavLink to={{ pathname: "/lots/own/lots" }}>My Lots</NavLink>
-            </li>
-            <li>
-              <NavLink to={{ pathname: "/lots/own/bids" }}>
-                Lots My Bids
+              <NavLink to={{ pathname: "/orders" }} exact>
+                Orders
               </NavLink>
             </li>
             <li>

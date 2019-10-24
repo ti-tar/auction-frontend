@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import * as lotsActions from "../../domain/lots/actions";
 import * as bitsActions from "../../domain/bids/actions";
-import { Link } from "react-router-dom";
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from "react-router-dom";
 import { StateInterface } from "../../domain";
 
 import "./styles/lotDetailsStyles.scss";
+import BidsInterface from "../../interfaces/bid";
 
 interface Props {
   match: {
@@ -18,13 +18,22 @@ interface Props {
 }
 
 const LotDetails: React.FC<Props & RouteComponentProps> = props => {
-
-  const { match: { params: { id: lotId } }, history } = props;
-  const lot = useSelector((state: StateInterface) => state.lots.resource);
+  const {
+    match: {
+      params: { id: lotId }
+    },
+    history
+  } = props;
+  const { isLoading, resource: lot } = useSelector(
+    (state: StateInterface) => state.lots
+  );
   const userId = useSelector((state: StateInterface) => state.user.id);
-  const bids = useSelector((state: StateInterface) => state.bids.resources);
-  const bidsTotal = useSelector((state: StateInterface) => state.bids.meta.total);
-  const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);
+  const { isLoading: isBidsLoading, resources: bids } = useSelector(
+    (state: StateInterface) => state.bids
+  );
+  const bidsTotal = useSelector(
+    (state: StateInterface) => state.bids.meta.total
+  );
 
   const dispatch = useDispatch();
 
@@ -34,12 +43,21 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
   }, [dispatch, lotId]);
 
   const setLot = (lotId: string) => {
-    dispatch({ type: lotsActions.setLot.request, payload: { lotId }, history })
-  }
+    dispatch({ type: lotsActions.setLot.request, payload: { lotId }, history });
+  };
+  const deleteLot = (lotId: string) =>
+    dispatch({
+      type: lotsActions.deleteLot.request,
+      payload: { lotId },
+      history
+    });
 
-  const deleteLot = (lotId: string) => (
-    dispatch({ type: lotsActions.deleteLot.request, payload: { lotId }, history })
-  )
+  const [isWinner, setIsWinner] = useState(false);
+  useEffect(() => {
+    if (!isBidsLoading && bids.length) {
+      setIsWinner(bids[bids.length - 1].user.id === userId);
+    }
+  }, [isBidsLoading, bids, isWinner, userId]);
 
   return (
     <section className="lotDetails">
@@ -56,7 +74,14 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
             </div>
           </div>
           <div className="lot__product">
-            <h3>{lot.title} ({lot.status})</h3>
+            {lot.user && lot.user.id !== userId && lot.status === "closed" && (
+              <div className="winnerStatus">
+                {isWinner ? "You are the Winner" : "You are not the winner"}
+              </div>
+            )}
+            <h3>
+              {lot.title} ({lot.status})
+            </h3>
             <>
               <h6>Description:</h6>
               <p>{lot.description}</p>
@@ -65,7 +90,9 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
             {!!lot.user && (
               <>
                 <h6>Owner:</h6>
-                <p>{lot.user.firstName}, {lot.user.email}</p>
+                <p>
+                  {lot.user.firstName}, {lot.user.email}
+                </p>
               </>
             )}
           </div>
@@ -75,24 +102,36 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                 <span>Current Price: </span> <span>${lot.currentPrice}</span>
               </div>
               <div>
-                <span>Estimated Price: </span> <span>${lot.estimatedPrice}</span>
+                <span>Estimated Price: </span>{" "}
+                <span>${lot.estimatedPrice}</span>
               </div>
               <div>
                 <span>End Time</span>
-                <span>{moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}</span>
+                <span>
+                  {moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}
+                </span>
               </div>
             </div>
 
             {!isLoading && !!lot && lot.id && userId === lot.user.id ? (
-              !isLoading && !!lot.user && userId === lot.user.id && lot.status === 'pending' && (
+              !isLoading &&
+              !!lot.user &&
+              userId === lot.user.id &&
+              lot.status === "pending" && (
                 <div className="lot_options">
                   <small>
-                    You may change or deledte lot, lot is not proccessed until you push "Set the lot" button. After that you won't change anything.
+                    You may change or deledte lot, lot is not processed until
+                    you push "Set the lot" button. After that you won't change
+                    anything.
                   </small>
                   <button
                     className="lot_options_set_lot_button"
                     onClick={() => {
-                      if (window.confirm(`Set Lot to Auction? You won't be able to edit or delete it`)) {
+                      if (
+                        window.confirm(
+                          `Set Lot to Auction? You won't be able to edit or delete it`
+                        )
+                      ) {
                         setLot(lotId);
                       }
                     }}
@@ -121,7 +160,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                   </button>
                 </div>
               )
-            ) : (
+            ) : lot.status === "inProcess" ? (
               <div className="lot_options">
                 <Link
                   className="lot_options_make_bid_button"
@@ -130,6 +169,17 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                   Make a bid
                 </Link>
               </div>
+            ) : lot.status === "closed" && isWinner ? (
+              <div className="lot_options">
+                <Link
+                  className="lot_options_checkout_button"
+                  to={{ pathname: `/lots/${lot.id}/order` }}
+                >
+                  Checkout
+                </Link>
+              </div>
+            ) : (
+              ""
             )}
           </div>
         </div>
@@ -139,7 +189,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
 
       <div className="lotBids">
         <h2>Bids</h2>
-        
+
         <div className="table">
           <div className="row head">
             <div className="id"></div>
@@ -147,20 +197,23 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
             <div className="proposition">Proposition</div>
             <div className="time">Time</div>
           </div>
-          {!!bids && !!bids.length && bids.map((bid: any) => (
-            <div key={bid.proposedPrice} className="row">
-              <div className="id"> </div>
-              <div className="customer">{bid.user ? bid.user.firstName : ''}</div>
-              <div className="proposition">{bid.proposedPrice}</div>
-              <div className="time">{moment(bid.bidCreationTime).format("DD MMM YY, hh:mm:ss")}</div>
-            </div>
-          ))}
+          {!!bids &&
+            !!bids.length &&
+            bids.map((bid: BidsInterface) => (
+              <div key={bid.proposedPrice} className="row">
+                <div className="id"> </div>
+                <div className="customer">
+                  {bid.user ? bid.user.firstName : ""}
+                </div>
+                <div className="proposition">{bid.proposedPrice}</div>
+                <div className="time">
+                  {moment(bid.bidCreationTime).format("DD MMM YY, hh:mm:ss")}
+                </div>
+              </div>
+            ))}
         </div>
 
-        <div className="total">
-          Total bids: {bidsTotal}
-        </div>
-
+        <div className="total">Total bids: {bidsTotal}</div>
       </div>
     </section>
   );

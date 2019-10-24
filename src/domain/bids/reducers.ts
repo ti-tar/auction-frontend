@@ -1,15 +1,16 @@
-import reducerActionInterface from "./../../interfaces/reducerAction";
 import * as bidsActions from "./actions";
 import BidsInterface from "../../interfaces/bid";
+import { ActionType } from "../../interfaces/actionTypes";
+import { Reducer } from "redux";
 
 export interface BidsStateInterface {
-  resources: BidsInterface[],
+  resources: BidsInterface[];
   meta: {
-    page: number,
-    perPage: number,
-    total: number,
-  },
-  isLoading: boolean
+    page: number;
+    perPage: number;
+    total: number;
+  };
+  isLoading: boolean;
 }
 
 export const bidsInitialState: BidsStateInterface = {
@@ -22,39 +23,28 @@ export const bidsInitialState: BidsStateInterface = {
   isLoading: false
 };
 
-export const reducer = {
-  bids(bidsState = bidsInitialState, action: reducerActionInterface) {
-    const { type, payload } = action;
-    switch (type) {
-      case bidsActions.fetchBids.request: {
-        return {
-          ...bidsState,
-          isLoading: true
-        };
-      }
-      case bidsActions.fetchBids.success: {
-        if (payload && payload.resources) {
-          return {
-            ...bidsState,
-            resources: [...payload.resources],
-            meta: payload.meta,
-            isLoading: false
-          };
-        }
-        return {
-          ...bidsState,
-          isLoading: false
-        };
-      }
-      case bidsActions.fetchBids.failure: {
-        return {
-          ...bidsState,
-          isLoading: false
-        };
-      }
+export const bidsReducers: Reducer = (
+  bidsState: BidsStateInterface,
+  { type, payload }: ActionType
+) => {
+  switch (type) {
+    case bidsActions.fetchBids.request:
+      return { ...bidsState, isLoading: true };
 
-      default:
-        return { ...bidsState };
-    }
+    case bidsActions.fetchBids.success:
+      if (payload && payload.resources) {
+        return {
+          resources: [...payload.resources],
+          meta: payload.meta,
+          isLoading: false
+        };
+      }
+      return { ...bidsInitialState };
+
+    case bidsActions.fetchBids.failure:
+      return { ...bidsInitialState };
+
+    default:
+      return { ...bidsState };
   }
 };
