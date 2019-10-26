@@ -15,7 +15,7 @@ const orderForm: React.FC<InjectedFormProps<OrderFormValues>> = ({
       <div>
         <Field name="type" component="select">
           {Object.keys(OrderDeliveryType).map((k: any) => (
-            <option value={k} key={k}>
+            <option value={OrderDeliveryType[k]} key={k}>
               {OrderDeliveryType[k]}
             </option>
           ))}
