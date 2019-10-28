@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import * as lotsActions from "../../domain/lots/actions";
 import LotForm from "../../components/form/lotForm";
@@ -34,7 +34,6 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
 
   useEffect(() => {
     if (lotId) {
-      // fetchLot(lotId);
       dispatch({ type: lotsActions.fetchLot.request, payload: { lotId } });
     }
   }, [dispatch, lotId]);
@@ -69,14 +68,12 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
     }
 
     if (lotId) {
-      // updateLot(lotToSend, lotId, history);
       dispatch({
         type: lotsActions.updateLot.request,
         payload: { lotId, updatedLot: lotToSend },
         history
       });
     } else {
-      // createLot(lotToSend, history);
       dispatch({
         type: lotsActions.createLot.request,
         payload: { newLot: lotToSend },
@@ -90,9 +87,6 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
     formData.append("file", e.target.files[0]);
 
     dispatch({ type: lotsActions.uploadCover.request, payload: { formData } });
-
-    // change("form-lots-edit", "image", response.data.file.fileName);
-    //           setImage(response.data.file.fileName);
   };
 
   return (
@@ -124,6 +118,4 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
   );
 };
 
-const LotsEditRouteComponent: any = withRouter(LotsEdit);
-
-export default LotsEditRouteComponent;
+export default LotsEdit;

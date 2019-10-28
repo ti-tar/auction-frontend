@@ -8,7 +8,9 @@ import {
   updateLot,
   deleteLot,
   setLot,
-  uploadLotCover
+  uploadLotCover,
+  executeOrder,
+  receiveOrder
 } from "../domain/lots/sagas";
 import * as lotsActions from "../domain/lots/actions";
 
@@ -49,6 +51,8 @@ const watchComponents: WatchComponents = {
   [lotsActions.deleteLot.request]: deleteLot,
   [lotsActions.setLot.request]: setLot,
   [lotsActions.uploadCover.request]: uploadLotCover,
+  [lotsActions.executeOrder.request]: executeOrder,
+  [lotsActions.receiveOrder.request]: receiveOrder,
 
   [bidsActions.fetchBids.request]: fetchBids,
   [bidsActions.createBid.request]: createBid,

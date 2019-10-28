@@ -57,6 +57,13 @@ export default {
   uploadLotCover: ({ formData }: any) =>
     httpClient.post(`${prefix}/lots/upload`, formData),
 
+  // executeOrder
+  executeOrder: ({ lotId }: { lotId: number }) =>
+    httpClient.post(`${prefix}/lots/${lotId}/executeOrder`, {}),
+  // receiveOrder
+  receiveOrder: ({ lotId }: { lotId: number }) =>
+    httpClient.post(`${prefix}/lots/${lotId}/receiveOrder`, {}),
+
   // orders
   fetchOrders: () => httpClient.get(`${prefix}/orders`),
   fetchOrder: ({ orderId }: { orderId: number }) =>

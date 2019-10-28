@@ -8,3 +8,6 @@ export const deleteLot = getAction("lots/DELETE_LOT");
 export const setLot = getAction("lots/SET_LOT");
 
 export const uploadCover = getAction("lots/UPLOAD_COVER");
+
+export const executeOrder = getAction("lots/EXECUTE_COVER");
+export const receiveOrder = getAction("lots/RECEIVE_COVER");

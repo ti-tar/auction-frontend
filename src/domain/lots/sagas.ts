@@ -156,3 +156,37 @@ export function* uploadLotCover(action: any) {
     });
   }
 }
+
+export function* executeOrder(action: any) {
+  const { lotId } = action.payload;
+  try {
+    const { data } = yield call(Api.executeOrder, { lotId });
+    yield put({
+      type: lotsActions.executeOrder.success,
+      payload: data
+    });
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: lotsActions.executeOrder.failure,
+      payload: errors
+    });
+  }
+}
+
+export function* receiveOrder(action: any) {
+  const { lotId } = action.payload;
+  try {
+    const { data } = yield call(Api.receiveOrder, { lotId });
+    yield put({
+      type: lotsActions.receiveOrder.success,
+      payload: data
+    });
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: lotsActions.receiveOrder.failure,
+      payload: errors
+    });
+  }
+}
