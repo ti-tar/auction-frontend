@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { InjectedFormProps } from "redux-form";
 import OrderForm, { OrderFormValues } from "../../components/form/orderForm";
@@ -8,6 +8,7 @@ import * as lotsActions from "../../domain/lots/actions";
 import { StateInterface } from "../../domain";
 import { OrderActionType } from "../../interfaces/actionTypes";
 import { RouteComponentProps } from "react-router";
+import { getWinnersBid } from "../../libs/helpers";
 
 interface Props {
   match: {
@@ -30,11 +31,22 @@ const OrderEdit: React.FC<
   const { resource: lot, isLoading } = useSelector(
     (state: StateInterface) => state.lots
   );
-  const dispatch = useDispatch();
 
+  const [order, setOrder] = useState({});
+
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: lotsActions.fetchLot.request, payload: { lotId } });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (lot.bids && lot.bids.length) {
+      const winnersBid = getWinnersBid(lot.bids);
+      if (!!winnersBid && winnersBid.order) {
+        setOrder(winnersBid.order);
+      }
+    }
+  }, [lot.id]);
 
   const handleOnSubmit = (formValues: OrderFormValues) => {
     if (!formValues.arrivalLocation || formValues.type === "pending") {
@@ -42,30 +54,26 @@ const OrderEdit: React.FC<
       return;
     }
 
-    dispatch<OrderActionType>({
-      type: ordersActions.createOrder.request,
-      payload: { lotId: parseInt(lotId, 10), order: formValues },
-      history
-    });
-
-    // if (lotId) {
-    //   dispatch({
-    //     type: ordersActions.updateOrder.request,
-    //     payload: { lotId, lot: formValues }
-    //   });
-    // } else {
-    //   dispatch({
-    //     type: ordersActions.createOrder.request,
-    //     payload: { lot: formValues }
-    //   });
-    // }
+    if (Object.keys(order).length) {
+      dispatch<OrderActionType>({
+        type: ordersActions.updateOrder.request,
+        payload: { lotId: parseInt(lotId, 10), order: formValues },
+        history
+      });
+    } else {
+      dispatch<OrderActionType>({
+        type: ordersActions.createOrder.request,
+        payload: { lotId: parseInt(lotId, 10), order: formValues },
+        history
+      });
+    }
   };
 
   return (
     <section className="orders">
       <div className="title">OrderDetails</div>
       <div className="fromWrapper">
-        <OrderForm onSubmit={handleOnSubmit} />
+        <OrderForm onSubmit={handleOnSubmit} initialValues={order} />
       </div>
     </section>
   );

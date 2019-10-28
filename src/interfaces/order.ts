@@ -7,7 +7,7 @@ export enum OrderDeliveryType {
   dhlExpress = "DHL Express"
 }
 
-export default interface Order {
+export default interface OrderInterface {
   id: number;
   arrivalLocation: string;
   type: OrderDeliveryType;

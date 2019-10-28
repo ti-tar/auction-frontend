@@ -1,3 +1,5 @@
+import BidsInterface from "./bid";
+
 export default interface LotInterface {
   id: number;
   title: string;
@@ -9,4 +11,5 @@ export default interface LotInterface {
   estimatedPrice: number;
   endTime: string;
   user: any;
+  bids: BidsInterface[] | null;
 }

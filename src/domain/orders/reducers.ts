@@ -1,10 +1,10 @@
 import * as ordersActions from "./actions";
-import Order from "../../interfaces/order";
+import OrderInterface from "../../interfaces/order";
 import { ActionType } from "../../interfaces/actionTypes";
 import { Reducer } from "redux";
 
 export interface OrderState {
-  resources: Order[];
+  resources: OrderInterface[];
   meta: {};
   isLoading: boolean;
 }

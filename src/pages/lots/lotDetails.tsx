@@ -8,6 +8,7 @@ import { StateInterface } from "../../domain";
 
 import "./styles/lotDetailsStyles.scss";
 import BidsInterface from "../../interfaces/bid";
+import { getWinnersBid } from "../../libs/helpers";
 
 interface Props {
   match: {
@@ -54,10 +55,11 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
 
   const [isWinner, setIsWinner] = useState(false);
   useEffect(() => {
-    if (!isBidsLoading && bids.length) {
-      setIsWinner(bids[bids.length - 1].user.id === userId);
+    if (lot.bids && lot.bids.length) {
+      const winnersBid = getWinnersBid(lot.bids);
+      setIsWinner(!!winnersBid && winnersBid.user.id === userId);
     }
-  }, [isBidsLoading, bids, isWinner, userId]);
+  }, [bids, isWinner, userId]);
 
   return (
     <section className="lotDetails">

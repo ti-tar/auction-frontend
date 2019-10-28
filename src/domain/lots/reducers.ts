@@ -26,7 +26,8 @@ export const lotsInitialState: LotsStateInterface = {
     currentPrice: 0,
     estimatedPrice: 0,
     endTime: "",
-    user: null
+    user: null,
+    bids: null
   },
   meta: {
     page: 1,

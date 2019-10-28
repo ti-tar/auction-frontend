@@ -1,5 +1,6 @@
 import { toast as toast123 } from "react-toastify";
 import responseErrorInterface from "../interfaces/responseError";
+import BidsInterface from "../interfaces/bid";
 
 export const toast = (msg: string, type = "") => {
   switch (type) {
@@ -60,4 +61,12 @@ export const showAxiosErrors = (response: responseErrorInterface) => {
   }
 
   toast("Unknown server error");
+};
+
+export const getWinnersBid = (
+  bids: BidsInterface[]
+): BidsInterface | undefined => {
+  const arr: number[] = bids.map(b => b.proposedPrice);
+  const maxPrice = Math.max(...arr);
+  return bids.find(b => b.proposedPrice === maxPrice);
 };
