@@ -1,29 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { Field, reduxForm, change } from "redux-form";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import moment from "moment";
-import axios from "axios";
 import * as lotsActions from "../../domain/lots/actions";
-import CustomDatePicker from "../../components/form/datePicker/datepicker";
+import LotForm from "../../components/form/lotForm";
 import LotCreateInterface from "../../interfaces/lotCreate";
-import { getStorageItem } from "../../libs/storage";
-
 import "./styles/lotsCreateStyles.scss";
 import LotInterface from "../../interfaces/lot";
+import { StateInterface } from "../../domain";
 
 type Props = React.ReactChild & {
   match: {
     params: { lotId: string };
   };
   handleSubmit: Function;
-  createLot: Function;
-  updateLot: Function;
-  fetchLot: Function;
-  lot: LotInterface;
-  changeFormValue: Function;
 };
 
 const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
@@ -31,22 +22,22 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
     match: {
       params: { lotId }
     },
-    handleSubmit,
-    createLot,
-    updateLot,
-    history,
-    lot,
-    fetchLot,
-    changeFormValue
+    history
   } = props;
 
   const [image, setImage] = useState();
+  const dispatch = useDispatch();
+
+  const lot: LotInterface = useSelector(
+    (state: StateInterface) => state.lots.resource
+  );
 
   useEffect(() => {
     if (lotId) {
-      fetchLot(lotId);
+      // fetchLot(lotId);
+      dispatch({ type: lotsActions.fetchLot.request, payload: { lotId } });
     }
-  }, [fetchLot, lotId]);
+  }, [dispatch, lotId]);
 
   useEffect(() => {
     setImage(lot.image);
@@ -78,37 +69,30 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
     }
 
     if (lotId) {
-      updateLot(lotToSend, lotId, history);
+      // updateLot(lotToSend, lotId, history);
+      dispatch({
+        type: lotsActions.updateLot.request,
+        payload: { lotId, updatedLot: lotToSend },
+        history
+      });
     } else {
-      createLot(lotToSend, history);
+      // createLot(lotToSend, history);
+      dispatch({
+        type: lotsActions.createLot.request,
+        payload: { newLot: lotToSend },
+        history
+      });
     }
   };
 
   const onChange = (e: any) => {
-    const data = new FormData();
-    data.append("file", e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
 
-    // receive two parameter endpoint url ,form data
-    axios
-      .post("http://localhost:5000/api/lots/upload", data, {
-        headers: { Authorization: `Bearer ${getStorageItem("token")}` }
-      })
-      .then(response => {
-        // then print response status
+    dispatch({ type: lotsActions.uploadCover.request, payload: { formData } });
 
-        if (
-          response &&
-          response.data &&
-          response.data.file &&
-          response.data.file.fileName
-        ) {
-          changeFormValue(response.data.file.fileName);
-          setImage(response.data.file.fileName);
-        }
-      })
-      .catch(err => {
-        console.warn("Some error has occurred");
-      });
+    // change("form-lots-edit", "image", response.data.file.fileName);
+    //           setImage(response.data.file.fileName);
   };
 
   return (
@@ -116,52 +100,7 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
       <div className="title">{!!lotId ? "Edit Lot" : "Create Lot"}</div>
 
       <div className="fromWrapper">
-        <form onSubmit={handleSubmit(handleBeforeSubmit)}>
-          <Field
-            name="title"
-            type="text"
-            component="input"
-            placeholder="title"
-            autoComplete="off"
-          />
-
-          <Field
-            name="currentPrice"
-            type="text"
-            component="input"
-            placeholder="currentPrice"
-            autoComplete="off"
-            parse={(value: string): number => parseFloat(value)}
-          />
-
-          <Field
-            name="estimatedPrice"
-            type="text"
-            component="input"
-            placeholder="estimatedPrice"
-            autoComplete="off"
-            parse={(value: string): number => parseFloat(value)}
-          />
-
-          <Field name="endTime" type="text" component={CustomDatePicker} />
-
-          <Field
-            name="description"
-            component="textarea"
-            placeholder="description"
-          />
-
-          <Field
-            name="image"
-            type="hidden"
-            component="input"
-            placeholder="image"
-          />
-
-          <div className="submitBtn">
-            <button type="submit">Submit</button>
-          </div>
-        </form>
+        <LotForm onSubmit={handleBeforeSubmit} initialValues={lot} />
 
         <div className="coverImage">
           <label>Cover image</label>
@@ -185,43 +124,6 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
   );
 };
 
-const LotsEditRouteComponent: any = compose(
-  withRouter,
-  connect(
-    (state: any, ownProps: any) => {
-      const { lotId } = ownProps.match.params;
-      return {
-        lot: state.lots.resource,
-        initialValues: lotId ? state.lots.resource : {}
-      };
-    },
-    {
-      createLot: (newLot: LotCreateInterface, history: Function): any => ({
-        type: lotsActions.createLot.request,
-        payload: { newLot },
-        history
-      }),
-      updateLot: (
-        updatedLot: LotCreateInterface,
-        lotId: string,
-        history: Function
-      ): any => ({
-        type: lotsActions.updateLot.request,
-        payload: { lotId, updatedLot },
-        history
-      }),
-      fetchLot: (lotId: string): any => ({
-        type: lotsActions.fetchLot.request,
-        payload: { lotId }
-      }),
-      changeFormValue: (fileName: string) =>
-        change("form-lots-edit", "image", fileName)
-    }
-  ),
-  reduxForm({
-    form: "form-lots-edit",
-    enableReinitialize: true
-  })
-)(LotsEdit);
+const LotsEditRouteComponent: any = withRouter(LotsEdit);
 
 export default LotsEditRouteComponent;

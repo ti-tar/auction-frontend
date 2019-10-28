@@ -60,7 +60,10 @@ export function* fetchLot({ payload: { lotId } }: FetchLotActionType) {
   }
 }
 
-export function* updateLot({ payload: { lotId, updatedLot }, history }: UpdateLotActionType) {
+export function* updateLot({
+  payload: { lotId, updatedLot },
+  history
+}: UpdateLotActionType) {
   try {
     const { data } = yield call(Api.updateLot, { lotId, updatedLot });
 
@@ -80,7 +83,10 @@ export function* updateLot({ payload: { lotId, updatedLot }, history }: UpdateLo
   }
 }
 
-export function* createNewLot({ payload: { newLot }, history }: CreateLotActionType) {
+export function* createNewLot({
+  payload: { newLot },
+  history
+}: CreateLotActionType) {
   try {
     const { data } = yield call(Api.createLot, { newLot });
     yield put({
@@ -98,7 +104,10 @@ export function* createNewLot({ payload: { newLot }, history }: CreateLotActionT
   }
 }
 
-export function* deleteLot({ payload: { lotId }, history }: DeleteLotActionType) {
+export function* deleteLot({
+  payload: { lotId },
+  history
+}: DeleteLotActionType) {
   try {
     yield call(Api.deleteLot, { lotId });
     toast("Lot successfully deleted!", "success");
@@ -123,6 +132,26 @@ export function* setLot(action: SetLotToAuctionActionType) {
     showAxiosErrors(errors.response);
     yield put({
       type: lotsActions.deleteLot.failure,
+      payload: errors
+    });
+  }
+}
+
+export function* uploadLotCover(action: any) {
+  const { formData } = action.payload;
+
+  try {
+    const { data } = yield call(Api.uploadLotCover, { formData });
+    toast("Lot cover successfully uploaded!", "success");
+
+    yield put({
+      type: lotsActions.uploadCover.success,
+      payload: { image: data.file.fileName }
+    });
+  } catch (errors) {
+    showAxiosErrors(errors.response);
+    yield put({
+      type: lotsActions.uploadCover.failure,
       payload: errors
     });
   }

@@ -6,3 +6,5 @@ export const createLot = getAction("lots/CREATE_LOT");
 export const updateLot = getAction("lots/UPDATE_LOT");
 export const deleteLot = getAction("lots/DELETE_LOT");
 export const setLot = getAction("lots/SET_LOT");
+
+export const uploadCover = getAction("lots/UPLOAD_COVER");

@@ -182,7 +182,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                   className="lot_options_checkout_button"
                   to={{ pathname: `/lots/${lot.id}/order` }}
                 >
-                  {!!order ? "Update Order" : "Checkout"}
+                  {!!order ? "Edit Order" : "Checkout"}
                 </Link>
               </div>
             ) : (

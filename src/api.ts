@@ -54,6 +54,8 @@ export default {
     httpClient.delete(`${prefix}/lots/${lotId}`),
   setLot: ({ lotId }: { lotId: number }) =>
     httpClient.put(`${prefix}/lots/${lotId}/set`),
+  uploadLotCover: ({ formData }: any) =>
+    httpClient.post(`${prefix}/lots/upload`, formData),
 
   // orders
   fetchOrders: () => httpClient.get(`${prefix}/orders`),

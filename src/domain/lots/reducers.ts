@@ -73,6 +73,13 @@ export const lotsReducers: Reducer = (
     case lotsActions.fetchLot.failure:
       return { ...lotsInitialState };
 
+    // on upload image
+    case lotsActions.uploadCover.success:
+      return {
+        ...lotsState,
+        resource: { ...lotsState.resource, image: payload.image }
+      };
+
     default:
       return { ...lotsState };
   }
