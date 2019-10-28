@@ -9,6 +9,7 @@ import { StateInterface } from "../../domain";
 import "./styles/lotDetailsStyles.scss";
 import BidsInterface from "../../interfaces/bid";
 import { getWinnersBid } from "../../libs/helpers";
+import OrderInterface from "../../interfaces/order";
 
 interface Props {
   match: {
@@ -25,11 +26,12 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
     },
     history
   } = props;
+  const [order, setOrder] = useState<OrderInterface>();
   const { isLoading, resource: lot } = useSelector(
     (state: StateInterface) => state.lots
   );
   const userId = useSelector((state: StateInterface) => state.user.id);
-  const { isLoading: isBidsLoading, resources: bids } = useSelector(
+  const { resources: bids } = useSelector(
     (state: StateInterface) => state.bids
   );
   const bidsTotal = useSelector(
@@ -57,14 +59,17 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
   useEffect(() => {
     if (lot.bids && lot.bids.length) {
       const winnersBid = getWinnersBid(lot.bids);
-      setIsWinner(!!winnersBid && winnersBid.user.id === userId);
+      if (!!winnersBid) {
+        setIsWinner(winnersBid.user.id === userId);
+        setOrder(winnersBid.order);
+      }
     }
-  }, [bids, isWinner, userId]);
+  }, [lot]);
 
   return (
     <section className="lotDetails">
       {!!lot && (
-        <div className="lot" key={`${lot.id} ${lot.title}`}>
+        <div className="lot">
           <div className="lot__img">
             <div>
               {lot.image && (
@@ -122,8 +127,8 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
               lot.status === "pending" && (
                 <div className="lot_options">
                   <small>
-                    You may change or deledte lot, lot is not processed until
-                    you push "Set the lot" button. After that you won't change
+                    You may change or delete lot, lot is not processed until you
+                    push "Set the lot" button. After that you won't change
                     anything.
                   </small>
                   <button
@@ -177,13 +182,32 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                   className="lot_options_checkout_button"
                   to={{ pathname: `/lots/${lot.id}/order` }}
                 >
-                  Checkout
+                  {!!order ? "Update Order" : "Checkout"}
                 </Link>
               </div>
             ) : (
               ""
             )}
           </div>
+          {!!order && (
+            <div className="lot__order">
+              <div className="lot__order_item">
+                <h4>Order</h4>
+              </div>
+              <div className="lot__order_item">
+                <h4>Status:</h4>
+                <p>{order.status}</p>
+              </div>
+              <div className="lot__order_item">
+                <h4>Arrival type:</h4>
+                <p>{order.type}</p>
+              </div>
+              <div className="lot__order_item arrival_location">
+                <h4>Arrival location:</h4>
+                <p>{order.arrivalLocation}</p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -194,7 +218,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
 
         <div className="table">
           <div className="row head">
-            <div className="id"></div>
+            <div className="id"> </div>
             <div className="customer">Customer</div>
             <div className="proposition">Proposition</div>
             <div className="time">Time</div>

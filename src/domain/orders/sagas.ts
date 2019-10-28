@@ -1,7 +1,7 @@
 import { put, call } from "redux-saga/effects";
 import Api from "../../api";
 import * as orderActions from "../../domain/orders/actions";
-import { showAxiosErrors } from "../../libs/helpers";
+import { showAxiosErrors, toast } from "../../libs/helpers";
 import {
   FetchOrderActionType,
   OrderActionType
@@ -38,7 +38,10 @@ export function* fetchOrder({ payload: { orderId } }: FetchOrderActionType) {
   }
 }
 
-export function* createOrder({ payload: { lotId, order } }: OrderActionType) {
+export function* createOrder({
+  payload: { lotId, order },
+  history
+}: OrderActionType) {
   console.log(order);
   try {
     const { data } = yield call(Api.createOrder, { lotId, order });
@@ -46,19 +49,26 @@ export function* createOrder({ payload: { lotId, order } }: OrderActionType) {
       type: orderActions.createOrder.success,
       payload: data
     });
+    toast("Order created successfully", "success");
+    history.push(`/lots/${lotId}`);
   } catch (e) {
     showAxiosErrors(e.response);
     yield put({ type: orderActions.createOrder.failure, payload: e });
   }
 }
 
-export function* updateOrder({ payload: { lotId, order } }: OrderActionType) {
+export function* updateOrder({
+  payload: { lotId, order },
+  history
+}: OrderActionType) {
   try {
     const { data } = yield call(Api.updateOrder, { lotId, order });
     yield put({
       type: orderActions.updateOrder.success,
       payload: data
     });
+    toast("Order updated successfully", "success");
+    history.push(`/lots/${lotId}`);
   } catch (e) {
     showAxiosErrors(e.response);
     yield put({ type: orderActions.createOrder.failure, payload: e });

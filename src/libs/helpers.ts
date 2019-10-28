@@ -1,27 +1,27 @@
-import { toast as toast123 } from "react-toastify";
+import { toast as toastNative } from "react-toastify";
 import responseErrorInterface from "../interfaces/responseError";
 import BidsInterface from "../interfaces/bid";
 
 export const toast = (msg: string, type = "") => {
   switch (type) {
     case "success":
-      toast123.success(msg, {
-        position: toast123.POSITION.TOP_RIGHT
+      toastNative.success(msg, {
+        position: toastNative.POSITION.TOP_RIGHT
       });
       break;
     case "info":
-      toast123.info(msg, {
-        position: toast123.POSITION.TOP_RIGHT
+      toastNative.info(msg, {
+        position: toastNative.POSITION.TOP_RIGHT
       });
       break;
     case "warn":
-      toast123.warn(msg, {
-        position: toast123.POSITION.TOP_RIGHT
+      toastNative.warn(msg, {
+        position: toastNative.POSITION.TOP_RIGHT
       });
       break;
     default:
-      toast123.error(msg, {
-        position: toast123.POSITION.TOP_RIGHT
+      toastNative.error(msg, {
+        position: toastNative.POSITION.TOP_RIGHT
       });
   }
 };
