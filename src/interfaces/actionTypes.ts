@@ -91,6 +91,21 @@ export interface CreateLotActionType extends ActionType {
   };
   history: History;
 }
+
+export interface ExecuteLotActionType extends ActionType {
+  payload: {
+    lotId: number;
+  };
+  history: History;
+}
+
+export interface ReceiveLotActionType extends ActionType {
+  payload: {
+    lotId: number;
+  };
+  history: History;
+}
+
 // bids
 export interface BidsActionType extends ActionType {
   payload: {

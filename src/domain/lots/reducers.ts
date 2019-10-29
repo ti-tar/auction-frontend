@@ -70,6 +70,21 @@ export const lotsReducers: Reducer = (lotsState: LotsStateInterface, { type, pay
     case lotsActions.fetchLot.failure:
       return { ...lotsInitialState };
 
+    // execute order
+    case lotsActions.executeOrder.success:
+      return { ...lotsState, resource: { ...payload.resource }, isLoading: false };
+
+    case lotsActions.executeOrder.failure:
+      return { ...lotsInitialState };
+
+    // receive order
+    case lotsActions.receiveOrder.success:
+      return { ...lotsState, resource: { ...payload.resource }, isLoading: false };
+
+    case lotsActions.receiveOrder.failure:
+      return { ...lotsInitialState };
+
+    // clear
     case lotsActions.clearLot.success:
       return { ...lotsInitialState };
 

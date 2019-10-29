@@ -10,7 +10,10 @@ import {
   CreateLotActionType,
   SetLotToAuctionActionType,
   DeleteLotActionType,
-  UploadCoverActionType
+  UploadCoverActionType,
+  ActionType,
+  ExecuteLotActionType,
+  ReceiveLotActionType
 } from "../../interfaces/actionTypes";
 import { FORMS } from "../../constants";
 
@@ -150,14 +153,14 @@ export function* uploadLotCover({ payload: { formData } }: UploadCoverActionType
   }
 }
 
-export function* executeOrder(action: any) {
-  const { lotId } = action.payload;
+export function* executeOrder({ payload: { lotId }, history }: ExecuteLotActionType) {
   try {
     const { data } = yield call(Api.executeOrder, { lotId });
     yield put({
       type: lotsActions.executeOrder.success,
       payload: data
     });
+    history.push(`/lots/${lotId}`);
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
@@ -167,14 +170,14 @@ export function* executeOrder(action: any) {
   }
 }
 
-export function* receiveOrder(action: any) {
-  const { lotId } = action.payload;
+export function* receiveOrder({ payload: { lotId }, history }: ReceiveLotActionType) {
   try {
     const { data } = yield call(Api.receiveOrder, { lotId });
     yield put({
       type: lotsActions.receiveOrder.success,
       payload: data
     });
+    history.push(`/lots/${lotId}`);
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({

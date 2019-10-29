@@ -70,7 +70,9 @@
         .lot_options_set_lot_button,
         .lot_options_edit_lot_button,
         .lot_options_checkout_button,
-        .lot_options_delete_lot_button
+        .lot_options_delete_lot_button,
+        .lot_options_execute_lot_button,
+        .lot_options_receive_lot_button
         {
           display: flex;
           width: 100%;
@@ -88,15 +90,11 @@
           color: black;
         }
 
-        .lot_options_make_bid_button {
-          background: #27AE60;
-        }
-
-        .lot_options_checkout_button {
-          background: #27AE60;
-        }
-
-        .lot_options_set_lot_button {
+        .lot_options_make_bid_button,
+        .lot_options_checkout_button,
+        .lot_options_set_lot_button,
+        .lot_options_execute_lot_button,
+        .lot_options_receive_lot_button {
           background: #27AE60;
         }
 

@@ -51,6 +51,20 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
       history
     });
 
+  const executeOrder = (lotId: string) =>
+    dispatch({
+      type: lotsActions.executeOrder.request,
+      payload: { lotId },
+      history
+    });
+
+  const receiveOrder = (lotId: string) =>
+    dispatch({
+      type: lotsActions.receiveOrder.request,
+      payload: { lotId },
+      history
+    });
+
   const [isWinner, setIsWinner] = useState(false);
   useEffect(() => {
     if (lot.bids && lot.bids.length) {
@@ -115,6 +129,8 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
               <LotButtons
                 lotId={lotId}
                 deleteLot={deleteLot}
+                executeOrder={executeOrder}
+                receiveOrder={receiveOrder}
                 lot={lot}
                 userId={userId}
                 isWinner={isWinner}
