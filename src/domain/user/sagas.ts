@@ -3,8 +3,9 @@ import Api from "../../api";
 import * as usersActions from "../../domain/user/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
 import { setStorageItem, clearStorage } from "../../libs/storage";
-import { AuthActionType } from "../../interfaces/actionTypes";
+import {AuthActionType, SignUpActionType} from '../../interfaces/actionTypes';
 import { UserInterface } from "../../interfaces/user";
+import { UserCreateInterface } from "../../components/form/signupForm";
 
 export function* fetchProfile() {
   try {
@@ -32,9 +33,12 @@ function setUserToLocalStorage(user: UserInterface) {
   setStorageItem("firstName", firstName);
 }
 
-export function* createUser({ payload, history }: AuthActionType) {
+export function* createUser({
+  payload: { newUser },
+  history
+}: SignUpActionType) {
   try {
-    const { data } = yield call(Api.createUser, payload);
+    const { data } = yield call(Api.createUser, { newUser });
 
     yield put({
       type: usersActions.createNewUser.success,

@@ -4,9 +4,9 @@ import qs from "qs";
 import { getStorageItem } from "./libs/storage";
 // interfaces
 import LotCreateInterface from "./interfaces/lotCreate";
-import userCreateInterface from "./interfaces/userCreate";
 import { OrderFormValues } from "./components/form/orderForm";
 import { BidFormData } from "./components/form/bidForm";
+import { UserCreateInterface } from "./components/form/signupForm";
 
 const getAxiosInstance = () =>
   axios.create({
@@ -81,7 +81,7 @@ export default {
 
   // user
   fetchProfile: () => httpClient.get(`${prefix}/users/profile`),
-  createUser: (newUser: userCreateInterface) =>
+  createUser: ({ newUser }: { newUser: UserCreateInterface }) =>
     httpClient.post(`${prefix}/auth/signup`, newUser),
 
   // auth

@@ -1,29 +1,20 @@
 import React from "react";
 import "./styles/signUpStyles.scss";
-import { Field, reduxForm } from "redux-form";
-import { compose } from "redux";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as usersActions from "../../domain/user/actions";
-import { withRouter } from "react-router";
+import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
+import SignUpForm, {
+  UserCreateInterface
+} from "../../components/form/signupForm";
 
-// interfaces
-import userCreateInterface from "../../interfaces/userCreate";
-
-// css
 import "./styles/signUpStyles.scss";
-import { FORMS } from "../../constants";
+import { SignUpActionType } from "../../interfaces/actionTypes";
 
-type Props = React.ReactChild & {
-  handleSubmit: Function;
-  createNewUser: Function;
-  history: Function;
-};
+const SignUp: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
+  const dispatch = useDispatch();
 
-const SignUp: React.FunctionComponent<Props> = props => {
-  const { handleSubmit, createNewUser, history } = props;
-
-  const handleBeforeSubmit = (formValues: any) => {
+  const handleBeforeSubmit = (formValues: UserCreateInterface): void => {
     if (
       !formValues.firstName ||
       !formValues.lastName ||
@@ -32,87 +23,24 @@ const SignUp: React.FunctionComponent<Props> = props => {
       !formValues.phone
     ) {
       toast.error("fill all fields");
-      return false;
+      return;
     }
 
-    const userToSend: userCreateInterface = {
-      firstName: formValues.firstName,
-      lastName: formValues.lastName,
-      email: formValues.email,
-      phone: formValues.phone,
-      password: formValues.password
-    };
-
-    createNewUser(userToSend, history);
+    dispatch<SignUpActionType>({
+      type: usersActions.createNewUser.request,
+      payload: { newUser: formValues },
+      history
+    });
   };
 
   return (
     <section className="signUp">
       <h1>Sign Up</h1>
       <div className="formWrapper">
-        <form onSubmit={handleSubmit(handleBeforeSubmit)}>
-          <Field
-            name="firstName"
-            type="text"
-            component="input"
-            placeholder="first name"
-          />
-
-          <Field
-            name="lastName"
-            type="text"
-            component="input"
-            placeholder="last name"
-          />
-
-          <Field
-            name="email"
-            type="text"
-            component="input"
-            placeholder="email"
-          />
-
-          <Field
-            name="phone"
-            type="text"
-            component="input"
-            placeholder="380991234567"
-          />
-
-          <Field
-            name="password"
-            type="password"
-            component="input"
-            placeholder="password"
-          />
-
-          <div className="submitBtn">
-            <button type="submit">Submit</button>
-          </div>
-        </form>
+        <SignUpForm onSubmit={handleBeforeSubmit} />
       </div>
     </section>
   );
 };
 
-const SignUpRouteComponent: any = compose(
-  connect(
-    null,
-    {
-      createNewUser: (
-        userToSend: userCreateInterface,
-        history: Function
-      ): any => ({
-        type: usersActions.createNewUser.request,
-        payload: userToSend,
-        history
-      })
-    }
-  ),
-  reduxForm({
-    form: FORMS.FORM_SIGNUP
-  }),
-  withRouter
-)(SignUp);
-
-export default SignUpRouteComponent;
+export default SignUp;

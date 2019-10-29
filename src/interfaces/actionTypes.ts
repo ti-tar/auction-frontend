@@ -1,6 +1,7 @@
 import { History } from "history";
 import LotCreateInterface from "./lotCreate";
-import {OrderFormValues} from "../components/form/orderForm";
+import { OrderFormValues } from "../components/form/orderForm";
+import { UserCreateInterface } from "../components/form/signupForm";
 
 export interface ActionType {
   type: string;
@@ -8,6 +9,13 @@ export interface ActionType {
 }
 
 export interface AuthActionType extends ActionType {
+  history: History;
+}
+
+export interface SignUpActionType extends ActionType {
+  payload: {
+    newUser: UserCreateInterface;
+  };
   history: History;
 }
 
