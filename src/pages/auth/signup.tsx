@@ -4,9 +4,7 @@ import { useDispatch } from "react-redux";
 import * as usersActions from "../../domain/user/actions";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
-import SignUpForm, {
-  UserCreateInterface
-} from "../../components/form/signupForm";
+import SignUpForm, { UserCreateInterface } from "../../components/form/signupForm";
 
 import "./styles/signUpStyles.scss";
 import { SignUpActionType } from "../../interfaces/actionTypes";

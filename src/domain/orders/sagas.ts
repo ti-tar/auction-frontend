@@ -2,10 +2,7 @@ import { put, call } from "redux-saga/effects";
 import Api from "../../api";
 import * as orderActions from "../../domain/orders/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
-import {
-  FetchOrderActionType,
-  OrderActionType
-} from "../../interfaces/actionTypes";
+import { FetchOrderActionType, OrderActionType } from "../../interfaces/actionTypes";
 
 export function* fetchOrders() {
   try {
@@ -38,10 +35,7 @@ export function* fetchOrder({ payload: { orderId } }: FetchOrderActionType) {
   }
 }
 
-export function* createOrder({
-  payload: { lotId, order },
-  history
-}: OrderActionType) {
+export function* createOrder({ payload: { lotId, order }, history }: OrderActionType) {
   console.log(order);
   try {
     const { data } = yield call(Api.createOrder, { lotId, order });
@@ -57,10 +51,7 @@ export function* createOrder({
   }
 }
 
-export function* updateOrder({
-  payload: { lotId, order },
-  history
-}: OrderActionType) {
+export function* updateOrder({ payload: { lotId, order }, history }: OrderActionType) {
   try {
     const { data } = yield call(Api.updateOrder, { lotId, order });
     yield put({

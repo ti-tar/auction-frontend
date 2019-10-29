@@ -1,7 +1,8 @@
 import { History } from "history";
-import LotCreateInterface from "./lotCreate";
 import { OrderFormValues } from "../components/form/orderForm";
 import { UserCreateInterface } from "../components/form/signupForm";
+import { LotFormValues } from "../components/form/lotForm";
+import { BidFormData } from "../components/form/bidForm";
 
 export interface ActionType {
   type: string;
@@ -26,6 +27,23 @@ export interface ForgotPasswordActionType extends ActionType {
   history: History;
 }
 
+export interface ResetPasswordActionType extends ActionType {
+  payload: {
+    token: string;
+    password: string;
+    passwordConfirm: string;
+  };
+  history: History;
+}
+
+export interface VerifyEmailActionType extends ActionType {
+  payload: {
+    token: string;
+  };
+  history: History;
+}
+
+// lots
 export interface FetchLotsActionType extends ActionType {
   payload: {
     filter: string;
@@ -42,7 +60,7 @@ export interface FetchLotActionType extends ActionType {
 export interface UpdateLotActionType extends ActionType {
   payload: {
     lotId: number;
-    updatedLot: any;
+    updatedLot: LotFormValues;
   };
   history: History;
 }
@@ -61,13 +79,34 @@ export interface SetLotToAuctionActionType extends ActionType {
   history: History;
 }
 
+export interface UploadCoverActionType extends ActionType {
+  payload: {
+    formData: FormData;
+  };
+}
+
 export interface CreateLotActionType extends ActionType {
   payload: {
-    newLot: LotCreateInterface;
+    newLot: LotFormValues;
+  };
+  history: History;
+}
+// bids
+export interface BidsActionType extends ActionType {
+  payload: {
+    lotId: number;
+  };
+  history: History;
+}
+export interface CreateBidActionType extends ActionType {
+  payload: {
+    lotId: number;
+    newBid: BidFormData;
   };
   history: History;
 }
 
+// orders
 export interface FetchOrderActionType extends ActionType {
   payload: {
     orderId: number;

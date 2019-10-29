@@ -6,7 +6,9 @@ import { setStorageItem, clearStorage } from "../../libs/storage";
 import {
   AuthActionType,
   ForgotPasswordActionType,
-  SignUpActionType
+  ResetPasswordActionType,
+  SignUpActionType,
+  VerifyEmailActionType
 } from "../../interfaces/actionTypes";
 import { UserInterface } from "../../interfaces/user";
 
@@ -36,10 +38,7 @@ function setUserToLocalStorage(user: UserInterface) {
   setStorageItem("firstName", firstName);
 }
 
-export function* createUser({
-  payload: { newUser },
-  history
-}: SignUpActionType) {
+export function* createUser({ payload: { newUser }, history }: SignUpActionType) {
   try {
     const { data } = yield call(Api.createUser, { newUser });
 
@@ -89,9 +88,9 @@ export function* makeLogout({ history }: AuthActionType) {
   history.push("/");
 }
 
-export function* sendVerifyEmail({ payload, history }: AuthActionType) {
+export function* sendVerifyEmail({ payload: { token }, history }: VerifyEmailActionType) {
   try {
-    const { data } = yield call(Api.verifyEmail, payload);
+    const { data } = yield call(Api.verifyEmail, { token });
     yield put({
       type: usersActions.verifyEmail.success,
       payload: data
@@ -107,10 +106,7 @@ export function* sendVerifyEmail({ payload, history }: AuthActionType) {
   }
 }
 
-export function* sendForgotPassword({
-  payload: { email },
-  history
-}: ForgotPasswordActionType) {
+export function* sendForgotPassword({ payload: { email }, history }: ForgotPasswordActionType) {
   try {
     const { data } = yield call(Api.forgotPassword, { email });
     yield put({
@@ -127,7 +123,7 @@ export function* sendForgotPassword({
   }
 }
 
-export function* sendResetPassword({ payload, history }: AuthActionType) {
+export function* sendResetPassword({ payload, history }: ResetPasswordActionType) {
   try {
     const { data } = yield call(Api.resetPassword, payload);
     yield put({

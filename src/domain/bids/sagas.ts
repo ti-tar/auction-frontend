@@ -2,10 +2,9 @@ import { put, call } from "redux-saga/effects";
 import Api from "../../api";
 import * as bidsActions from "../../domain/bids/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
+import { BidsActionType, CreateBidActionType } from "../../interfaces/actionTypes";
 
-export function* fetchBids({ payload }: any) {
-  const { lotId } = payload;
-
+export function* fetchBids({ payload: { lotId } }: BidsActionType) {
   try {
     const { data } = yield call(Api.fetchBids, { lotId });
 
@@ -23,9 +22,7 @@ export function* fetchBids({ payload }: any) {
   }
 }
 
-export function* createBid({ payload, history }: any) {
-  const { newBid, lotId } = payload;
-
+export function* createBid({ payload: { newBid, lotId }, history }: CreateBidActionType) {
   try {
     const { data } = yield call(Api.createBid, { newBid, lotId });
 

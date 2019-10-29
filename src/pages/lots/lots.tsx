@@ -18,12 +18,8 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
   const { page = 1 } = qs.parse(queryString);
 
   const lots = useSelector((state: StateInterface) => state.lots.resources);
-  const { total, perPage } = useSelector(
-    (state: StateInterface) => state.lots.meta
-  );
-  const isLoading = useSelector(
-    (state: StateInterface) => state.lots.isLoading
-  );
+  const { total, perPage } = useSelector((state: StateInterface) => state.lots.meta);
+  const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);
   const userId = useSelector((state: StateInterface) => state.user.id);
 
   const dispatch = useDispatch();
@@ -80,14 +76,9 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
         lots.map(lot => (
           <div className="lot" key={`${lot.id} ${lot.title}`}>
             <div className="lot__img">
-              {userId === lot.user.id && (
-                <div className="your_lot">Your lot</div>
-              )}
+              {userId === lot.user.id && <div className="your_lot">Your lot</div>}
               <div className="image_place">
-                <img
-                  src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`}
-                  alt={lot.title}
-                />
+                <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} alt={lot.title} />
               </div>
             </div>
             <div className="lot__product">

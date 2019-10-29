@@ -15,10 +15,7 @@ export const ordersInitialState: OrderState = {
   isLoading: false
 };
 
-export const ordersReducers: Reducer = (
-  ordersState: OrderState,
-  { type, payload }: ActionType
-) => {
+export const ordersReducers: Reducer = (ordersState: OrderState, { type, payload }: ActionType) => {
   switch (type) {
     case ordersActions.fetchOrders.request: {
       return { ...ordersInitialState, isLoading: true };

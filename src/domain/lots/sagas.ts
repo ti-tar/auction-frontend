@@ -9,7 +9,8 @@ import {
   UpdateLotActionType,
   CreateLotActionType,
   SetLotToAuctionActionType,
-  DeleteLotActionType
+  DeleteLotActionType,
+  UploadCoverActionType
 } from "../../interfaces/actionTypes";
 import { FORMS } from "../../constants";
 
@@ -66,10 +67,7 @@ export function* clearLot() {
   yield put({ type: lotsActions.clearLot.success });
 }
 
-export function* updateLot({
-  payload: { lotId, updatedLot },
-  history
-}: UpdateLotActionType) {
+export function* updateLot({ payload: { lotId, updatedLot }, history }: UpdateLotActionType) {
   try {
     const { data } = yield call(Api.updateLot, { lotId, updatedLot });
 
@@ -89,10 +87,7 @@ export function* updateLot({
   }
 }
 
-export function* createNewLot({
-  payload: { newLot },
-  history
-}: CreateLotActionType) {
+export function* createNewLot({ payload: { newLot }, history }: CreateLotActionType) {
   try {
     const { data } = yield call(Api.createLot, { newLot });
     yield put({
@@ -110,10 +105,7 @@ export function* createNewLot({
   }
 }
 
-export function* deleteLot({
-  payload: { lotId },
-  history
-}: DeleteLotActionType) {
+export function* deleteLot({ payload: { lotId }, history }: DeleteLotActionType) {
   try {
     yield call(Api.deleteLot, { lotId });
     toast("Lot successfully deleted!", "success");
@@ -143,9 +135,7 @@ export function* setLot(action: SetLotToAuctionActionType) {
   }
 }
 
-export function* uploadLotCover(action: any) {
-  const { formData } = action.payload;
-
+export function* uploadLotCover({ payload: { formData } }: UploadCoverActionType) {
   try {
     const { data } = yield call(Api.uploadLotCover, { formData });
     toast("Lot cover successfully uploaded!", "success");

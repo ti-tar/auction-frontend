@@ -11,9 +11,7 @@ import "./styles/signUpStyles.scss";
 
 const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(
-    (state: StateInterface) => state.user.isLoading
-  );
+  const isLoading = useSelector((state: StateInterface) => state.user.isLoading);
 
   const handleBeforeSubmit = (formValues: LoginInterface): void => {
     if (!formValues.email || !formValues.password) {

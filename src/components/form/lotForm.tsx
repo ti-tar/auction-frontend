@@ -8,18 +8,10 @@ interface Props {}
 
 export interface LotFormValues extends LotInterface {}
 
-const LotForm: React.FC<Props & InjectedFormProps<LotFormValues>> = ({
-  handleSubmit
-}) => {
+const LotForm: React.FC<Props & InjectedFormProps<LotFormValues>> = ({ handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <Field
-        name="title"
-        type="text"
-        component="input"
-        placeholder="title"
-        autoComplete="off"
-      />
+      <Field name="title" type="text" component="input" placeholder="title" autoComplete="off" />
 
       <Field
         name="currentPrice"
@@ -41,11 +33,7 @@ const LotForm: React.FC<Props & InjectedFormProps<LotFormValues>> = ({
 
       <Field name="endTime" type="text" component={CustomDatePicker} />
 
-      <Field
-        name="description"
-        component="textarea"
-        placeholder="description"
-      />
+      <Field name="description" component="textarea" placeholder="description" />
 
       <Field name="image" type="hidden" component="input" placeholder="image" />
 

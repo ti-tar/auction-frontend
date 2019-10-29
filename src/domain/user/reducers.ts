@@ -19,10 +19,7 @@ export const userInitialState: UserStateInterface = {
   isLoading: false
 };
 
-export const userReducer: Reducer = (
-  state: UserStateInterface,
-  { type, payload }: ActionType
-) => {
+export const userReducer: Reducer = (state: UserStateInterface, { type, payload }: ActionType) => {
   switch (type) {
     case userActions.fetchProfile.request:
       return { ...state };

@@ -23,10 +23,7 @@ export const bidsInitialState: BidsStateInterface = {
   isLoading: false
 };
 
-export const bidsReducers: Reducer = (
-  bidsState: BidsStateInterface,
-  { type, payload }: ActionType
-) => {
+export const bidsReducers: Reducer = (bidsState: BidsStateInterface, { type, payload }: ActionType) => {
   switch (type) {
     case bidsActions.fetchBids.request:
       return { ...bidsState, isLoading: true };

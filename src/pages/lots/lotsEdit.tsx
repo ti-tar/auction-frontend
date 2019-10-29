@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import * as lotsActions from "../../domain/lots/actions";
 import LotForm, { LotFormValues } from "../../components/form/lotForm";
-import LotCreateInterface from "../../interfaces/lotCreate";
 import "./styles/lotsCreateStyles.scss";
 import LotInterface from "../../interfaces/lot";
 import { StateInterface } from "../../domain";
 import { FORMS } from "../../constants";
+import { UploadCoverActionType } from "../../interfaces/actionTypes";
 
 type Props = React.ReactChild & {
   match: {
@@ -29,15 +29,11 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
   const [image, setImage] = useState();
   const dispatch = useDispatch();
 
-  const lot: LotInterface = useSelector(
-    (state: StateInterface) => state.lots.resource
-  );
+  const lot: LotInterface = useSelector((state: StateInterface) => state.lots.resource);
 
   const formImage: string | undefined = useSelector(
     (state: StateInterface) =>
-      !!state.form &&
-      state.form[FORMS.FORM_LOT_EDIT] &&
-      state.form[FORMS.FORM_LOT_EDIT].values.image
+      !!state.form && state.form[FORMS.FORM_LOT_EDIT] && state.form[FORMS.FORM_LOT_EDIT].values.image
   );
 
   useEffect(() => {
@@ -57,12 +53,7 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
   }, [formImage]);
 
   const handleBeforeSubmit = (formValues: LotFormValues): void => {
-    if (
-      !formValues.title ||
-      !formValues.currentPrice ||
-      !formValues.estimatedPrice ||
-      !formValues.endTime
-    ) {
+    if (!formValues.title || !formValues.currentPrice || !formValues.estimatedPrice || !formValues.endTime) {
       toast.error("fill all fields");
       return;
     }
@@ -72,17 +63,14 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
       return;
     }
 
-    const lotToSend: LotCreateInterface = {
+    const lotToSend = {
       title: formValues.title,
       currentPrice: formValues.currentPrice,
       estimatedPrice: formValues.estimatedPrice,
       endTime: moment(formValues.endTime).toISOString(),
+      description: formValues.description,
       image: image
     };
-
-    if (formValues.description) {
-      lotToSend.description = formValues.description;
-    }
 
     if (lotId) {
       dispatch({
@@ -99,11 +87,12 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
     }
   };
 
-  const onChange = (e: any) => {
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-
-    dispatch({ type: lotsActions.uploadCover.request, payload: { formData } });
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const formData: FormData = new FormData();
+    if (e.target.files) {
+      formData.append("file", e.target.files[0]);
+    }
+    dispatch<UploadCoverActionType>({ type: lotsActions.uploadCover.request, payload: { formData } });
   };
 
   return (
@@ -116,19 +105,9 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
         <div className="coverImage">
           <label>Cover image</label>
           <div>
-            <input
-              type="file"
-              accept=".jpg, .png, .jpeg"
-              data-enctype="multipart/form-data"
-              onChange={onChange}
-            />
+            <input type="file" accept=".jpg, .png, .jpeg" data-enctype="multipart/form-data" onChange={onChange} />
           </div>
-          {!!image && (
-            <img
-              src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${image}`}
-              alt=""
-            />
-          )}
+          {!!image && <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${image}`} alt="" />}
         </div>
       </div>
     </section>

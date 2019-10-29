@@ -16,9 +16,7 @@ interface Props {
   };
 }
 
-const BidCreate: React.FC<
-  Props & RouteComponentProps & InjectedFormProps<BidFormData>
-> = props => {
+const BidCreate: React.FC<Props & RouteComponentProps & InjectedFormProps<BidFormData>> = props => {
   const {
     history,
     match: {

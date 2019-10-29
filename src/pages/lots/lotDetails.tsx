@@ -28,16 +28,10 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
     history
   } = props;
   const [order, setOrder] = useState<OrderInterface>();
-  const { isLoading, resource: lot } = useSelector(
-    (state: StateInterface) => state.lots
-  );
+  const { isLoading, resource: lot } = useSelector((state: StateInterface) => state.lots);
   const userId = useSelector((state: StateInterface) => state.user.id);
-  const { resources: bids } = useSelector(
-    (state: StateInterface) => state.bids
-  );
-  const bidsTotal = useSelector(
-    (state: StateInterface) => state.bids.meta.total
-  );
+  const { resources: bids } = useSelector((state: StateInterface) => state.bids);
+  const bidsTotal = useSelector((state: StateInterface) => state.bids.meta.total);
 
   const dispatch = useDispatch();
 
@@ -66,7 +60,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
         setOrder(winnersBid.order);
       }
     }
-  }, [lot]);
+  }, [lot, userId]);
 
   const onSetLot = (lotId: string) => {
     setLot(lotId);
@@ -79,18 +73,13 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
           <div className="lot__img">
             <div>
               {lot.image && (
-                <img
-                  src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`}
-                  alt=""
-                />
+                <img src={`${process.env.REACT_APP_STATIC_API_URL}/images/lots/thumb/${lot.image}`} alt="" />
               )}
             </div>
           </div>
           <div className="lot__product">
             {lot.user && lot.user.id !== userId && lot.status === "closed" && (
-              <div className="winnerStatus">
-                {isWinner ? "You are the Winner" : "You are not the winner"}
-              </div>
+              <div className="winnerStatus">{isWinner ? "You are the Winner" : "You are not the winner"}</div>
             )}
             <h3>
               {lot.title} ({lot.status})
@@ -115,14 +104,11 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                 <span>Current Price: </span> <span>${lot.currentPrice}</span>
               </div>
               <div>
-                <span>Estimated Price: </span>{" "}
-                <span>${lot.estimatedPrice}</span>
+                <span>Estimated Price: </span> <span>${lot.estimatedPrice}</span>
               </div>
               <div>
                 <span>End Time</span>
-                <span>
-                  {moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}
-                </span>
+                <span>{moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}</span>
               </div>
             </div>
             {!isLoading && (
@@ -176,13 +162,9 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
             bids.map((bid: BidsInterface) => (
               <div key={bid.proposedPrice} className="row">
                 <div className="id"> </div>
-                <div className="customer">
-                  {bid.user ? bid.user.firstName : ""}
-                </div>
+                <div className="customer">{bid.user ? bid.user.firstName : ""}</div>
                 <div className="proposition">{bid.proposedPrice}</div>
-                <div className="time">
-                  {moment(bid.bidCreationTime).format("DD MMM YY, hh:mm:ss")}
-                </div>
+                <div className="time">{moment(bid.bidCreationTime).format("DD MMM YY, hh:mm:ss")}</div>
               </div>
             ))}
         </div>

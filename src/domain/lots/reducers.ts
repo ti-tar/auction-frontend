@@ -37,10 +37,7 @@ export const lotsInitialState: LotsStateInterface = {
   isLoading: false
 };
 
-export const lotsReducers: Reducer = (
-  lotsState: LotsStateInterface,
-  { type, payload }: ActionType
-) => {
+export const lotsReducers: Reducer = (lotsState: LotsStateInterface, { type, payload }: ActionType) => {
   switch (type) {
     case lotsActions.fetchLots.request:
       return { ...lotsInitialState, isLoading: true };

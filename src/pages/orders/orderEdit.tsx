@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { InjectedFormProps } from "redux-form";
 import OrderForm, { OrderFormValues } from "../../components/form/orderForm";
 import { toast } from "react-toastify";
 import * as ordersActions from "../../domain/orders/actions";
@@ -18,9 +17,7 @@ interface Props {
   };
 }
 
-const OrderEdit: React.FC<
-  Props & InjectedFormProps<{}, {}> & RouteComponentProps
-> = props => {
+const OrderEdit: React.FC<Props & RouteComponentProps> = props => {
   const {
     match: {
       params: { lotId }
@@ -28,16 +25,14 @@ const OrderEdit: React.FC<
     history
   } = props;
 
-  const { resource: lot, isLoading } = useSelector(
-    (state: StateInterface) => state.lots
-  );
+  const { resource: lot } = useSelector((state: StateInterface) => state.lots);
 
   const [order, setOrder] = useState({});
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: lotsActions.fetchLot.request, payload: { lotId } });
-  }, [dispatch]);
+  }, [dispatch, lotId]);
 
   useEffect(() => {
     if (lot.bids && lot.bids.length) {
@@ -46,7 +41,7 @@ const OrderEdit: React.FC<
         setOrder(winnersBid.order);
       }
     }
-  }, [lot.id]);
+  }, [lot.id, lot.bids]);
 
   const handleOnSubmit = (formValues: OrderFormValues) => {
     if (!formValues.arrivalLocation || formValues.type === "pending") {

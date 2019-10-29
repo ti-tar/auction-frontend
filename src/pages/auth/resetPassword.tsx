@@ -1,22 +1,18 @@
 import React, { useState } from "react";
 import { toast } from "../../libs/helpers";
 import qs from "qs";
-
-import { connect } from "react-redux";
-import { compose } from "redux";
+import { useDispatch } from "react-redux";
 import * as userActions from "../../domain/user/actions";
+import { RouteComponentProps } from "react-router";
 
-// css
 import "./styles/signUpStyles.scss";
-import { withRouter } from "react-router";
 
-const ResetEmail: any = (props: any): any => {
-  const {
-    history,
-    resetPassword,
-    location: { search }
-  } = props;
+import { ResetPasswordActionType } from "../../interfaces/actionTypes";
 
+interface Props {}
+
+const ResetEmail: React.FC<Props & RouteComponentProps> = ({ history, location: { search } }) => {
+  const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
@@ -32,14 +28,15 @@ const ResetEmail: any = (props: any): any => {
       return false;
     }
 
-    resetPassword(
-      {
+    dispatch<ResetPasswordActionType>({
+      type: userActions.resetPassword.request,
+      payload: {
         token: searchOrg.token,
         password,
         passwordConfirm
       },
       history
-    );
+    });
   };
 
   return (
@@ -75,20 +72,4 @@ const ResetEmail: any = (props: any): any => {
   );
 };
 
-const ResetEmailRouteComponent: any = compose(
-  connect(
-    (state: any) => ({
-      // isLoading: state.user.isLoading,
-    }),
-    {
-      resetPassword: (resetPassData: any, history: any): any => ({
-        type: userActions.resetPassword.request,
-        payload: resetPassData,
-        history
-      })
-    }
-  ),
-  withRouter
-)(ResetEmail);
-
-export default ResetEmailRouteComponent;
+export default ResetEmail;

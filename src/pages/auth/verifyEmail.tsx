@@ -1,45 +1,36 @@
 import React from "react";
 import { toast } from "../../libs/helpers";
 import qs from "qs";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as userActions from "../../domain/user/actions";
-
-// css
 import "./styles/signUpStyles.scss";
+import { RouteComponentProps } from "react-router";
+import { VerifyEmailActionType } from "../../interfaces/actionTypes";
 
-type Props = React.ReactChild & {
-  verifyEmail: Function;
-  history: Function;
-  location: Record<string, any>;
-};
-
-// const VerifyEmail: React.FunctionComponent<Props> = (props) => {
-const VerifyEmail: any = (props: any): any => {
-  const {
-    history,
-    verifyEmail,
-    location: { search }
-  } = props;
-
+const VerifyEmail: React.FC<RouteComponentProps> = ({ history, location: { search } }) => {
+  const dispatch = useDispatch();
   const searchOrg = qs.parse(search.startsWith("?") ? search.slice(1) : search);
 
   if (!searchOrg.token) {
     toast("Wrong url format, ensure your copypaste link right way");
   }
 
-  const makeVerifyEmail = (formValues: any) => {
+  const makeVerifyEmail = (): void => {
     if (!searchOrg.token) {
       toast("Wrong url format, ensure your copypaste link right way");
-      return false;
+      return;
     }
 
-    verifyEmail(searchOrg.token, history);
+    dispatch<VerifyEmailActionType>({
+      type: userActions.verifyEmail.request,
+      payload: { token: searchOrg.token },
+      history
+    });
   };
 
   return (
     <section className="verifyEmail">
       <h1>Verify Email</h1>
-
       <div className="formWrapper">
         <button onClick={makeVerifyEmail}>Verify Email</button>
       </div>
@@ -47,17 +38,4 @@ const VerifyEmail: any = (props: any): any => {
   );
 };
 
-const VerifyEmailRouteComponent: any = connect(
-  (state: any) => ({
-    // isLoading: state.user.isLoading,
-  }),
-  {
-    verifyEmail: (token: string, history: any): any => ({
-      type: userActions.verifyEmail.request,
-      payload: { token },
-      history
-    })
-  }
-)(VerifyEmail);
-
-export default VerifyEmailRouteComponent;
+export default VerifyEmail;
