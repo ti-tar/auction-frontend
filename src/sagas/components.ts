@@ -4,6 +4,7 @@ import { fork, takeEvery } from "redux-saga/effects";
 import {
   fetchLots,
   fetchLot,
+  clearLot,
   createNewLot,
   updateLot,
   deleteLot,
@@ -46,6 +47,7 @@ interface WatchComponents {
 const watchComponents: WatchComponents = {
   [lotsActions.fetchLots.request]: fetchLots,
   [lotsActions.fetchLot.request]: fetchLot,
+  [lotsActions.clearLot.request]: clearLot,
   [lotsActions.createLot.request]: createNewLot,
   [lotsActions.updateLot.request]: updateLot,
   [lotsActions.deleteLot.request]: deleteLot,

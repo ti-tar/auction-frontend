@@ -1,4 +1,5 @@
 import { put, call } from "redux-saga/effects";
+import { change } from "redux-form";
 import Api from "../../api";
 import * as lotsActions from "../../domain/lots/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
@@ -58,6 +59,10 @@ export function* fetchLot({ payload: { lotId } }: FetchLotActionType) {
       payload: errors
     });
   }
+}
+
+export function* clearLot() {
+  yield put({ type: lotsActions.clearLot.success });
 }
 
 export function* updateLot({
@@ -144,10 +149,7 @@ export function* uploadLotCover(action: any) {
     const { data } = yield call(Api.uploadLotCover, { formData });
     toast("Lot cover successfully uploaded!", "success");
 
-    yield put({
-      type: lotsActions.uploadCover.success,
-      payload: { image: data.file.fileName }
-    });
+    yield put(change("form-lots-edit", "image", data.file.fileName));
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({
