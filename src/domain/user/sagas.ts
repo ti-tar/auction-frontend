@@ -3,9 +3,12 @@ import Api from "../../api";
 import * as usersActions from "../../domain/user/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
 import { setStorageItem, clearStorage } from "../../libs/storage";
-import {AuthActionType, SignUpActionType} from '../../interfaces/actionTypes';
+import {
+  AuthActionType,
+  ForgotPasswordActionType,
+  SignUpActionType
+} from "../../interfaces/actionTypes";
 import { UserInterface } from "../../interfaces/user";
-import { UserCreateInterface } from "../../components/form/signupForm";
 
 export function* fetchProfile() {
   try {
@@ -104,9 +107,12 @@ export function* sendVerifyEmail({ payload, history }: AuthActionType) {
   }
 }
 
-export function* sendForgotPassword({ payload, history }: AuthActionType) {
+export function* sendForgotPassword({
+  payload: { email },
+  history
+}: ForgotPasswordActionType) {
   try {
-    const { data } = yield call(Api.forgotPassword, payload);
+    const { data } = yield call(Api.forgotPassword, { email });
     yield put({
       type: usersActions.forgotPassword.success,
       payload: data

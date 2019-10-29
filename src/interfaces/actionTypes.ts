@@ -19,6 +19,13 @@ export interface SignUpActionType extends ActionType {
   history: History;
 }
 
+export interface ForgotPasswordActionType extends ActionType {
+  payload: {
+    email: string;
+  };
+  history: History;
+}
+
 export interface FetchLotsActionType extends ActionType {
   payload: {
     filter: string;

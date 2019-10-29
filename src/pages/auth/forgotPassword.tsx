@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { compose } from "redux";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as userActions from "../../domain/user/actions";
-
-// css
 import "./styles/signUpStyles.scss";
-import { withRouter } from "react-router";
+import { RouteComponentProps } from "react-router";
+import { ForgotPasswordActionType } from "../../interfaces/actionTypes";
 
-const ForgotPassword: any = (props: any): any => {
-  const { sendForgotEmail, history } = props;
-
+const ForgotPassword: React.FC<RouteComponentProps> = ({ history }): any => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
 
   const handleInput = (e: any) => {
@@ -17,11 +14,15 @@ const ForgotPassword: any = (props: any): any => {
   };
 
   const handleSendForgotEmail = () => {
-    sendForgotEmail({ email }, history);
+    dispatch<ForgotPasswordActionType>({
+      type: userActions.forgotPassword.request,
+      payload: { email },
+      history
+    });
   };
 
   return (
-    <section className="fogotPassword">
+    <section className="forgotPassword">
       <h1>Fogot password</h1>
 
       <div className="formWrapper">
@@ -45,18 +46,4 @@ const ForgotPassword: any = (props: any): any => {
   );
 };
 
-const ForgotPasswordRouteComponent: any = compose(
-  connect(
-    null,
-    {
-      sendForgotEmail: (emailData: any, history: any): any => ({
-        type: userActions.forgotPassword.request,
-        payload: emailData,
-        history
-      })
-    }
-  ),
-  withRouter
-)(ForgotPassword);
-
-export default ForgotPasswordRouteComponent;
+export default ForgotPassword;
