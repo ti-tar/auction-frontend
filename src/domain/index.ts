@@ -35,7 +35,6 @@ import { reducer as ReduxFormReducers } from "redux-form";
 
 declare global {
   interface Window {
-    // __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
   }
 }
@@ -45,13 +44,15 @@ export interface StateInterface {
   lots: LotsStateInterface;
   bids: BidsStateInterface;
   orders: OrderState;
+  form: any;
 }
 
 const stateInitialValue: StateInterface = {
   user: userInitialState,
   lots: lotsInitialState,
   bids: bidsInitialState,
-  orders: ordersInitialState
+  orders: ordersInitialState,
+  form: null
 };
 
 const reducers: ReducersMapObject = {

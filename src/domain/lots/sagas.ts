@@ -11,6 +11,7 @@ import {
   SetLotToAuctionActionType,
   DeleteLotActionType
 } from "../../interfaces/actionTypes";
+import { FORMS } from "../../constants";
 
 export function* fetchLots({ payload: { filter, page } }: FetchLotsActionType) {
   function getHandler(filter: string): any {
@@ -149,7 +150,7 @@ export function* uploadLotCover(action: any) {
     const { data } = yield call(Api.uploadLotCover, { formData });
     toast("Lot cover successfully uploaded!", "success");
 
-    yield put(change("form-lots-edit", "image", data.file.fileName));
+    yield put(change(FORMS.FORM_LOT_EDIT, "image", data.file.fileName));
   } catch (errors) {
     showAxiosErrors(errors.response);
     yield put({

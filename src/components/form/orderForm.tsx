@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { OrderDeliveryType } from "../../interfaces/order";
+import { FORMS } from "../../constants";
 
 interface Props {}
 
@@ -42,6 +43,6 @@ const orderForm: React.FC<Props & InjectedFormProps<OrderFormValues>> = ({
 };
 
 export default reduxForm<OrderFormValues>({
-  form: "form-order-create",
+  form: FORMS.FORM_ORDER_EDIT,
   enableReinitialize: true
 })(orderForm);

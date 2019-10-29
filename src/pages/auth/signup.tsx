@@ -12,6 +12,7 @@ import userCreateInterface from "../../interfaces/userCreate";
 
 // css
 import "./styles/signUpStyles.scss";
+import { FORMS } from "../../constants";
 
 type Props = React.ReactChild & {
   handleSubmit: Function;
@@ -109,7 +110,7 @@ const SignUpRouteComponent: any = compose(
     }
   ),
   reduxForm({
-    form: "form-signup"
+    form: FORMS.FORM_SIGNUP
   }),
   withRouter
 )(SignUp);

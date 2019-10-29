@@ -9,6 +9,7 @@ import LotCreateInterface from "../../interfaces/lotCreate";
 import "./styles/lotsCreateStyles.scss";
 import LotInterface from "../../interfaces/lot";
 import { StateInterface } from "../../domain";
+import { FORMS } from "../../constants";
 
 type Props = React.ReactChild & {
   match: {
@@ -33,8 +34,10 @@ const LotsEdit: React.FC<Props & RouteComponentProps> = props => {
   );
 
   const formImage: string | undefined = useSelector(
-    (state: any) =>
-      state.form["form-lots-edit"] && state.form["form-lots-edit"].values.image
+    (state: StateInterface) =>
+      !!state.form &&
+      state.form[FORMS.FORM_LOT_EDIT] &&
+      state.form[FORMS.FORM_LOT_EDIT].values.image
   );
 
   useEffect(() => {

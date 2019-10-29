@@ -2,6 +2,7 @@ import React from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import CustomDatePicker from "./datePicker/datepicker";
 import LotInterface from "../../interfaces/lot";
+import { FORMS } from "../../constants";
 
 interface Props {}
 
@@ -56,6 +57,6 @@ const LotForm: React.FC<Props & InjectedFormProps<LotFormValues>> = ({
 };
 
 export default reduxForm<LotFormValues>({
-  form: "form-lots-edit",
+  form: FORMS.FORM_LOT_EDIT,
   enableReinitialize: true
 })(LotForm);
