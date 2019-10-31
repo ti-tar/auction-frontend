@@ -23,11 +23,7 @@ const MenuBtn = (props: any) => {
   const toggleBtnRef = useRef(null);
   useSideClick(toggleBtnRef, props.setIsOpen);
   return (
-    <div
-      className="toggleDropDownBtn"
-      ref={toggleBtnRef}
-      onClick={props.toggleDropDown}
-    >
+    <div className="toggleDropDownBtn" ref={toggleBtnRef} onClick={props.toggleDropDown}>
       &#9776;
     </div>
   );
@@ -41,9 +37,7 @@ const NavMenu: React.FC<RouteComponentProps> = ({ history }) => {
   };
 
   const dispatch = useDispatch();
-  const { firstName, token } = useSelector(
-    (state: StateInterface) => state.user
-  );
+  const { firstName, token } = useSelector((state: StateInterface) => state.user);
   const logout = () => dispatch({ type: userActions.logout.request, history });
 
   return (
@@ -55,15 +49,15 @@ const NavMenu: React.FC<RouteComponentProps> = ({ history }) => {
       <MenuBtn toggleDropDown={toggleDropDown} setIsOpen={setIsOpen} />
 
       <ul className={`buttons ${!isOpen || "opened"}`}>
+        <li>
+          <NavLink to={{ pathname: "/lots" }} exact>
+            Lots
+          </NavLink>
+        </li>
         {!!token ? (
           <>
             <li>
               <NavLink to={{ pathname: "/lots/create" }}>Create Lot</NavLink>
-            </li>
-            <li>
-              <NavLink to={{ pathname: "/lots" }} exact>
-                Lots
-              </NavLink>
             </li>
             <li>
               <NavLink to={{ pathname: "/orders" }} exact>
