@@ -71,6 +71,7 @@ const App: React.FC = () => {
         <Route exact path="/lots" component={Lots} />
         <Route exact path="/lots/:lotId/order" component={OrderEdit} />
         <Route exact path="/orders" component={Orders} />
+        <Route exact path="/orders/:filters" component={Orders} />
         <Route exact path="/" component={Main} />
       </Switch>
     </div>

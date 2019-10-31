@@ -122,6 +122,12 @@ export interface CreateBidActionType extends ActionType {
 }
 
 // orders
+export interface FetchOrdersActionType extends ActionType {
+  payload: {
+    filters?: string;
+  };
+}
+
 export interface FetchOrderActionType extends ActionType {
   payload: {
     orderId: number;

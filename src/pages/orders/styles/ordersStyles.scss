@@ -3,10 +3,31 @@
     max-width: 850px;
     background: white;
 
+    .ordersNav {
+        width: 100%;
+        list-style: none;
+        padding-left: 0;
+        text-align: right;
+        li {
+            display: inline-block;
+            margin: 5px 10px;
+            a {
+                font-size: 14px;
+                text-decoration: none;
+                color: black;
+                &.active,
+                &:hover {
+                    text-decoration: underline;
+                    color: blue;
+                }
+            }
+        }
+    }
+
     .order {
         padding: 5px 10px;
         background: #eeeeee;
-        border: 1px solud #aaa;
+        border: 1px solid #aaa;
         margin-bottom: 1em;
     }
 }

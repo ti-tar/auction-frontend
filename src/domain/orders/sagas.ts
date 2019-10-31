@@ -2,11 +2,11 @@ import { put, call } from "redux-saga/effects";
 import Api from "../../api";
 import * as orderActions from "../../domain/orders/actions";
 import { showAxiosErrors, toast } from "../../libs/helpers";
-import { FetchOrderActionType, OrderActionType } from "../../interfaces/actionTypes";
+import { FetchOrderActionType, FetchOrdersActionType, OrderActionType } from "../../interfaces/actionTypes";
 
-export function* fetchOrders() {
+export function* fetchOrders({ payload: { filters } }: FetchOrdersActionType) {
   try {
-    const { data } = yield call(Api.fetchOrders);
+    const { data } = yield call(Api.fetchOrders, { filters });
     yield put({ type: orderActions.fetchOrders.success, payload: data });
   } catch (errors) {
     showAxiosErrors(errors.response);

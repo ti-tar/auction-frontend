@@ -4,21 +4,44 @@ import * as ordersActions from "./../../domain/orders/actions";
 import { StateInterface } from "../../domain";
 
 import "./styles/ordersStyles.scss";
+import { NavLink, RouteComponentProps } from "react-router-dom";
+import { FetchOrdersActionType} from '../../interfaces/actionTypes';
 
-interface Props {}
+interface Props {
+  match: {
+    params: {
+      filters: string | undefined;
+    };
+  };
+}
 
-const Orders: React.FC<Props> = props => {
+const Orders: React.FC<Props & RouteComponentProps> = ({
+  match: {
+    params: { filters }
+  }
+}) => {
   const dispatch = useDispatch();
 
   const orders = useSelector((state: StateInterface) => state.orders.resources);
 
   useEffect(() => {
-    dispatch({ type: ordersActions.fetchOrders.request });
-  }, [dispatch]);
+    dispatch<FetchOrdersActionType>({ type: ordersActions.fetchOrders.request, payload: { filters } });
+  }, [dispatch, filters]);
 
   return (
     <section className="orders">
-      <h1>Orders</h1>
+      <ul className="ordersNav">
+        <li>
+          <NavLink to={{ pathname: "/orders", search: "" }} exact>
+            My orders
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to={{ pathname: "/orders/mylots" }} exact>
+            Orders My Lots
+          </NavLink>
+        </li>
+      </ul>
       {orders.map(order => (
         <div key={order.id} className="order">
           <h6>{order.id} </h6>

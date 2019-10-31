@@ -56,7 +56,8 @@ export default {
   receiveOrder: ({ lotId }: { lotId: number }) => httpClient.post(`${prefix}/lots/${lotId}/receiveOrder`, {}),
 
   // orders
-  fetchOrders: () => httpClient.get(`${prefix}/orders`),
+  fetchOrders: ({ filters }: { filters: string | undefined }) =>
+    httpClient.get(`${prefix}/orders${filters ? "?filters=" + filters : ""}`),
   fetchOrder: ({ orderId }: { orderId: number }) => httpClient.get(`${prefix}/orders/${orderId}`),
   createOrder: ({ lotId, order }: { lotId: number; order: OrderFormValues }) =>
     httpClient.post(`${prefix}/lots/${lotId}/order`, order),
