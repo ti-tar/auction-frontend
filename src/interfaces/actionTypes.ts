@@ -115,7 +115,7 @@ export interface BidsActionType extends ActionType {
 }
 export interface CreateBidActionType extends ActionType {
   payload: {
-    lotId: number;
+    lotId: string;
     newBid: BidFormData;
   };
   history: History;

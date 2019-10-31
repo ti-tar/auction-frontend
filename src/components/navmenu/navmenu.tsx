@@ -19,11 +19,11 @@ const useSideClick = (toggleBtnRef: any, setIsOpen: any) => {
   }, [setIsOpen, toggleBtnRef]);
 };
 
-const MenuBtn = (props: any) => {
+const MenuBtn = ({ setIsOpen, toggleDropDown }: any) => {
   const toggleBtnRef = useRef(null);
-  useSideClick(toggleBtnRef, props.setIsOpen);
+  useSideClick(toggleBtnRef, setIsOpen);
   return (
-    <div className="toggleDropDownBtn" ref={toggleBtnRef} onClick={props.toggleDropDown}>
+    <div className="toggleDropDownBtn" ref={toggleBtnRef} onClick={toggleDropDown}>
       &#9776;
     </div>
   );
@@ -43,7 +43,7 @@ const NavMenu: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <header className={"NavMenu"}>
       <NavLink to={{ pathname: "/" }} className={"logo"}>
-        Auction Marketplace {!!token ? `(User: ${firstName})` : ""}
+        Auction Marketplace {!!token ? `(User: ${firstName})` : "(not logged in)"}
       </NavLink>
 
       <MenuBtn toggleDropDown={toggleDropDown} setIsOpen={setIsOpen} />

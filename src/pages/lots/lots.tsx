@@ -21,6 +21,7 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
   const { total, perPage } = useSelector((state: StateInterface) => state.lots.meta);
   const isLoading = useSelector((state: StateInterface) => state.lots.isLoading);
   const userId = useSelector((state: StateInterface) => state.user.id);
+  const token = useSelector((state: StateInterface) => state.user.token);
 
   const dispatch = useDispatch();
 
@@ -53,23 +54,25 @@ const Lots: React.FunctionComponent<RouteComponentProps> = props => {
 
   return (
     <section className="lots">
-      <ul className="lotsNav">
-        <li>
-          <NavLink to={{ pathname: "/lots" }} exact>
-            All Lots inProcess
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to={{ pathname: "/lots/own/lots" }} exact>
-            My Lots
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to={{ pathname: "/lots/own/bids" }} exact>
-            Lots With My Bids
-          </NavLink>
-        </li>
-      </ul>
+      {!!token && (
+        <ul className="lotsNav">
+          <li>
+            <NavLink to={{ pathname: "/lots" }} exact>
+              All Lots inProcess
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={{ pathname: "/lots/own/lots" }} exact>
+              My Lots
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={{ pathname: "/lots/own/bids" }} exact>
+              Lots With My Bids
+            </NavLink>
+          </li>
+        </ul>
+      )}
 
       {!isLoading &&
         !!lots &&

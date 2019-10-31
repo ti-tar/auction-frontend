@@ -1,21 +1,26 @@
 .bidCreate {
   margin: 2em auto;
+  padding: 2em 0;
   width: 500px;
   min-height: 339px;
   background: #E0E0E0;
   border-radius: 10px;
 
-  .title {
+  .lotInfo {
+    h2 {
+      a {
+        font-size: 30px;
+        text-decoration: none;
+      }
+    }
+  }
+  .title, .lotInfo {
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
-    font-size: 24px;
+    font-size: 21px;
     text-align: center;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    padding-bottom: 1em;
   }
 
   .fromWrapper {
@@ -24,7 +29,7 @@
     form {
       display: flex;
       flex-wrap: wrap;
-      padding: 2em 0;
+      padding: 1em 0;
       input[type=text],
       textarea {
         border: 0;

@@ -66,7 +66,7 @@ export default {
 
   // bids
   fetchBids: ({ lotId }: { lotId: number }) => httpClient.get(`${prefix}/lots/${lotId}/bids`),
-  createBid: ({ lotId, newBid }: { lotId: number; newBid: BidFormData }) =>
+  createBid: ({ lotId, newBid }: { lotId: string; newBid: BidFormData }) =>
     httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
 
   // user

@@ -34,7 +34,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
   const bidsTotal = useSelector((state: StateInterface) => state.bids.meta.total);
 
   const dispatch = useDispatch();
-
+  const token = useSelector((state: StateInterface) => state.user.token);
   useEffect(() => {
     dispatch({ type: lotsActions.fetchLot.request, payload: { lotId } });
     dispatch({ type: bitsActions.fetchBids.request, payload: { lotId } });
@@ -125,7 +125,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
                 <span>{moment(lot.endTime).format("DD MMM YYYY, hh:mm:ss")}</span>
               </div>
             </div>
-            {!isLoading && (
+            {!isLoading && !!token && (
               <LotButtons
                 lotId={lotId}
                 deleteLot={deleteLot}
@@ -139,7 +139,7 @@ const LotDetails: React.FC<Props & RouteComponentProps> = props => {
               />
             )}
           </div>
-          {!!order && (
+          {!!token && !!order && (
             <div className="lot__order">
               <div className="lot__order_item">
                 <h4>Order</h4>

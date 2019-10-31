@@ -63,7 +63,10 @@ export const showAxiosErrors = (response: responseErrorInterface) => {
   toast("Unknown server error");
 };
 
-export const getWinnersBid = (bids: BidsInterface[]): BidsInterface | undefined => {
+export const getWinnersBid = (bids: BidsInterface[] | null): BidsInterface | undefined => {
+  if (!bids) {
+    return;
+  }
   const arr: number[] = bids.map(b => b.proposedPrice);
   const maxPrice = Math.max(...arr);
   return bids.find(b => b.proposedPrice === maxPrice);
