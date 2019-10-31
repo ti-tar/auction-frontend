@@ -4,8 +4,8 @@ import * as ordersActions from "./../../domain/orders/actions";
 import { StateInterface } from "../../domain";
 
 import "./styles/ordersStyles.scss";
-import { NavLink, RouteComponentProps } from "react-router-dom";
-import { FetchOrdersActionType} from '../../interfaces/actionTypes';
+import { Link, NavLink, RouteComponentProps } from "react-router-dom";
+import { FetchOrdersActionType } from "../../interfaces/actionTypes";
 
 interface Props {
   match: {
@@ -44,7 +44,15 @@ const Orders: React.FC<Props & RouteComponentProps> = ({
       </ul>
       {orders.map(order => (
         <div key={order.id} className="order">
-          <h6>{order.id} </h6>
+          <h3>
+            orderId: #{order.id}
+            {"  "}
+            {!!order.bid.lot && (
+              <Link to={{ pathname: `/lots/${order.bid.lot.id}` }}>
+                {order.bid.lot.title} (id: {order.bid.lot.id})
+              </Link>
+            )}{" "}
+          </h3>
           <p>
             location: {order.arrivalLocation}
             <br />

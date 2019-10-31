@@ -5,12 +5,12 @@ import * as lotsActions from "../../domain/lots/actions";
 import * as bitsActions from "../../domain/bids/actions";
 import { RouteComponentProps } from "react-router-dom";
 import { StateInterface } from "../../domain";
-
-import "./styles/lotDetailsStyles.scss";
 import BidsInterface from "../../interfaces/bid";
 import { getWinnersBid } from "../../libs/helpers";
 import OrderInterface from "../../interfaces/order";
 import LotButtons from "./components/lotButtons";
+
+import "./styles/lotDetailsStyles.scss";
 
 interface Props {
   match: {

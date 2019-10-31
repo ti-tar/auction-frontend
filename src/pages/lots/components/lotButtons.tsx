@@ -72,11 +72,20 @@ const LotButtons: React.FC<Props> = ({
         </div>
       )}
 
-      {/* usr is buyer, winner && lot.status === "closed"  && order === 'pending' */}
-      {isWinner && !!lot && lot.status === "closed" && !!order && order.status === "pending" && (
+      {/* usr is buyer, winner && lot.status === "closed" && no order */}
+      {isWinner && !!lot && lot.status === "closed" && !order && (
         <div className="lot_options">
           <Link className="lot_options_checkout_button" to={{ pathname: `/lots/${lot.id}/order` }}>
-            {!!order ? "Edit Order" : "Checkout"}
+            Checkout
+          </Link>
+        </div>
+      )}
+
+      {/* usr is buyer, winner && lot.status === "closed" && order === 'pending' */}
+      {isWinner && !!lot && lot.status === "closed" && !!order && order.status === "pending" && (
+        <div className="lot_options">
+          <Link className="lot_options_update_order_button" to={{ pathname: `/lots/${lot.id}/order` }}>
+            Edit Order
           </Link>
         </div>
       )}
