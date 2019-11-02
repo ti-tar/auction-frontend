@@ -67,7 +67,7 @@ export default {
   // bids
   fetchBids: ({ lotId }: { lotId: number }) => httpClient.get(`${prefix}/lots/${lotId}/bids`),
   createBid: ({ lotId, newBid }: { lotId: string; newBid: BidFormData }) =>
-    httpClient.post(`${prefix}/lots/${lotId}/bids`, newBid),
+    httpClient.post(`${prefix}/lots/${lotId}/bids`, { proposedPrice: parseFloat(newBid.proposedPrice) }), // fastfix, todo
 
   // user
   fetchProfile: () => httpClient.get(`${prefix}/users/profile`),
