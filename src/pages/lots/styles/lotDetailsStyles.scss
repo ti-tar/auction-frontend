@@ -1,3 +1,5 @@
+@import "../../../common.scss";
+
 .lotDetails {
   margin: 0 auto;
   max-width: 850px;
@@ -10,10 +12,9 @@
     flex-wrap: wrap;
 
     .lot__img {
-      display: flex;
       flex: 0 0 185px;
-      margin: 10px;
-
+      padding: 10px;
+      box-sizing: border-box;
       div {
         img {
           width: 100%;
@@ -22,7 +23,9 @@
     }
 
     .lot__product {
-      flex-grow: 1;
+      flex: 0 0 365px;
+      padding: 10px;
+      box-sizing: border-box;
 
       .winnerStatus {
         color: red;
@@ -45,7 +48,8 @@
       display: flex;
       flex-wrap: wrap;
       flex: 0 0 270px;
-      margin: 5px;
+      padding: 10px;
+      box-sizing: border-box;
       align-items: stretch;
 
       .lot__details {
@@ -128,6 +132,43 @@
         p {
           margin: 5px 0;
         }
+      }
+    }
+
+    @media all and ( max-width: $tablet-width){
+      justify-content: space-between;
+      .lot__img {
+        flex: 0 0 45%;
+        order: 1;
+      }
+      .lot__product {
+        flex: 0 0 100%;
+        order: 3;
+      }
+      .lot__info {
+        flex: 0 0 45%;
+        order: 2;
+      }
+    }
+
+    @media all and ( max-width: $mobile-width){
+      justify-content: space-between;
+      .lot__img {
+        flex: 0 0 100%;
+        order: 1;
+        div {
+          img {
+            width: 100%;
+          }
+        }
+      }
+      .lot__product {
+        flex: 0 0 100%;
+        order: 2;
+      }
+      .lot__info {
+        flex: 0 0 100%;
+        order: 3;
       }
     }
   }
